@@ -1,0 +1,8 @@
+/.vs
+/Binaries
+/DerivedDataCache
+/Intermediate
+/Saved
+*.sln
+*.sdf
+*.suo 
