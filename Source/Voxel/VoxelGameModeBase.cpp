@@ -2,6 +2,15 @@
 
 #include "VoxelGameModeBase.h"
 
+void AVoxelGameModeBase::BeginPlay()
+{
+	Super::BeginPlay();
 
+	//Spawn world
+	FActorSpawnParameters SpawnInfo;
+	SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	GameWorld = GetWorld()->SpawnActor<AVoxel_World>(FVector(0,0,0), FRotator(0,0,0), SpawnInfo);
+}
 
 

@@ -2,7 +2,8 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "Engine.h"
+#include "Voxel_World.h"
 #include "GameFramework/GameModeBase.h"
 #include "VoxelGameModeBase.generated.h"
 
@@ -14,7 +15,10 @@ class VOXEL_API AVoxelGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+protected:
+	virtual void BeginPlay() override;
 	
-	
+public:
+	AVoxel_World* GameWorld;
 	
 };
