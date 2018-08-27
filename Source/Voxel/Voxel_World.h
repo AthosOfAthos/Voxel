@@ -2,7 +2,8 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "Engine.h"
+#include "UnrealNetwork.h"
 #include "Voxel_Chunk.h"
 #include "GameFramework/Actor.h"
 #include "Voxel_World.generated.h"
