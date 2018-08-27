@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Voxel_Chunk.h"
 #include "GameFramework/Actor.h"
 #include "Voxel_World.generated.h"
 
@@ -23,6 +24,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	
+	TMap<FString, AVoxel_Chunk*> ChunkMap;
 	
 };

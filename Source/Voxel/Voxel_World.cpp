@@ -16,6 +16,11 @@ void AVoxel_World::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	//Spawn 0,0,0 for testing
+	FActorSpawnParameters SpawnInfo;
+	SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	ChunkMap.Add(TEXT("0,0,0"), GetWorld()->SpawnActor<AVoxel_Chunk>(FVector(0, 0, 0), FRotator(0, 0, 0), SpawnInfo));
 }
 
 // Called every frame
