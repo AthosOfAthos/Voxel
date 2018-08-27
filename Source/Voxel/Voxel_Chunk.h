@@ -2,7 +2,11 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "Engine.h"
+#include "UnrealNetwork.h"
+#include "Components/InstancedStaticMeshComponent.h"
+#include "Engine/StaticMesh.h"
+#include "Engine/StaticMeshActor.h"
 #include "GameFramework/Actor.h"
 #include "Voxel_Chunk.generated.h"
 
@@ -23,6 +27,25 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	//todo make an array of this shit
+	UInstancedStaticMeshComponent* GenericVoxel;
+
+	void Init(int PosX, int PosY, int PosZ, int seed);
 	
-	
+	//Logic for updating chunks
+	void UpdateChunk();
+
+	void UpdateChunkClient(TArray<uint16> NewChunkData);
+
+	uint16 ChunkData[9][9][9];
+
+	uint16 RenderData[9][9][9];
+
+	//Position in chunk grid
+	UPROPERTY(Replicated)
+		int PosX;
+	UPROPERTY(Replicated)
+		int PosY;
+	UPROPERTY(Replicated)
+		int PosZ;
 };
