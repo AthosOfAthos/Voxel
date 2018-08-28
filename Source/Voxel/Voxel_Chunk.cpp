@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Voxel_Chunk.h"
+#include <string>
 
 
 // Sets default values
@@ -38,7 +39,7 @@ void AVoxel_Chunk::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutL
 void AVoxel_Chunk::BeginPlay()
 {
 	Super::BeginPlay();
-
+	Generate();
 
 	//DELETE THIS
 	UpdateChunk();
@@ -61,10 +62,14 @@ void AVoxel_Chunk::Init(int LocX, int LocY, int LocZ, FastNoise noise)
 {
 	if (HasAuthority())
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(1));
 		PosX = LocX;
 		PosY = LocY;
 		PosZ = LocZ;
 		mynoise = noise;
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(mynoise.GetSeed()));
+		mynoise.SetSeed(1);
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(mynoise.GetSeed()));
 	}
 }
 
@@ -80,18 +85,16 @@ void AVoxel_Chunk::Generate()
 			{
 				for (int8 VoxelZ = 0; VoxelZ < 10; VoxelZ++)
 				{
-					/*
-					if (mynoise.GetPerlin(VoxelX, VoxelY) >= 1) {
-						GenericVoxel->AddInstance(FTransform(FRotator(0, 0, 0), FVector(VoxelX * 100, VoxelY * 100, VoxelZ * 100), FVector(1, 1, 1)));
-					}
-					*/
+					//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(mynoise.GetPerlin(VoxelX, VoxelY, VoxelZ)));
+					//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(mynoise.GetSeed()));
+					
+					
 				}
 			}
 		}
 	}
 
 	}
-}
 
 //Logic to update chunk... duh
 void AVoxel_Chunk::UpdateChunk()
@@ -105,8 +108,11 @@ void AVoxel_Chunk::UpdateChunk()
 		{
 			for (int8 VoxelZ = 0; VoxelZ < 10; VoxelZ++)
 			{
-				
-				GenericVoxel->AddInstance(FTransform(FRotator(0, 0, 0), FVector(VoxelX * 100, VoxelY * 100, VoxelZ * 100), FVector(1, 1, 1)));
+				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(mynoise.GetSeed()));
+				if (mynoise.GetPerlin(VoxelX+(PosX*100), VoxelY + (PosY * 100), VoxelZ + (PosZ * 100)) >= 0.05) {
+					GenericVoxel->AddInstance(FTransform(FRotator(0, 0, 0), FVector(VoxelX * 100, VoxelY * 100, VoxelZ * 100), FVector(1, 1, 1)));
+				}
+				//GenericVoxel->AddInstance(FTransform(FRotator(0, 0, 0), FVector(VoxelX * 100, VoxelY * 100, VoxelZ * 100), FVector(1, 1, 1)));
 			}
 		}
 	}
