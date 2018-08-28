@@ -20,6 +20,14 @@ AVoxel_Chunk::AVoxel_Chunk()
 		GenericVoxel->SetStaticMesh(tmpMesh);
 	}
 
+
+	//NetworkData = TArray<uint16>();
+	//NetworkData.Init(0, 1000);
+
+	for (int I = 0; I < 1000; I++)
+	{
+		NetworkData[I] = 0;
+	}
 }
 
 
@@ -40,6 +48,11 @@ void AVoxel_Chunk::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	if (HasAuthority())
+	{
+
+	}
+
 }
 
 //probaly will not need this..
@@ -49,7 +62,7 @@ void AVoxel_Chunk::Tick(float DeltaTime)
 
 	if (HasAuthority())
 	{
-		NetworkData[0] = 0;
+		NetworkData[1] = 1;
 	}
 
 }
@@ -58,13 +71,13 @@ void AVoxel_Chunk::Init(int LocX, int LocY, int LocZ, FastNoise* noise)
 {
 	if (HasAuthority())
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(1));
+		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(1));
 		PosX = LocX;
 		PosY = LocY;
 		PosZ = LocZ;
 		TheNoise = noise;
-
-		UpdateChunk();
+		Generate();
+		//UpdateChunk();
 	}
 }
 
@@ -74,7 +87,39 @@ void AVoxel_Chunk::Generate()
 	if (HasAuthority())
 	{
 		//Generation Code here
+		for (int8 VoxelX = 0; VoxelX < 10; VoxelX++)
+		{
+			for (int8 VoxelY = 0; VoxelY < 10; VoxelY++)
+			{
+				for (int8 VoxelZ = 0; VoxelZ < 10; VoxelZ++)
+				{
+					if (TheNoise != nullptr) {
+						//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(TheNoise->GetPerlin(VoxelX + (PosX * 100), VoxelY + (PosY * 100), VoxelZ + (PosZ * 100))));
+						if (std::abs(TheNoise->GetPerlin(VoxelX + (PosX * 100), VoxelY + (PosY * 100), VoxelZ + (PosZ * 100))) >= 0.04)
+						{
+							NetworkData[VoxelX + VoxelY * 10 + VoxelZ * 100] = 1;
+						}
+					}
+				}
+			}
+		}
 		
+		
+		/*for (int I = 0; I < 1000; I++)
+		{
+			NetworkData[I] = 1;
+		}*/
+		/*
+		if (TheNoise != nullptr)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(TheNoise->GetSeed()));
+			//if (TheNoise->GetPerlin(VoxelX + (PosX * 100), VoxelY + (PosY * 100), VoxelZ + (PosZ * 100)) >= 0.05) {
+				
+			//}
+		}
+		*/
+
+		OnRep_NetworkData();
 	}
 
 }
@@ -85,21 +130,23 @@ void AVoxel_Chunk::UpdateChunk()
 
 	GenericVoxel->ClearInstances();
 
+
+
 	for (int8 VoxelX = 0; VoxelX < 10; VoxelX++)
 	{
 		for (int8 VoxelY = 0; VoxelY < 10; VoxelY++)
 		{
 			for (int8 VoxelZ = 0; VoxelZ < 10; VoxelZ++)
 			{
-				if (TheNoise != nullptr)
+				switch (ChunkData[VoxelX][VoxelY][VoxelZ])
 				{
-					GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(TheNoise->GetSeed()));
-					if (TheNoise->GetPerlin(VoxelX + (PosX * 100), VoxelY + (PosY * 100), VoxelZ + (PosZ * 100)) >= 0.05) {
-						GenericVoxel->AddInstance(FTransform(FRotator(0, 0, 0), FVector(VoxelX * 100, VoxelY * 100, VoxelZ * 100), FVector(1, 1, 1)));
-					}
-				}
+				default:
 
-				
+					break;
+				case 1:
+					GenericVoxel->AddInstance(FTransform(FRotator(0, 0, 0), FVector(VoxelX * 100, VoxelY * 100, VoxelZ * 100), FVector(1, 1, 1)));
+					break;
+				}
 			}
 		}
 	}
@@ -107,5 +154,12 @@ void AVoxel_Chunk::UpdateChunk()
 
 void AVoxel_Chunk::OnRep_NetworkData()
 {
-	Destroy();
+	
+	for (int I = 0; I < 1000; I++)
+	{
+		ChunkData[I % 10][(I / 10) % 10][I / 100] = NetworkData[I];
+	}
+	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(ChunkData[1][0][0]));
+
+	UpdateChunk();
 }

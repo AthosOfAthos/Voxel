@@ -31,7 +31,7 @@ public:
 	//todo make an array of this shit
 	UInstancedStaticMeshComponent* GenericVoxel;
 
-	FastNoise mynoise;
+	//FastNoise mynoise;
 	FastNoise* TheNoise;
 
 	void Init(int PosX, int PosY, int PosZ, FastNoise* noise);
@@ -45,8 +45,9 @@ public:
 	void UpdateChunk();
 
 	//The version of the chunk replicated to clients
-	UPROPERTY(ReplicatedUsing=OnRep_NetworkData)
-		TArray<uint16> NetworkData;
+	UPROPERTY(ReplicatedUsing = OnRep_NetworkData)
+		uint8 NetworkData[999];
+		//TArray<uint16> NetworkData;
 
 	//Blocks stored in an easy to use 3d array
 	uint16 ChunkData[9][9][9];
