@@ -51,6 +51,7 @@ public:
 	//The version of the chunk replicated to clients
 	UPROPERTY(ReplicatedUsing = OnRep_NetworkData)
 		uint16 NetworkData[999];
+
 		//TArray<uint16> NetworkData;
 
 	//Blocks stored in an easy to use 3d array
