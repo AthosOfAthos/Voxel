@@ -57,7 +57,7 @@ void AVoxel_Chunk::Tick(float DeltaTime)
 
 }
 
-void AVoxel_Chunk::Init(int LocX, int LocY, int LocZ, FastNoise* noise)
+void AVoxel_Chunk::Init(int LocX, int LocY, int LocZ, FastNoise noise)
 {
 	if (HasAuthority())
 	{
@@ -80,9 +80,11 @@ void AVoxel_Chunk::Generate()
 			{
 				for (int8 VoxelZ = 0; VoxelZ < 10; VoxelZ++)
 				{
-					if (mynoise.getValue() >= 1) {
+					/*
+					if (mynoise.GetPerlin(VoxelX, VoxelY) >= 1) {
 						GenericVoxel->AddInstance(FTransform(FRotator(0, 0, 0), FVector(VoxelX * 100, VoxelY * 100, VoxelZ * 100), FVector(1, 1, 1)));
 					}
+					*/
 				}
 			}
 		}

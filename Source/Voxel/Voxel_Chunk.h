@@ -31,9 +31,9 @@ public:
 	//todo make an array of this shit
 	UInstancedStaticMeshComponent* GenericVoxel;
 
-	FastNoise* mynoise();
+	FastNoise mynoise;
 
-	void Init(int PosX, int PosY, int PosZ, FastNoise* noise);
+	void Init(int PosX, int PosY, int PosZ, FastNoise noise);
 	
 	void Generate();
 
