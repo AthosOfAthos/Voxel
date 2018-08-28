@@ -21,8 +21,13 @@ AVoxel_Chunk::AVoxel_Chunk()
 	}
 
 
-	NetworkData = TArray<uint16>();
-	NetworkData.Init(0, 1000);
+	//NetworkData = TArray<uint16>();
+	//NetworkData.Init(0, 1000);
+
+	for (int I = 0; I < 1000; I++)
+	{
+		NetworkData[I] = 0;
+	}
 }
 
 
@@ -66,7 +71,7 @@ void AVoxel_Chunk::Init(int LocX, int LocY, int LocZ, FastNoise* noise)
 {
 	if (HasAuthority())
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(1));
+		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(1));
 		PosX = LocX;
 		PosY = LocY;
 		PosZ = LocZ;
@@ -84,7 +89,10 @@ void AVoxel_Chunk::Generate()
 		//Generation Code here
 
 		
-
+		for (int I = 0; I < 1000; I++)
+		{
+			NetworkData[I] = 1;
+		}
 		/*
 		if (TheNoise != nullptr)
 		{
