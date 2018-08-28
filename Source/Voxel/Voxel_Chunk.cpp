@@ -87,6 +87,7 @@ void AVoxel_Chunk::Generate()
 	if (HasAuthority())
 	{
 		//Generation Code here
+
 		for (int8 VoxelX = 0; VoxelX < 10; VoxelX++)
 		{
 			for (int8 VoxelY = 0; VoxelY < 10; VoxelY++)
@@ -109,6 +110,7 @@ void AVoxel_Chunk::Generate()
 		{
 			NetworkData[I] = 1;
 		}*/
+
 		/*
 		if (TheNoise != nullptr)
 		{

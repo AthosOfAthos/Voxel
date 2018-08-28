@@ -44,9 +44,11 @@ void AVoxel_World::BeginPlay()
 
 		GetWorld()->SpawnActor<AVoxel_Chunk>(FVector(0, 0, 0), FRotator(0, 0, 0), SpawnInfo);
 
-		for (int ChunkX = 0; ChunkX < 3; ChunkX++)
+
+		for (int ChunkX = 0; ChunkX < 5; ChunkX++)
 		{
-			for (int ChunkY = 0; ChunkY < 3; ChunkY++)
+			for (int ChunkY = 0; ChunkY < 5; ChunkY++)
+
 			{
 				for (int ChunkZ = 0; ChunkZ < 3; ChunkZ++)
 				{
@@ -55,7 +57,7 @@ void AVoxel_World::BeginPlay()
 					ChunkKey.Append(FString().SanitizeFloat(ChunkY));
 					ChunkKey.Append(",");
 					ChunkKey.Append(FString().SanitizeFloat(ChunkZ));
-					//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, ChunkKey);
+					GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, ChunkKey);
 					ChunkMap.Add(ChunkKey, GetWorld()->SpawnActor<AVoxel_Chunk>(FVector(ChunkX * 1000, ChunkY * 1000, ChunkZ * 1000), FRotator(0, 0, 0), SpawnInfo));
 					ChunkMap[ChunkKey]->Init(ChunkX, ChunkY, ChunkZ, &perlin);
 				}
