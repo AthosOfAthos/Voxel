@@ -81,6 +81,11 @@ void AVoxel_Chunk::Init(int LocX, int LocY, int LocZ, FastNoise* noise)
 	}
 }
 
+uint16 AVoxel_Chunk::GetBlock(int BlockX, int BlockY, int BlockZ)
+{
+	return ChunkData[BlockX % 100][BlockY % 100][BlockZ % 100];
+}
+
 void AVoxel_Chunk::Generate()
 {
 	//Double check that we are the server
@@ -108,13 +113,32 @@ void AVoxel_Chunk::Generate()
 
 }
 
+bool AVoxel_Chunk::IsOccluded(int BlockX, int BlockY, int BlockZ)
+{
+	return false;
+}
+
 //Logic to update chunk... duh
 void AVoxel_Chunk::UpdateChunk()
 {
 
 	GenericVoxel->ClearInstances();
 
+	//Block Occlusion
+	for (int8 VoxelX = 0; VoxelX < 10; VoxelX++)
+	{
+		for (int8 VoxelY = 0; VoxelY < 10; VoxelY++)
+		{
+			for (int8 VoxelZ = 0; VoxelZ < 10; VoxelZ++)
+			{
+				
 
+				
+
+
+			}
+		}
+	}
 
 	for (int8 VoxelX = 0; VoxelX < 10; VoxelX++)
 	{
@@ -138,7 +162,7 @@ void AVoxel_Chunk::UpdateChunk()
 
 void AVoxel_Chunk::OnRep_NetworkData()
 {
-	
+	//Make easy to work with
 	for (int I = 0; I < 1000; I++)
 	{
 		ChunkData[I % 10][(I / 10) % 10][I / 100] = NetworkData[I];

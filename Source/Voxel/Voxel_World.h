@@ -27,6 +27,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	uint16 GetBlock(int BlockX, int BlockY, int BlockZ);
+
 	TMap<FString, AVoxel_Chunk*> ChunkMap;
 
 	FastNoise perlin;

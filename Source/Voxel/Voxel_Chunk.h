@@ -36,10 +36,14 @@ public:
 
 	void Init(int PosX, int PosY, int PosZ, FastNoise* noise);
 	
+	uint16 GetBlock(int BlockX, int BlockY, int BlockZ);
+
 	void Generate();
 
 	UFUNCTION()
 	virtual void OnRep_NetworkData();
+
+	bool IsOccluded(int BlockX, int BlockY, int BlockZ);
 
 	//Logic for updating chunks
 	void UpdateChunk();

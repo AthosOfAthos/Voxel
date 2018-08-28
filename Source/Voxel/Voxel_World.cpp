@@ -72,3 +72,14 @@ void AVoxel_World::Tick(float DeltaTime)
 
 }
 
+
+uint16 AVoxel_World::GetBlock(int BlockX, int BlockY, int BlockZ)
+{
+	FString ChunkKey = FString().SanitizeFloat(BlockX / 100);
+	ChunkKey.Append(",");
+	ChunkKey.Append(FString().SanitizeFloat(BlockY / 100));
+	ChunkKey.Append(",");
+	ChunkKey.Append(FString().SanitizeFloat(BlockZ / 100));
+
+	return ChunkMap[ChunkKey]->GetBlock(BlockX, BlockY, BlockZ);
+}
