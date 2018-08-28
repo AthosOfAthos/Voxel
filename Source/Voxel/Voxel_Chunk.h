@@ -32,13 +32,19 @@ public:
 
 	void Init(int PosX, int PosY, int PosZ, int seed);
 	
+	void Generate();
+
 	//Logic for updating chunks
 	void UpdateChunk();
 
-	void UpdateChunkClient(TArray<uint16> NewChunkData);
+	//The version of the chunk replicated to clients
+	UPROPERTY(Replicated)
+		TArray<uint16> NetworkData;
 
+	//Blocks stored in an easy to use 3d array
 	uint16 ChunkData[9][9][9];
 
+	//tldr what actualy 'spawns' in the world
 	uint16 RenderData[9][9][9];
 
 	//Position in chunk grid

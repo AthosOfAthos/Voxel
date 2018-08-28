@@ -30,6 +30,8 @@ void AVoxel_Chunk::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutL
 	DOREPLIFETIME(AVoxel_Chunk, PosX);
 	DOREPLIFETIME(AVoxel_Chunk, PosY);
 	DOREPLIFETIME(AVoxel_Chunk, PosZ);
+
+	DOREPLIFETIME(AVoxel_Chunk, NetworkData);
 }
 
 // Called when the game starts or when spawned
@@ -60,6 +62,16 @@ void AVoxel_Chunk::Init(int LocX, int LocY, int LocZ, int WorldSeed)
 	}
 }
 
+void AVoxel_Chunk::Generate()
+{
+	//Double check that we are the server
+	if (HasAuthority())
+	{
+		//Generation Code here
+
+	}
+}
+
 //Logic to update chunk... duh
 void AVoxel_Chunk::UpdateChunk()
 {
@@ -77,9 +89,4 @@ void AVoxel_Chunk::UpdateChunk()
 			}
 		}
 	}
-}
-
-void AVoxel_Chunk::UpdateChunkClient(TArray<uint16> NewChunkData)
-{
-	
 }
