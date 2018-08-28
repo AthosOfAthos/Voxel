@@ -32,8 +32,9 @@ public:
 	UInstancedStaticMeshComponent* GenericVoxel;
 
 	FastNoise mynoise;
+	FastNoise* TheNoise;
 
-	void Init(int PosX, int PosY, int PosZ, FastNoise noise);
+	void Init(int PosX, int PosY, int PosZ, FastNoise* noise);
 	
 	void Generate();
 
