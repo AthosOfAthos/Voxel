@@ -34,11 +34,14 @@ public:
 	
 	void Generate();
 
+	UFUNCTION()
+	virtual void OnRep_NetworkData();
+
 	//Logic for updating chunks
 	void UpdateChunk();
 
 	//The version of the chunk replicated to clients
-	UPROPERTY(Replicated)
+	UPROPERTY(ReplicatedUsing=OnRep_NetworkData)
 		TArray<uint16> NetworkData;
 
 	//Blocks stored in an easy to use 3d array

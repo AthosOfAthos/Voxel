@@ -50,6 +50,11 @@ void AVoxel_Chunk::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (HasAuthority())
+	{
+		NetworkData[0] = 0;
+	}
+
 }
 
 void AVoxel_Chunk::Init(int LocX, int LocY, int LocZ, int WorldSeed)
@@ -89,4 +94,9 @@ void AVoxel_Chunk::UpdateChunk()
 			}
 		}
 	}
+}
+
+void AVoxel_Chunk::OnRep_NetworkData()
+{
+	Destroy();
 }
