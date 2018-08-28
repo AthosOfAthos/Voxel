@@ -8,6 +8,7 @@
 #include "Engine/StaticMesh.h"
 #include "Engine/StaticMeshActor.h"
 #include "GameFramework/Actor.h"
+#include "Math/FastNoise.h"
 #include "Voxel_Chunk.generated.h"
 
 UCLASS()
@@ -30,7 +31,9 @@ public:
 	//todo make an array of this shit
 	UInstancedStaticMeshComponent* GenericVoxel;
 
-	void Init(int PosX, int PosY, int PosZ, int seed);
+	FastNoise* mynoise();
+
+	void Init(int PosX, int PosY, int PosZ, FastNoise* noise);
 	
 	void Generate();
 
@@ -54,4 +57,6 @@ public:
 		int PosY;
 	UPROPERTY(Replicated)
 		int PosZ;
+
+
 };

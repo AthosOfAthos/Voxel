@@ -6,7 +6,9 @@
 #include "UnrealNetwork.h"
 #include "Voxel_Chunk.h"
 #include "GameFramework/Actor.h"
+#include "Math/FastNoise.h"
 #include "Voxel_World.generated.h"
+
 
 UCLASS()
 class VOXEL_API AVoxel_World : public AActor
@@ -26,5 +28,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	TMap<FString, AVoxel_Chunk*> ChunkMap;
+
+	FastNoise perlin;
 	
 };

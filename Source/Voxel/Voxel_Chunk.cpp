@@ -52,13 +52,14 @@ void AVoxel_Chunk::Tick(float DeltaTime)
 
 }
 
-void AVoxel_Chunk::Init(int LocX, int LocY, int LocZ, int WorldSeed)
+void AVoxel_Chunk::Init(int LocX, int LocY, int LocZ, FastNoise* noise)
 {
 	if (HasAuthority())
 	{
 		PosX = LocX;
 		PosY = LocY;
 		PosZ = LocZ;
+		mynoise = noise;
 	}
 }
 
@@ -68,6 +69,19 @@ void AVoxel_Chunk::Generate()
 	if (HasAuthority())
 	{
 		//Generation Code here
+		for (int8 VoxelX = 0; VoxelX < 10; VoxelX++)
+		{
+			for (int8 VoxelY = 0; VoxelY < 10; VoxelY++)
+			{
+				for (int8 VoxelZ = 0; VoxelZ < 10; VoxelZ++)
+				{
+					if (mynoise.getValue() >= 1) {
+						GenericVoxel->AddInstance(FTransform(FRotator(0, 0, 0), FVector(VoxelX * 100, VoxelY * 100, VoxelZ * 100), FVector(1, 1, 1)));
+					}
+				}
+			}
+		}
+	}
 
 	}
 }

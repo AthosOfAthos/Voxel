@@ -19,13 +19,20 @@ void AVoxel_World::BeginPlay()
 	
 	if (HasAuthority())
 	{
+		//Right here we set all the perlin noise variables 
+		perlin.SetSeed(1);
+
 		//Spawn 0,0,0 for testing
 		FActorSpawnParameters SpawnInfo;
 		SpawnInfo.Owner = this;
 		SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 		ChunkMap.Add(TEXT("0,0,0"), GetWorld()->SpawnActor<AVoxel_Chunk>(FVector(0, 0, 0), FRotator(0, 0, 0), SpawnInfo));
+		ChunkMap[TEXT("0,0,0")]->Init(0, 0, 0, &perlin);
 	}
+
+	
+	
 
 }
 
