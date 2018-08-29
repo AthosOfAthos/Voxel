@@ -16,10 +16,10 @@ AVoxel_Chunk::AVoxel_Chunk()
 	GenericVoxel->SetupAttachment(RootComponent);
 
 	VoxelMesh.Init(nullptr, 5);
-	VoxelMesh[0] = GenericVoxel;
+	VoxelMesh[1] = GenericVoxel;
 
 	//Find generic Voxel mesh world loaded for us
-	VoxelMesh[0]->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Generic.Voxel_Generic")));
+	VoxelMesh[1]->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Generic.Voxel_Generic")));
 
 
 	for (int I = 0; I < 1000; I++)
@@ -185,7 +185,11 @@ int AVoxel_Chunk::Height(int VoxX, int VoxY, int VoxZ)
 
 void AVoxel_Chunk::UpdateChunk()
 {
-	VoxelMesh[0]->ClearInstances();
+	for (int i = 0; i < 5; i++)
+	{
+		if (VoxelMesh[i] != nullptr)
+			VoxelMesh[i]->ClearInstances();
+	}
 
 	for (int8 VoxelX = 0; VoxelX < 10; VoxelX++)
 	{
@@ -193,15 +197,9 @@ void AVoxel_Chunk::UpdateChunk()
 		{
 			for (int8 VoxelZ = 0; VoxelZ < 10; VoxelZ++)
 			{
-				switch (ChunkData[VoxelX][VoxelY][VoxelZ])
-				{
-				default:
-
-					break;
-				case 1:
-					VoxelMesh[0]->AddInstance(FTransform(FRotator(0, 0, 0), FVector(VoxelX * 100, VoxelY * 100, VoxelZ * 100), FVector(1, 1, 1)));
-					break;
-				}
+				int i = ChunkData[VoxelX][VoxelY][VoxelZ];
+				if (VoxelMesh[i] != nullptr)
+					VoxelMesh[i]->AddInstance(FTransform(FRotator(0, 0, 0), FVector(VoxelX * 100, VoxelY * 100, VoxelZ * 100), FVector(1, 1, 1)));
 			}
 		}
 	}
