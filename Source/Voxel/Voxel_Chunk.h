@@ -52,15 +52,15 @@ public:
 
 	//The version of the chunk replicated to clients
 	UPROPERTY(ReplicatedUsing = OnRep_NetworkData)
-		uint16 NetworkData[999];
+		uint16 NetworkData[1000];
 
 		//TArray<uint16> NetworkData;
 
 	//Blocks stored in an easy to use 3d array
-	uint16 ChunkData[9][9][9];
+	uint16 ChunkData[10][10][10];
 
 	//tldr what actualy 'spawns' in the world
-	uint16 RenderData[9][9][9];
+	uint16 RenderData[10][10][10];
 
 	//Position in chunk grid
 	UPROPERTY(Replicated)
