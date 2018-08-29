@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Voxel_Chunk.h"
+#include "Voxel_World.h"
 
 AVoxel_Chunk::AVoxel_Chunk()
 {
@@ -116,6 +117,7 @@ void AVoxel_Chunk::Generate()
 
 bool AVoxel_Chunk::IsOccluded(int BlockX, int BlockY, int BlockZ)
 {
+	Cast<AVoxel_World>(GetOwner())->GetBlock(0, 0, 0);
 	return false;
 }
 
