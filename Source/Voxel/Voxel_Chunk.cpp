@@ -12,11 +12,8 @@ AVoxel_Chunk::AVoxel_Chunk()
 	GenericVoxel = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("GenericVoxelMesh"));
 	GenericVoxel->SetupAttachment(RootComponent);
 
-	UStaticMesh* tmpMesh = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Cube.Cube"));
-	if (tmpMesh != nullptr)
-	{
-		GenericVoxel->SetStaticMesh(tmpMesh);
-	}
+	//Find generic Voxel mesh world loaded for us
+	GenericVoxel->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Cube.Cube")));
 
 	for (int I = 0; I < 1000; I++)
 	{

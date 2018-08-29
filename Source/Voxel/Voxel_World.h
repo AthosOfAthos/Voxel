@@ -5,6 +5,8 @@
 #include "Engine.h"
 #include "UnrealNetwork.h"
 #include "Voxel_Chunk.h"
+#include "Engine/StaticMesh.h"
+#include "Engine/StaticMeshActor.h"
 #include "GameFramework/Actor.h"
 #include "Math/FastNoise.h"
 #include "Voxel_World.generated.h"
@@ -31,6 +33,8 @@ public:
 	void UnloadChunk(int ChunkX, int ChunkY, int ChunkZ);
 
 	uint16 GetBlock(int BlockX, int BlockY, int BlockZ);
+
+	UStaticMesh* BlockMesh;
 
 	TMap<FString, AVoxel_Chunk*> ChunkMap;
 

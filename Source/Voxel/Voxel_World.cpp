@@ -10,6 +10,9 @@ AVoxel_World::AVoxel_World()
 	PrimaryActorTick.bCanEverTick = true;
 	bReplicates = true;
 
+	//Load Generic Voxel mesh
+	BlockMesh = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Cube.Cube"));
+
 }
 
 // Called when the game starts or when spawned
@@ -40,9 +43,9 @@ void AVoxel_World::BeginPlay()
 		GetWorld()->SpawnActor<AVoxel_Chunk>(FVector(0, 0, 0), FRotator(0, 0, 0), SpawnInfo);
 
 
-		for (int ChunkX = -2; ChunkX < 2; ChunkX++)
+		for (int ChunkX = -5; ChunkX < 5; ChunkX++)
 		{
-			for (int ChunkY = -2; ChunkY < 2; ChunkY++)
+			for (int ChunkY = -5; ChunkY < 5; ChunkY++)
 
 			{
 				for (int ChunkZ = -2; ChunkZ < 2; ChunkZ++)
