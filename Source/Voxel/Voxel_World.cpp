@@ -39,10 +39,6 @@ void AVoxel_World::BeginPlay()
 		SpawnInfo.Owner = this;
 		SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-
-		GetWorld()->SpawnActor<AVoxel_Chunk>(FVector(0, 0, 0), FRotator(0, 0, 0), SpawnInfo);
-
-
 		for (int ChunkX = -5; ChunkX < 5; ChunkX++)
 		{
 			for (int ChunkY = -5; ChunkY < 5; ChunkY++)
@@ -56,8 +52,6 @@ void AVoxel_World::BeginPlay()
 		}
 		
 
-		
-
 	}
 }
 
@@ -66,6 +60,11 @@ void AVoxel_World::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (HasAuthority())
+	{
+		
+		
+	}
 }
 
 void AVoxel_World::LoadChunk(int ChunkX, int ChunkY, int ChunkZ)
@@ -101,14 +100,27 @@ void AVoxel_World::UnloadChunk(int ChunkX, int ChunkY, int ChunkZ)
 	}
 }
 
-
-uint16 AVoxel_World::GetBlock(int BlockX, int BlockY, int BlockZ)
+uint16 AVoxel_World::GetBlock(int VoxelX, int VoxelY, int VoxelZ)
 {
-	FString ChunkKey = FString().SanitizeFloat(BlockX / 100);
+	FString ChunkKey = FString().SanitizeFloat(VoxelX / 10);
 	ChunkKey.Append(",");
-	ChunkKey.Append(FString().SanitizeFloat(BlockY / 100));
+	ChunkKey.Append(FString().SanitizeFloat(VoxelY / 10));
 	ChunkKey.Append(",");
-	ChunkKey.Append(FString().SanitizeFloat(BlockZ / 100));
+	ChunkKey.Append(FString().SanitizeFloat(VoxelZ / 10));
 
-	return ChunkMap[ChunkKey]->GetBlock(BlockX, BlockY, BlockZ);
+	return ChunkMap[ChunkKey]->GetBlock(VoxelX, VoxelY, VoxelZ);
+}
+
+void AVoxel_World::SetBlock(int VoxelX, int VoxelY, int VoxelZ, int Id)
+{
+	if (HasAuthority())
+	{
+		FString ChunkKey = FString().SanitizeFloat(VoxelX / 10);
+		ChunkKey.Append(",");
+		ChunkKey.Append(FString().SanitizeFloat(VoxelY / 10));
+		ChunkKey.Append(",");
+		ChunkKey.Append(FString().SanitizeFloat(VoxelZ / 10));
+
+		ChunkMap[ChunkKey]->SetBlock(VoxelX, VoxelY, VoxelZ, Id);
+	}
 }

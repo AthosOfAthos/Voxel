@@ -36,7 +36,8 @@ public:
 
 	void Init(int PosX, int PosY, int PosZ, FastNoise* noise);
 	
-	uint16 GetBlock(int BlockX, int BlockY, int BlockZ);
+	uint16 GetBlock(int VoxelX, int VoxelY, int VoxelZ);
+	void SetBlock(int VoxelX, int VoxelY, int VoxelZ, int Id);
 
 	void Generate();
 	int Noise(int VoxelX, int VoxelY, int VoxelZ);

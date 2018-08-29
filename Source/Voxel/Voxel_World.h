@@ -32,9 +32,13 @@ public:
 	void LoadChunk(int ChunkX, int ChunkY, int ChunkZ);
 	void UnloadChunk(int ChunkX, int ChunkY, int ChunkZ);
 
-	uint16 GetBlock(int BlockX, int BlockY, int BlockZ);
+	uint16 GetBlock(int VoxelX, int VoxelY, int VoxelZ);
+	void SetBlock(int VoxelX, int VoxelY, int VoxelZ, int Id);
 
 	UStaticMesh* BlockMesh;
+
+	//temp
+	int x, y, z = 0;
 
 	TMap<FString, AVoxel_Chunk*> ChunkMap;
 

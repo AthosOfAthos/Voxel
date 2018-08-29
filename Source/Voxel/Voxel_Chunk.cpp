@@ -69,9 +69,21 @@ void AVoxel_Chunk::Init(int LocX, int LocY, int LocZ, FastNoise* noise)
 	}
 }
 
-uint16 AVoxel_Chunk::GetBlock(int BlockX, int BlockY, int BlockZ)
+uint16 AVoxel_Chunk::GetBlock(int VoxelX, int VoxelY, int VoxelZ)
 {
-	return ChunkData[BlockX % 100][BlockY % 100][BlockZ % 100];
+	return ChunkData[VoxelX % 10][VoxelY % 10][VoxelZ % 10];
+}
+
+void AVoxel_Chunk::SetBlock(int VoxelX, int VoxelY, int VoxelZ, int Id)
+{
+	if (HasAuthority())
+	{
+		VoxelX = VoxelX % 10;
+		VoxelY = VoxelY % 10;
+		VoxelZ = VoxelZ % 10;
+		NetworkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = Id;
+		OnRep_NetworkData();
+	}
 }
 
 void AVoxel_Chunk::Generate()
@@ -86,7 +98,19 @@ void AVoxel_Chunk::Generate()
 			{
 				for (int8 VoxelZ = 0; VoxelZ < 10; VoxelZ++)
 				{
-					NetworkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = Shape(VoxelX, VoxelY, VoxelZ);
+					//NetworkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = Shape(VoxelX, VoxelY, VoxelZ);
+					float Height = TheNoise->GetPerlin((VoxelX + (PosX * 10)) * 1, (VoxelY + (PosY * 10)) * 1);
+					Height *= 20;
+					GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(Height));
+					if ((VoxelZ + (PosZ * 1000)) < Height)
+					{
+						NetworkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = 1;
+					}
+					else
+					{
+						NetworkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = 0;
+					}
+
 				}
 			}
 		}
