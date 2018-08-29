@@ -19,7 +19,7 @@ AVoxel_Chunk::AVoxel_Chunk()
 	VoxelMesh[0] = GenericVoxel;
 
 	//Find generic Voxel mesh world loaded for us
-	VoxelMesh[0]->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Cube.Cube")));
+	VoxelMesh[0]->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Generic.Voxel_Generic")));
 
 
 	for (int I = 0; I < 1000; I++)

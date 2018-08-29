@@ -12,8 +12,8 @@ AVoxel_World::AVoxel_World()
 	bAlwaysRelevant = true;
 
 	//Load Generic Voxel mesh
-	BlockMesh = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Cube.Cube"));
-
+	VoxelMesh.Init(nullptr, 5);
+	VoxelMesh[1] = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Generic.Voxel_Generic"));
 }
 
 // Called when the game starts or when spawned

@@ -35,7 +35,7 @@ public:
 	uint16 GetBlock(int VoxelX, int VoxelY, int VoxelZ);
 	void SetBlock(int VoxelX, int VoxelY, int VoxelZ, int Id);
 
-	UStaticMesh* BlockMesh;
+	TArray<UStaticMesh*> VoxelMesh;
 
 	//temp
 	int x, y, z = 0;
