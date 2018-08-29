@@ -32,19 +32,19 @@ void AVoxel_World::BeginPlay()
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(perlin.GetFractalOctaves()));
 		
 
-
+		
 		for (int ChunkX = 0; ChunkX < 5; ChunkX++)
 		{
 			for (int ChunkY = 0; ChunkY < 5; ChunkY++)
-
 			{
 				for (int ChunkZ = 0; ChunkZ < 3; ChunkZ++)
 				{
-					SpawnChunk(ChunkX, ChunkY, ChunkZ);
+					LoadChunk(ChunkX, ChunkY, ChunkZ);
 				}
 			}
 		}
-
+		
+		UnloadChunk(0, 0, 0);
 
 		
 
@@ -58,7 +58,7 @@ void AVoxel_World::Tick(float DeltaTime)
 
 }
 
-void AVoxel_World::SpawnChunk(int ChunkX, int ChunkY, int ChunkZ)
+void AVoxel_World::LoadChunk(int ChunkX, int ChunkY, int ChunkZ)
 {
 	if (HasAuthority())
 	{
@@ -71,9 +71,23 @@ void AVoxel_World::SpawnChunk(int ChunkX, int ChunkY, int ChunkZ)
 		ChunkKey.Append(FString().SanitizeFloat(ChunkY));
 		ChunkKey.Append(",");
 		ChunkKey.Append(FString().SanitizeFloat(ChunkZ));
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, ChunkKey);
+		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, ChunkKey);
 		ChunkMap.Add(ChunkKey, GetWorld()->SpawnActor<AVoxel_Chunk>(FVector(ChunkX * 1000, ChunkY * 1000, ChunkZ * 1000), FRotator(0, 0, 0), SpawnInfo));
 		ChunkMap[ChunkKey]->Init(ChunkX, ChunkY, ChunkZ, &perlin);
+	}
+}
+
+void AVoxel_World::UnloadChunk(int ChunkX, int ChunkY, int ChunkZ)
+{
+	if (HasAuthority())
+	{
+		FString ChunkKey = FString().SanitizeFloat(ChunkX);
+		ChunkKey.Append(",");
+		ChunkKey.Append(FString().SanitizeFloat(ChunkY));
+		ChunkKey.Append(",");
+		ChunkKey.Append(FString().SanitizeFloat(ChunkZ));
+		ChunkMap[ChunkKey]->Destroy();
+		ChunkMap.Remove(ChunkKey);
 	}
 }
 
