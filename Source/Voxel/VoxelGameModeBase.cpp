@@ -2,6 +2,11 @@
 
 #include "VoxelGameModeBase.h"
 
+AVoxelGameModeBase::AVoxelGameModeBase()
+{
+	DefaultPawnClass = ACharacter_Player::StaticClass();
+}
+
 void AVoxelGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
