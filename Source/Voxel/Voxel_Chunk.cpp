@@ -26,7 +26,7 @@ AVoxel_Chunk::AVoxel_Chunk()
 
 	//Find generic Voxel mesh world loaded for us
 	VoxelMesh[1]->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Generic.Voxel_Generic")));
-	VoxelMesh[2]->SetStaticMesh(LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Water.Voxel_Water")));
+	VoxelMesh[2]->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Water.Voxel_Water")));
 
 	for (int I = 0; I < 1000; I++)
 	{
