@@ -52,7 +52,6 @@ void AVoxel_World::BeginPlay()
 			}
 		}
 		
-		UnloadChunk(0, 0, 0);
 
 		
 
