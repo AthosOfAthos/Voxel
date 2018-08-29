@@ -5,6 +5,7 @@
 AVoxelGameModeBase::AVoxelGameModeBase()
 {
 	DefaultPawnClass = ACharacter_Player::StaticClass();
+	PlayerControllerClass = AController_Player::StaticClass();
 }
 
 void AVoxelGameModeBase::BeginPlay()

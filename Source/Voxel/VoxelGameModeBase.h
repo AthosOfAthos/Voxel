@@ -5,6 +5,7 @@
 #include "Engine.h"
 #include "Voxel_World.h"
 #include "Character_Player.h"
+#include "Controller_Player.h"
 #include "GameFramework/GameModeBase.h"
 #include "VoxelGameModeBase.generated.h"
 
