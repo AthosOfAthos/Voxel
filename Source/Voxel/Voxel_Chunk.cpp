@@ -115,14 +115,35 @@ void AVoxel_Chunk::Generate()
 
 }
 
-bool AVoxel_Chunk::IsOccluded(int BlockX, int BlockY, int BlockZ)
+bool AVoxel_Chunk::IsOccluded(int VoxelX, int VoxelY, int VoxelZ)
 {
-	Cast<AVoxel_World>(GetOwner())->GetBlock(0, 0, 0);
+	//Cast<AVoxel_World>(GetOwner())->GetBlock(0, 0, 0);
+
 	return false;
 }
 
 void AVoxel_Chunk::UpdateChunk()
 {
+
+	for (int8 VoxelX = 0; VoxelX < 10; VoxelX++)
+	{
+		for (int8 VoxelY = 0; VoxelY < 10; VoxelY++)
+		{
+			for (int8 VoxelZ = 0; VoxelZ < 10; VoxelZ++)
+			{
+				if (!IsOccluded(VoxelX, VoxelY, VoxelZ))
+				{
+					RenderData[VoxelX][VoxelY][VoxelZ] = ChunkData[VoxelX][VoxelY][VoxelZ];
+				}
+				else
+				{
+					RenderData[VoxelX][VoxelY][VoxelZ] = 0;
+				}
+			}
+		}
+	}
+
+
 
 	GenericVoxel->ClearInstances();
 
@@ -132,7 +153,7 @@ void AVoxel_Chunk::UpdateChunk()
 		{
 			for (int8 VoxelZ = 0; VoxelZ < 10; VoxelZ++)
 			{
-				switch (ChunkData[VoxelX][VoxelY][VoxelZ])
+				switch (RenderData[VoxelX][VoxelY][VoxelZ])
 				{
 				default:
 
