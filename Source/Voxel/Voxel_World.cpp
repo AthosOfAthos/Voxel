@@ -14,6 +14,7 @@ AVoxel_World::AVoxel_World()
 	//Load Generic Voxel mesh
 	VoxelMesh.Init(nullptr, 5);
 	VoxelMesh[1] = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Generic.Voxel_Generic"));
+	VoxelMesh[2] = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Water.Voxel_Water"));
 }
 
 // Called when the game starts or when spawned
@@ -52,6 +53,8 @@ void AVoxel_World::BeginPlay()
 			}
 		}
 		
+
+		SetBlock(0, 0, 0, 2);
 
 	}
 }
