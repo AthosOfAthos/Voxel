@@ -45,8 +45,6 @@ public:
 	UFUNCTION()
 	virtual void OnRep_NetworkData();
 
-	bool IsOccluded(int VoxelX, int VoxelY, int VoxelZ);
-
 	//Logic for updating chunks
 	void UpdateChunk();
 
