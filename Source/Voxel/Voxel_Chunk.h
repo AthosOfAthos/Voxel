@@ -39,6 +39,8 @@ public:
 	uint16 GetBlock(int BlockX, int BlockY, int BlockZ);
 
 	void Generate();
+	int Noise(int VoxelX, int VoxelY, int VoxelZ);
+	int Shape(int VoxelX, int VoxelY, int VoxelZ);
 
 	UFUNCTION()
 	virtual void OnRep_NetworkData();

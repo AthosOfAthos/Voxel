@@ -45,12 +45,12 @@ void AVoxel_World::BeginPlay()
 		GetWorld()->SpawnActor<AVoxel_Chunk>(FVector(0, 0, 0), FRotator(0, 0, 0), SpawnInfo);
 
 
-		for (int ChunkX = 0; ChunkX < 5; ChunkX++)
+		for (int ChunkX = -2; ChunkX < 2; ChunkX++)
 		{
-			for (int ChunkY = 0; ChunkY < 5; ChunkY++)
+			for (int ChunkY = -2; ChunkY < 2; ChunkY++)
 
 			{
-				for (int ChunkZ = 0; ChunkZ < 3; ChunkZ++)
+				for (int ChunkZ = -2; ChunkZ < 2; ChunkZ++)
 				{
 					FString ChunkKey = FString().SanitizeFloat(ChunkX);
 					ChunkKey.Append(",");

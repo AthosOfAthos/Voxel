@@ -2,6 +2,7 @@
 
 #include "Voxel_Chunk.h"
 #include <string>
+#include <cmath>
 
 
 // Sets default values
@@ -88,7 +89,6 @@ uint16 AVoxel_Chunk::GetBlock(int BlockX, int BlockY, int BlockZ)
 
 void AVoxel_Chunk::Generate()
 {
-	//Double check that we are the server
 	if (HasAuthority())
 	{
 		//Generation Code here
@@ -99,36 +99,48 @@ void AVoxel_Chunk::Generate()
 			{
 				for (int8 VoxelZ = 0; VoxelZ < 10; VoxelZ++)
 				{
-					if (TheNoise != nullptr) {
-						//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(TheNoise->GetPerlin(VoxelX + (PosX * 100), VoxelY + (PosY * 100), VoxelZ + (PosZ * 100))));
-						if (std::abs(TheNoise->GetPerlin(VoxelX + (PosX * 100), VoxelY + (PosY * 100), VoxelZ + (PosZ * 100))) >= 0.04)
-						{
-							NetworkData[VoxelX + VoxelY * 10 + VoxelZ * 100] = 1;
-						}
-					}
+					NetworkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = Shape(VoxelX, VoxelY, VoxelZ);
 				}
 			}
 		}
-		
-		
-		/*for (int I = 0; I < 1000; I++)
-		{
-			NetworkData[I] = 1;
-		}*/
 
-		/*
-		if (TheNoise != nullptr)
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(TheNoise->GetSeed()));
-			//if (TheNoise->GetPerlin(VoxelX + (PosX * 100), VoxelY + (PosY * 100), VoxelZ + (PosZ * 100)) >= 0.05) {
-				
-			//}
-		}
-		*/
 
 		OnRep_NetworkData();
 	}
+}
+int AVoxel_Chunk::Noise(int VoxX, int VoxY, int VoxZ)
+{
+	if (TheNoise != nullptr) {
+		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(TheNoise->GetPerlin(VoxelX + (PosX * 100), VoxelY + (PosY * 100), VoxelZ + (PosZ * 100))));
+		if (std::abs(TheNoise->GetPerlin(VoxX + (PosX * 100), VoxY + (PosY * 100), VoxZ + (PosZ * 100))) >= 0.04)
+		{
+			 return 1;
+		}
+		else {
+			return 0;
+		}
+	}
+	else {
+		return 0;
+	}
+	
 
+}
+int AVoxel_Chunk::Shape(int VoxX, int VoxY, int VoxZ)
+{
+	int c = 10;
+	int a = 12; 
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat((pow(PosX * 100 + VoxX, 2) + pow(PosY * 100 + VoxY, 2) + pow(PosZ * 100 + VoxZ, 2))));
+	/*if (pow(PosX*100 + VoxX,2)+ pow(PosY * 100 + VoxY, 2)+ pow(PosZ * 100 + VoxZ, 2) <= pow(c,2)){
+		return 1;
+	}
+	else */
+	if (VoxX == 1) {
+		return 1;
+	}
+	else {
+		return 0;
+	}
 }
 
 bool AVoxel_Chunk::IsOccluded(int BlockX, int BlockY, int BlockZ)
