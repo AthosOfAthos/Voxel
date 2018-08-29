@@ -15,12 +15,6 @@ class VOXEL_API ACharacter_Player : public ACharacter
 {
 	GENERATED_BODY()
 
-	GetCharacterMovement()->GravityScale = 3;
-	GetCharacterMovement()->AirControl = 0.7f;
-	GetCharacterMovement()->JumpZVelocity = 700;
-	GetCharacterMovement()->MaxAcceleration = 4096;
-	GetCharacterMovement()->MaxWalkSpeed = 400;
-
 public:
 	// Sets default values for this character's properties
 	ACharacter_Player();
@@ -42,6 +36,13 @@ public:
 
 	void JumpPressed();
 	void JumpReleased();
+
+	void SetGravity(float);
+	UFUNCTION(Server, Reliable, WithValidation)
+		void SetGravityServer(float NewGravity);
 	
-	
+	float GravityNormal = 3;
+	float GravityJump = 1.5;
+	float JumpPower = 600;
+
 };

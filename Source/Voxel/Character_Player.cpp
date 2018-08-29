@@ -9,6 +9,12 @@ ACharacter_Player::ACharacter_Player()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	bReplicates = true;
+
+	GetCharacterMovement()->GravityScale = GravityNormal;
+	GetCharacterMovement()->AirControl = 0.7f;
+	GetCharacterMovement()->JumpZVelocity = JumpPower;
+	GetCharacterMovement()->MaxAcceleration = 4096;
+	GetCharacterMovement()->MaxWalkSpeed = 500;
 }
 
 // Called when the game starts or when spawned
@@ -68,10 +74,29 @@ void ACharacter_Player::LookX(float inputVal)
 
 void ACharacter_Player::JumpPressed()
 {
+	SetGravity(GravityJump);
+	SetGravityServer(GravityJump);
 	ACharacter::Jump();
 }
 
 void ACharacter_Player::JumpReleased()
 {
+	SetGravity(GravityNormal);
+	SetGravityServer(GravityNormal);
+}
 
+void ACharacter_Player::SetGravity(float NewGravity)
+{
+	GetCharacterMovement()->GravityScale = NewGravity;
+}
+
+bool ACharacter_Player::SetGravityServer_Validate(float NewGravity)
+{
+	//fix this
+	return true;
+}
+
+void ACharacter_Player::SetGravityServer_Implementation(float NewGravity)
+{
+	SetGravity(NewGravity);
 }
