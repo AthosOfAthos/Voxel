@@ -8,6 +8,9 @@ AVoxel_Chunk::AVoxel_Chunk()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	bReplicates = true;
+	bAlwaysRelevant = true;
+
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 
 	GenericVoxel = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("GenericVoxelMesh"));
 	GenericVoxel->SetupAttachment(RootComponent);
