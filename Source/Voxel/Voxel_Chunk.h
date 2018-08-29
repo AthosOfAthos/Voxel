@@ -41,6 +41,7 @@ public:
 	void SetBlock(int VoxelX, int VoxelY, int VoxelZ, int Id);
 
 	void Generate();
+	int Height(int VoxelX, int VoxelY, int VoxelZ);
 	int Noise(int VoxelX, int VoxelY, int VoxelZ);
 	int Shape(int VoxelX, int VoxelY, int VoxelZ);
 

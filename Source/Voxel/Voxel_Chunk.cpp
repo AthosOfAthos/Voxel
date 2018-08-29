@@ -94,7 +94,13 @@ void AVoxel_Chunk::Generate()
 {
 	if (HasAuthority())
 	{
-		//Generation Code here
+		//Generation Code here 
+		/*
+		Important note from the editor. There is a lot of generation code and I need to test a lot of things I want to test
+		As such please don't mess with the format I've set up unless we speak first <KinginYellow>
+		Basically Generate iterates through all blocks in the chunk and then decides if it should be block or not
+		As such if testing something choose to edit the int value (via a function which takes the pos and returns 1 or 0)
+		*/
 
 		for (int8 VoxelX = 0; VoxelX < 10; VoxelX++)
 		{
@@ -103,17 +109,8 @@ void AVoxel_Chunk::Generate()
 				for (int8 VoxelZ = 0; VoxelZ < 10; VoxelZ++)
 				{
 					//NetworkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = Shape(VoxelX, VoxelY, VoxelZ);
-					float Height = TheNoise->GetPerlin((VoxelX + (PosX * 10)) * 1, (VoxelY + (PosY * 10)) * 1);
-					Height *= 20;
-					GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(Height));
-					if ((VoxelZ + (PosZ * 1000)) < Height)
-					{
-						NetworkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = 1;
-					}
-					else
-					{
-						NetworkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = 0;
-					}
+					int Value = Height(VoxelX, VoxelY, VoxelZ);
+					NetworkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = Value;
 
 				}
 			}
@@ -154,6 +151,21 @@ int AVoxel_Chunk::Shape(int VoxX, int VoxY, int VoxZ)
 		return 1;
 	}
 	else {
+		return 0;
+	}
+}
+int AVoxel_Chunk::Height(int VoxX, int VoxY, int VoxZ) 
+{
+	float Height = TheNoise->GetPerlin((VoxX + (PosX * 10)) * 1, (VoxY + (PosY * 10)) * 1);
+	Height *= 20;
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(Height));
+	
+	if ((VoxZ + (PosZ * 1000)) < Height)
+	{
+		return 1;
+	}
+	else
+	{
 		return 0;
 	}
 }
