@@ -112,7 +112,7 @@ void AVoxel_Chunk::Generate()
 				for (int8 VoxelZ = 0; VoxelZ < 10; VoxelZ++)
 				{
 					//NetworkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = Shape(VoxelX, VoxelY, VoxelZ);
-					int Value = Height(VoxelX, VoxelY, VoxelZ);
+					int Value = Shape(VoxelX, VoxelY, VoxelZ);
 					NetworkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = Value;
 
 				}
@@ -127,7 +127,7 @@ int AVoxel_Chunk::Noise(int VoxX, int VoxY, int VoxZ)
 {
 	if (TheNoise != nullptr) {
 		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(TheNoise->GetPerlin(VoxelX + (PosX * 100), VoxelY + (PosY * 100), VoxelZ + (PosZ * 100))));
-		if (std::abs(TheNoise->GetPerlin(VoxX + (PosX * 100), VoxY + (PosY * 100), VoxZ + (PosZ * 100))) >= 0.04)
+		if (std::abs(TheNoise->GetPerlin(VoxX + (PosX * 100), VoxY + (PosY * 100), VoxZ + (PosZ * 100))) <= 0.03)
 		{
 			 return 1;
 		}
@@ -143,19 +143,29 @@ int AVoxel_Chunk::Noise(int VoxX, int VoxY, int VoxZ)
 }
 int AVoxel_Chunk::Shape(int VoxX, int VoxY, int VoxZ)
 {
-	int c = 10;
-	int a = 12; 
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat((pow(PosX * 100 + VoxX, 2) + pow(PosY * 100 + VoxY, 2) + pow(PosZ * 100 + VoxZ, 2))));
-	/*if (pow(PosX*100 + VoxX,2)+ pow(PosY * 100 + VoxY, 2)+ pow(PosZ * 100 + VoxZ, 2) <= pow(c,2)){
-		return 1;
+	int Type = 1;
+	int c = 18;
+	int a = 20;
+	switch (Type) {
+	case 0:
+		if (pow((PosX * 10) + VoxX, 2) + pow((PosY * 10) + VoxY, 2) + pow((PosZ * 10) + VoxZ, 2) <= pow(c, 2)) {
+			return 1;
+		}
+	case 1:
+		if (((int)pow(c-sqrt(pow((PosX*10) +VoxX,2) +pow((PosY*10)+VoxY,2)), 2)+pow((PosZ*10)+VoxZ,2)==pow(a,2))) {
+			return 1;
+		}
 	}
-	else */
-	if (VoxX == 1) {
+
+	
+	// GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat((pow(PosX * 100 + VoxX, 2) + pow(PosY * 100 + VoxY, 2) + pow(PosZ * 100 + VoxZ, 2))));
+	
+	/*if ((VoxX%10 == 0) && (VoxY%10 == 0) && (VoxZ%10 == 0)) {
 		return 1;
-	}
-	else {
+	}else {
 		return 0;
-	}
+	}*/
+	return 0;
 }
 int AVoxel_Chunk::Height(int VoxX, int VoxY, int VoxZ) 
 {
