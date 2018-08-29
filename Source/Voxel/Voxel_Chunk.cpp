@@ -2,12 +2,8 @@
 
 #include "Voxel_Chunk.h"
 
-
-
-// Sets default values
 AVoxel_Chunk::AVoxel_Chunk()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 	bReplicates = true;
 
@@ -20,16 +16,11 @@ AVoxel_Chunk::AVoxel_Chunk()
 		GenericVoxel->SetStaticMesh(tmpMesh);
 	}
 
-
-	//NetworkData = TArray<uint16>();
-	//NetworkData.Init(0, 1000);
-
 	for (int I = 0; I < 1000; I++)
 	{
 		NetworkData[I] = 0;
 	}
 }
-
 
 //Register variables for replication
 void AVoxel_Chunk::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
@@ -71,13 +62,11 @@ void AVoxel_Chunk::Init(int LocX, int LocY, int LocZ, FastNoise* noise)
 {
 	if (HasAuthority())
 	{
-		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(1));
 		PosX = LocX;
 		PosY = LocY;
 		PosZ = LocZ;
 		TheNoise = noise;
 		Generate();
-		//UpdateChunk();
 	}
 }
 
@@ -109,12 +98,6 @@ void AVoxel_Chunk::Generate()
 				}
 			}
 		}
-		
-		
-		/*for (int I = 0; I < 1000; I++)
-		{
-			NetworkData[I] = 1;
-		}*/
 
 		/*
 		if (TheNoise != nullptr)
@@ -136,27 +119,10 @@ bool AVoxel_Chunk::IsOccluded(int BlockX, int BlockY, int BlockZ)
 	return false;
 }
 
-//Logic to update chunk... duh
 void AVoxel_Chunk::UpdateChunk()
 {
 
 	GenericVoxel->ClearInstances();
-
-	//Block Occlusion
-	for (int8 VoxelX = 0; VoxelX < 10; VoxelX++)
-	{
-		for (int8 VoxelY = 0; VoxelY < 10; VoxelY++)
-		{
-			for (int8 VoxelZ = 0; VoxelZ < 10; VoxelZ++)
-			{
-				
-
-				
-
-
-			}
-		}
-	}
 
 	for (int8 VoxelX = 0; VoxelX < 10; VoxelX++)
 	{
