@@ -12,8 +12,12 @@ AVoxel_Chunk::AVoxel_Chunk()
 	GenericVoxel = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("GenericVoxelMesh"));
 	GenericVoxel->SetupAttachment(RootComponent);
 
+	VoxelMesh.Init(nullptr, 5);
+	VoxelMesh[0] = GenericVoxel;
+
 	//Find generic Voxel mesh world loaded for us
-	GenericVoxel->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Cube.Cube")));
+	VoxelMesh[0]->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Cube.Cube")));
+
 
 	for (int I = 0; I < 1000; I++)
 	{
@@ -156,7 +160,7 @@ int AVoxel_Chunk::Shape(int VoxX, int VoxY, int VoxZ)
 
 void AVoxel_Chunk::UpdateChunk()
 {
-	GenericVoxel->ClearInstances();
+	VoxelMesh[0]->ClearInstances();
 
 	for (int8 VoxelX = 0; VoxelX < 10; VoxelX++)
 	{
@@ -170,7 +174,7 @@ void AVoxel_Chunk::UpdateChunk()
 
 					break;
 				case 1:
-					GenericVoxel->AddInstance(FTransform(FRotator(0, 0, 0), FVector(VoxelX * 100, VoxelY * 100, VoxelZ * 100), FVector(1, 1, 1)));
+					VoxelMesh[0]->AddInstance(FTransform(FRotator(0, 0, 0), FVector(VoxelX * 100, VoxelY * 100, VoxelZ * 100), FVector(1, 1, 1)));
 					break;
 				}
 			}

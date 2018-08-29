@@ -30,6 +30,7 @@ public:
 
 	//todo make an array of this shit
 	UInstancedStaticMeshComponent* GenericVoxel;
+	TArray<UInstancedStaticMeshComponent*> VoxelMesh;
 
 	//FastNoise mynoise;
 	FastNoise* TheNoise;
