@@ -27,6 +27,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void LoadChunk(int ChunkX, int ChunkY, int ChunkZ);
+	void UnloadChunk(int ChunkX, int ChunkY, int ChunkZ);
+
 	uint16 GetBlock(int BlockX, int BlockY, int BlockZ);
 
 	TMap<FString, AVoxel_Chunk*> ChunkMap;

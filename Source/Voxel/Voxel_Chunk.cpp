@@ -1,14 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Voxel_Chunk.h"
-#include <string>
 #include <cmath>
 
 
-// Sets default values
 AVoxel_Chunk::AVoxel_Chunk()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 	bReplicates = true;
 
@@ -21,16 +18,11 @@ AVoxel_Chunk::AVoxel_Chunk()
 		GenericVoxel->SetStaticMesh(tmpMesh);
 	}
 
-
-	//NetworkData = TArray<uint16>();
-	//NetworkData.Init(0, 1000);
-
 	for (int I = 0; I < 1000; I++)
 	{
 		NetworkData[I] = 0;
 	}
 }
-
 
 //Register variables for replication
 void AVoxel_Chunk::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
@@ -72,13 +64,11 @@ void AVoxel_Chunk::Init(int LocX, int LocY, int LocZ, FastNoise* noise)
 {
 	if (HasAuthority())
 	{
-		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(1));
 		PosX = LocX;
 		PosY = LocY;
 		PosZ = LocZ;
 		TheNoise = noise;
 		Generate();
-		//UpdateChunk();
 	}
 }
 
@@ -143,40 +133,45 @@ int AVoxel_Chunk::Shape(int VoxX, int VoxY, int VoxZ)
 	}
 }
 
-bool AVoxel_Chunk::IsOccluded(int BlockX, int BlockY, int BlockZ)
+bool AVoxel_Chunk::IsOccluded(int VoxelX, int VoxelY, int VoxelZ)
 {
+	//Cast<AVoxel_World>(GetOwner())->GetBlock(0, 0, 0);
+
 	return false;
 }
 
-//Logic to update chunk... duh
 void AVoxel_Chunk::UpdateChunk()
 {
 
-	GenericVoxel->ClearInstances();
-
-	//Block Occlusion
 	for (int8 VoxelX = 0; VoxelX < 10; VoxelX++)
 	{
 		for (int8 VoxelY = 0; VoxelY < 10; VoxelY++)
 		{
 			for (int8 VoxelZ = 0; VoxelZ < 10; VoxelZ++)
 			{
-				
-
-				
-
-
+				if (!IsOccluded(VoxelX, VoxelY, VoxelZ))
+				{
+					RenderData[VoxelX][VoxelY][VoxelZ] = ChunkData[VoxelX][VoxelY][VoxelZ];
+				}
+				else
+				{
+					RenderData[VoxelX][VoxelY][VoxelZ] = 0;
+				}
 			}
 		}
 	}
 
+
+
+	GenericVoxel->ClearInstances();
+
 	for (int8 VoxelX = 0; VoxelX < 10; VoxelX++)
 	{
 		for (int8 VoxelY = 0; VoxelY < 10; VoxelY++)
 		{
 			for (int8 VoxelZ = 0; VoxelZ < 10; VoxelZ++)
 			{
-				switch (ChunkData[VoxelX][VoxelY][VoxelZ])
+				switch (RenderData[VoxelX][VoxelY][VoxelZ])
 				{
 				default:
 
