@@ -55,6 +55,16 @@ void AVoxel_World::Tick(float DeltaTime)
 	}
 }
 
+FString AVoxel_World::GetChunkKey(int ChunkX, int ChunkY, int ChunkZ)
+{
+	FString ChunkKey = FString().SanitizeFloat(ChunkX);
+	ChunkKey.Append(",");
+	ChunkKey.Append(FString().SanitizeFloat(ChunkY));
+	ChunkKey.Append(",");
+	ChunkKey.Append(FString().SanitizeFloat(ChunkZ));
+	return ChunkKey;
+}
+
 void AVoxel_World::ManageChunks()
 {
 	for (int i = 0; i < PlayerLocations.Num(); i++)

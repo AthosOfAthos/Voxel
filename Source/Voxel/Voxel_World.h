@@ -29,6 +29,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	FString GetChunkKey(int ChunkX, int ChunkY, int ChunkZ);
+
 	void ManageChunks();
 	void LoadChunk(int ChunkX, int ChunkY, int ChunkZ);
 	void UnloadChunk(int ChunkX, int ChunkY, int ChunkZ);
