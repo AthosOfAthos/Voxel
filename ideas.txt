@@ -1,0 +1,25 @@
+Mothership provides an area that is generated for the player (Or their pawns/drones) to work in. 
+Moving too far from ship flashes warning <Signal err> and if they go beyond it they shut off
+
+We found a function that swaps player control 
+
+Gets harder further from 0,0
+
+Tech tree is about ability to break and enter (Axe, thermite/cutter) 
+
+Dual use for each item
+
+Biomes:
+Ancient Jungle (Floating island, massive archs) 
+Mega death vulcano (Flowing lava) 
+Island (Flatish)
+Redwoods
+
+
+Events:
+Biome specific, 
+Solar flare
+Storms 
+
+
+
