@@ -29,6 +29,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void ManageChunks();
 	void LoadChunk(int ChunkX, int ChunkY, int ChunkZ);
 	void UnloadChunk(int ChunkX, int ChunkY, int ChunkZ);
 
@@ -37,11 +38,12 @@ public:
 
 	TArray<UStaticMesh*> VoxelMesh;
 
-	//temp
-	int x, y, z = 0;
+	TArray<FVector> PlayerLocations;
 
 	TMap<FString, AVoxel_Chunk*> ChunkMap;
 
 	FastNoise perlin;
+
+	int ViewRadius = 2;
 	
 };

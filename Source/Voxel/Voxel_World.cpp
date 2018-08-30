@@ -16,6 +16,8 @@ AVoxel_World::AVoxel_World()
 	VoxelMesh[1] = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Generic.Voxel_Generic"));
 	VoxelMesh[2] = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Stone.Voxel_Stone"));
 	VoxelMesh[3] = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Dirt.Voxel_Dirt"));
+
+	PlayerLocations.Init(FVector(0, 0, 0), 1);
 }
 
 // Called when the game starts or when spawned
@@ -38,26 +40,6 @@ void AVoxel_World::BeginPlay()
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(perlin.GetFractalOctaves()));
 		
 
-		FActorSpawnParameters SpawnInfo;
-		SpawnInfo.Owner = this;
-		SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
-		for (int ChunkX = -5; ChunkX < 5; ChunkX++)
-		{
-			for (int ChunkY = -5; ChunkY < 5; ChunkY++)
-
-			{
-				for (int ChunkZ = -2; ChunkZ < 2; ChunkZ++)
-				{
-					LoadChunk(ChunkX, ChunkY, ChunkZ);
-				}
-			}
-		}
-		
-
-		SetBlock(0, 0, 0, 2);
-		SetBlock(1, 0, 0, 3);
-
 	}
 }
 
@@ -68,8 +50,35 @@ void AVoxel_World::Tick(float DeltaTime)
 
 	if (HasAuthority())
 	{
-		
-		
+		//TODO: dont do this every tick
+		ManageChunks();
+	}
+}
+
+void AVoxel_World::ManageChunks()
+{
+	for (int i = 0; i < PlayerLocations.Num(); i++)
+	{
+		FVector PlayerChunk = FVector(PlayerLocations[i].X / 10, PlayerLocations[i].Y / 10, PlayerLocations[i].Z / 10);
+		for (int ChunkX = PlayerChunk.X - ViewRadius; ChunkX < PlayerChunk.X + ViewRadius; ChunkX++)
+		{
+			for (int ChunkY = PlayerChunk.Y - ViewRadius; ChunkY < PlayerChunk.Y + ViewRadius; ChunkY++)
+			{
+				for (int ChunkZ = PlayerChunk.Z - ViewRadius; ChunkZ < PlayerChunk.Z + ViewRadius; ChunkZ++)
+				{
+					FString ChunkKey = FString().SanitizeFloat(ChunkX);
+					ChunkKey.Append(",");
+					ChunkKey.Append(FString().SanitizeFloat(ChunkY));
+					ChunkKey.Append(",");
+					ChunkKey.Append(FString().SanitizeFloat(ChunkZ));
+					if (!ChunkMap.Contains(ChunkKey))
+						LoadChunk(ChunkX,ChunkY, ChunkZ);
+				}
+			}
+		}
+
+
+
 	}
 }
 
