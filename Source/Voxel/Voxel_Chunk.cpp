@@ -2,6 +2,7 @@
 
 #include "Voxel_Chunk.h"
 #include <cmath>
+#include <vector>
 
 
 AVoxel_Chunk::AVoxel_Chunk()
@@ -18,7 +19,7 @@ AVoxel_Chunk::AVoxel_Chunk()
 	GenericVoxel->SetupAttachment(RootComponent);
 	VoxelMesh[1] = GenericVoxel;
 
-	GenericVoxel = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Voxel Water"));
+	GenericVoxel = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Voxel Stone"));
 	GenericVoxel->SetupAttachment(RootComponent);
 	VoxelMesh[2] = GenericVoxel;
 
@@ -92,7 +93,7 @@ void AVoxel_Chunk::Init(int LocX, int LocY, int LocZ, FastNoise* noise)
 
 uint16 AVoxel_Chunk::GetBlock(int VoxelX, int VoxelY, int VoxelZ)
 {
-	return ChunkData[VoxelX % 10][VoxelY % 10][VoxelZ % 10];
+	return ChunkData[VoxelX % 10][VoxelY % 10][VoxelZ % 10];//doubt
 }
 
 void AVoxel_Chunk::SetBlock(int VoxelX, int VoxelY, int VoxelZ, int Id)
@@ -106,7 +107,13 @@ void AVoxel_Chunk::SetBlock(int VoxelX, int VoxelY, int VoxelZ, int Id)
 		OnRep_NetworkData();
 	}
 }
-
+std::vector<int> AVoxel_Chunk::Neighbors(int VoxX, int VoxY, int VoxZ){
+	std::vector<int> n{ChunkData[VoxX][VoxY][VoxZ+1],ChunkData[VoxX][VoxY][VoxZ-1], ChunkData[VoxX+1][VoxY][VoxZ], ChunkData[VoxX][VoxY+1][VoxZ], ChunkData[VoxX-1][VoxY][VoxZ], ChunkData[VoxX][VoxY-1][VoxZ]};
+	//Drop that in order T, B, N, E, S, W
+	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(ChunkData[VoxX][VoxY][VoxZ]));
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(NetworkData[VoxX + (VoxY * 10) + (VoxZ * 100)]));
+	return n;
+}
 void AVoxel_Chunk::SaveChunk()
 {
 	//Todo
@@ -123,7 +130,7 @@ void AVoxel_Chunk::Generate()
 		Basically Generate iterates through all blocks in the chunk and then decides if it should be block or not
 		As such if testing something choose to edit the int value (via a function which takes the pos and returns 1 or 0)
 		*/
-
+		//Pass 1 pops the blocks in place
 		for (int8 VoxelX = 0; VoxelX < 10; VoxelX++)
 		{
 			for (int8 VoxelY = 0; VoxelY < 10; VoxelY++)
@@ -138,10 +145,24 @@ void AVoxel_Chunk::Generate()
 					}
 					NetworkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = Value;
 
+					
 				}
 			}
 		}
+		// Pass 2 modifies blocks according to air exposure
+		/*for (int8 VoxelX = 0; VoxelX < 10; VoxelX++)
+		{
+			for (int8 VoxelY = 0; VoxelY < 10; VoxelY++)
+			{
+				for (int8 VoxelZ = 0; VoxelZ < 10; VoxelZ++)
+				{
+					//NetworkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = Shape(VoxelX, VoxelY, VoxelZ);
+					int Value = Grass(VoxelX, VoxelY, VoxelZ);
+					NetworkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = Value;
 
+				}
+			}
+		}*/
 
 		OnRep_NetworkData();
 	}
@@ -152,7 +173,7 @@ int AVoxel_Chunk::Noise(int VoxX, int VoxY, int VoxZ)
 		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat((VoxZ + (PosZ * 10))));
 		if ((std::abs(TheNoise->GetPerlin(VoxX + (PosX * 100), VoxY + (PosY * 100), VoxZ + (PosZ * 100))) <= 0.01)&& (VoxZ + (PosZ * 10))>15)
 		{
-			 return 1;
+			 return 3;
 		}
 		else {
 			return 0;
@@ -194,15 +215,23 @@ int AVoxel_Chunk::Height(int VoxX, int VoxY, int VoxZ)
 {
 	float Height = TheNoise->GetPerlinFractal((VoxX + (PosX * 10)) * 1, (VoxY + (PosY * 10)) * 1);
 	Height *= 20;
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(Height));
+	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(Height));
 	
 	if ((VoxZ + (PosZ * 10)) < Height)
 	{
-		return 1;
+		return 2;
 	}
 	else
 	{
 		return 0;
+	}
+}
+int AVoxel_Chunk::Grass(int VoxX, int VoxY, int VoxZ) {
+	if (Neighbors(VoxX, VoxY, VoxZ)[0] == 1 && NetworkData[VoxX + (VoxY * 10) + (VoxZ * 100)]!=0) {
+		return 4;
+	}
+	else {
+		return NetworkData[VoxX + (VoxY * 10) + (VoxZ * 100)];
 	}
 }
 
@@ -233,7 +262,7 @@ void AVoxel_Chunk::OnRep_NetworkData()
 	//Make easy to work with
 	for (int I = 0; I < 1000; I++)
 	{
-		ChunkData[I % 10][(I / 10) % 10][I / 100] = NetworkData[I];
+		ChunkData[I % 10][(I / 10) % 10][I / 100] = NetworkData[I];//not sure if this works
 	}
 	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(ChunkData[1][0][0]));
 

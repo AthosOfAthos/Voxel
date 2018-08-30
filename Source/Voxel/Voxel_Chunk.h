@@ -9,6 +9,7 @@
 #include "Engine/StaticMeshActor.h"
 #include "GameFramework/Actor.h"
 #include "Math/FastNoise.h"
+#include <vector>
 #include "Voxel_Chunk.generated.h"
 
 UCLASS()
@@ -39,6 +40,7 @@ public:
 	
 	uint16 GetBlock(int VoxelX, int VoxelY, int VoxelZ);
 	void SetBlock(int VoxelX, int VoxelY, int VoxelZ, int Id);
+	std::vector<int> Neighbors(int VoxelX, int VoxelY, int VoxelZ);
 
 	void SaveChunk();
 
@@ -46,6 +48,8 @@ public:
 	int Height(int VoxelX, int VoxelY, int VoxelZ);
 	int Noise(int VoxelX, int VoxelY, int VoxelZ);
 	int Shape(int VoxelX, int VoxelY, int VoxelZ);
+	int Grass(int VoxelX, int VoxelY, int VoxelZ);
+	//int Grow(int VoxelX, int VoxelY, int VoxelZ);
 
 	UFUNCTION()
 	virtual void OnRep_NetworkData();
