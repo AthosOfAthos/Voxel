@@ -76,11 +76,7 @@ void AVoxel_World::ManageChunks()
 			{
 				for (int ChunkZ = PlayerChunk.Z - ViewRadius; ChunkZ < PlayerChunk.Z + ViewRadius; ChunkZ++)
 				{
-					FString ChunkKey = FString().SanitizeFloat(ChunkX);
-					ChunkKey.Append(",");
-					ChunkKey.Append(FString().SanitizeFloat(ChunkY));
-					ChunkKey.Append(",");
-					ChunkKey.Append(FString().SanitizeFloat(ChunkZ));
+					FString ChunkKey = GetChunkKey(ChunkX, ChunkY, ChunkZ);
 					if (!ChunkMap.Contains(ChunkKey))
 						LoadChunk(ChunkX,ChunkY, ChunkZ);
 				}
@@ -100,11 +96,7 @@ void AVoxel_World::LoadChunk(int ChunkX, int ChunkY, int ChunkZ)
 		SpawnInfo.Owner = this;
 		SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-		FString ChunkKey = FString().SanitizeFloat(ChunkX);
-		ChunkKey.Append(",");
-		ChunkKey.Append(FString().SanitizeFloat(ChunkY));
-		ChunkKey.Append(",");
-		ChunkKey.Append(FString().SanitizeFloat(ChunkZ));
+		FString ChunkKey = GetChunkKey(ChunkX, ChunkY, ChunkZ);
 		if (!ChunkMap.Contains(ChunkKey))
 		{
 			ChunkMap.Add(ChunkKey, GetWorld()->SpawnActor<AVoxel_Chunk>(FVector(ChunkX * 1000, ChunkY * 1000, ChunkZ * 1000), FRotator(0, 0, 0), SpawnInfo));
@@ -117,11 +109,7 @@ void AVoxel_World::UnloadChunk(int ChunkX, int ChunkY, int ChunkZ)
 {
 	if (HasAuthority())
 	{
-		FString ChunkKey = FString().SanitizeFloat(ChunkX);
-		ChunkKey.Append(",");
-		ChunkKey.Append(FString().SanitizeFloat(ChunkY));
-		ChunkKey.Append(",");
-		ChunkKey.Append(FString().SanitizeFloat(ChunkZ));
+		FString ChunkKey = GetChunkKey(ChunkX, ChunkY, ChunkZ);
 		if (ChunkMap.Contains(ChunkKey))
 		{
 			ChunkMap[ChunkKey]->SaveChunk();
@@ -133,11 +121,7 @@ void AVoxel_World::UnloadChunk(int ChunkX, int ChunkY, int ChunkZ)
 
 uint16 AVoxel_World::GetBlock(int VoxelX, int VoxelY, int VoxelZ)
 {
-	FString ChunkKey = FString().SanitizeFloat(VoxelX / 10);
-	ChunkKey.Append(",");
-	ChunkKey.Append(FString().SanitizeFloat(VoxelY / 10));
-	ChunkKey.Append(",");
-	ChunkKey.Append(FString().SanitizeFloat(VoxelZ / 10));
+	FString ChunkKey = GetChunkKey(VoxelX / 10, VoxelY / 10, VoxelZ / 10);
 
 	return ChunkMap[ChunkKey]->GetBlock(VoxelX, VoxelY, VoxelZ);
 }
@@ -146,11 +130,7 @@ void AVoxel_World::SetBlock(int VoxelX, int VoxelY, int VoxelZ, int Id)
 {
 	if (HasAuthority())
 	{
-		FString ChunkKey = FString().SanitizeFloat(VoxelX / 10);
-		ChunkKey.Append(",");
-		ChunkKey.Append(FString().SanitizeFloat(VoxelY / 10));
-		ChunkKey.Append(",");
-		ChunkKey.Append(FString().SanitizeFloat(VoxelZ / 10));
+		FString ChunkKey = GetChunkKey(VoxelX / 10, VoxelY / 10, VoxelZ / 10);
 
 		ChunkMap[ChunkKey]->SetBlock(VoxelX, VoxelY, VoxelZ, Id);
 	}
