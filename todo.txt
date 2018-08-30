@@ -1,0 +1,18 @@
+Looking for something to do/ bored with current project?
+
+Try any of these out for size:
+
+Switch the system to use Vec3s rather than 3 ints 
+
+getNeighbors(int VoxelX, int VoxelY, int VoxelZ){
+	/*A function which takes in a blocks positions (Vec3) and
+	returns an array of the six neighbors poisitons (Vec3) in order
+	Top, Bottom, North, East, South, West */
+}
+
+isLit(int VoxelX, intVoxelY, int VoxelZ){
+	/*A function which takes in a blocks positons (Vec3) and 
+	return a value for how much light is on the block
+	early iterations might include only a 1 or 0
+}
+

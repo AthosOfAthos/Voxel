@@ -132,6 +132,10 @@ void AVoxel_Chunk::Generate()
 				{
 					//NetworkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = Shape(VoxelX, VoxelY, VoxelZ);
 					int Value = Height(VoxelX, VoxelY, VoxelZ);
+					if (Value == 0) {
+						Value = Noise(VoxelX, VoxelY, VoxelZ);
+						int i = 1;
+					}
 					NetworkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = Value;
 
 				}
@@ -145,8 +149,8 @@ void AVoxel_Chunk::Generate()
 int AVoxel_Chunk::Noise(int VoxX, int VoxY, int VoxZ)
 {
 	if (TheNoise != nullptr) {
-		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(TheNoise->GetPerlin(VoxelX + (PosX * 100), VoxelY + (PosY * 100), VoxelZ + (PosZ * 100))));
-		if (std::abs(TheNoise->GetPerlin(VoxX + (PosX * 100), VoxY + (PosY * 100), VoxZ + (PosZ * 100))) <= 0.03)
+		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat((VoxZ + (PosZ * 10))));
+		if ((std::abs(TheNoise->GetPerlin(VoxX + (PosX * 100), VoxY + (PosY * 100), VoxZ + (PosZ * 100))) <= 0.01)&& (VoxZ + (PosZ * 10))>15)
 		{
 			 return 1;
 		}
@@ -188,11 +192,11 @@ int AVoxel_Chunk::Shape(int VoxX, int VoxY, int VoxZ)
 }
 int AVoxel_Chunk::Height(int VoxX, int VoxY, int VoxZ) 
 {
-	float Height = TheNoise->GetPerlin((VoxX + (PosX * 10)) * 1, (VoxY + (PosY * 10)) * 1);
+	float Height = TheNoise->GetPerlinFractal((VoxX + (PosX * 10)) * 1, (VoxY + (PosY * 10)) * 1);
 	Height *= 20;
 	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(Height));
 	
-	if ((VoxZ + (PosZ * 1000)) < Height)
+	if ((VoxZ + (PosZ * 10)) < Height)
 	{
 		return 1;
 	}
