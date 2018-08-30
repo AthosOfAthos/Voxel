@@ -10,6 +10,11 @@ ACharacter_Player::ACharacter_Player()
 	PrimaryActorTick.bCanEverTick = true;
 	bReplicates = true;
 
+	CameraArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Arm"));
+	CameraArm->SetupAttachment(RootComponent);
+	//PlayerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Player Camera"));
+	//PlayerCamera->SetupAttachment(CameraArm);
+
 	GetCharacterMovement()->GravityScale = GravityNormal;
 	GetCharacterMovement()->AirControl = 0.7f;
 	GetCharacterMovement()->JumpZVelocity = JumpPower;
