@@ -16,6 +16,7 @@ AVoxel_World::AVoxel_World()
 	VoxelMesh[1] = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Generic.Voxel_Generic"));
 	VoxelMesh[2] = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Stone.Voxel_Stone"));
 	VoxelMesh[3] = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Dirt.Voxel_Dirt"));
+	VoxelMesh[4] = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Sand.Voxel_Sand"));
 
 	PlayerLocations.Init(FVector(0, 0, 0), 1);
 }
@@ -50,6 +51,7 @@ void AVoxel_World::Tick(float DeltaTime)
 
 	if (HasAuthority())
 	{
+		PlayerLocations[0].X += DeltaTime * 1;
 		//TODO: dont do this every tick
 		ManageChunks();
 	}

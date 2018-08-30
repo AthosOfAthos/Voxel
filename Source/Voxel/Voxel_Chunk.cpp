@@ -26,10 +26,15 @@ AVoxel_Chunk::AVoxel_Chunk()
 	GenericVoxel->SetupAttachment(RootComponent);
 	VoxelMesh[3] = GenericVoxel;
 
+	GenericVoxel = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Voxel Sand"));
+	GenericVoxel->SetupAttachment(RootComponent);
+	VoxelMesh[4] = GenericVoxel;
+
 	//Find generic Voxel mesh world loaded for us
 	VoxelMesh[1]->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Generic.Voxel_Generic")));
 	VoxelMesh[2]->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Stone.Voxel_Stone")));
 	VoxelMesh[3]->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Dirt.Voxel_Dirt")));
+	VoxelMesh[4]->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Sand.Voxel_Sand")));
 
 	for (int I = 0; I < 1000; I++)
 	{
@@ -126,7 +131,7 @@ void AVoxel_Chunk::Generate()
 				for (int8 VoxelZ = 0; VoxelZ < 10; VoxelZ++)
 				{
 					//NetworkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = Shape(VoxelX, VoxelY, VoxelZ);
-					int Value = Shape(VoxelX, VoxelY, VoxelZ);
+					int Value = Height(VoxelX, VoxelY, VoxelZ);
 					NetworkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = Value;
 
 				}
