@@ -16,17 +16,20 @@ AVoxel_Chunk::AVoxel_Chunk()
 
 	GenericVoxel = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Generic Voxel"));
 	GenericVoxel->SetupAttachment(RootComponent);
-
 	VoxelMesh[1] = GenericVoxel;
 
 	GenericVoxel = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Voxel Water"));
 	GenericVoxel->SetupAttachment(RootComponent);
-
 	VoxelMesh[2] = GenericVoxel;
+
+	GenericVoxel = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Voxel Dirt"));
+	GenericVoxel->SetupAttachment(RootComponent);
+	VoxelMesh[3] = GenericVoxel;
 
 	//Find generic Voxel mesh world loaded for us
 	VoxelMesh[1]->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Generic.Voxel_Generic")));
 	VoxelMesh[2]->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Stone.Voxel_Stone")));
+	VoxelMesh[3]->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Dirt.Voxel_Dirt")));
 
 	for (int I = 0; I < 1000; I++)
 	{
