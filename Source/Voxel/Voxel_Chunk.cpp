@@ -102,6 +102,11 @@ void AVoxel_Chunk::SetBlock(int VoxelX, int VoxelY, int VoxelZ, int Id)
 	}
 }
 
+void AVoxel_Chunk::SaveChunk()
+{
+	//Todo
+}
+
 void AVoxel_Chunk::Generate()
 {
 	if (HasAuthority())

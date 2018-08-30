@@ -40,6 +40,8 @@ public:
 	uint16 GetBlock(int VoxelX, int VoxelY, int VoxelZ);
 	void SetBlock(int VoxelX, int VoxelY, int VoxelZ, int Id);
 
+	void SaveChunk();
+
 	void Generate();
 	int Height(int VoxelX, int VoxelY, int VoxelZ);
 	int Noise(int VoxelX, int VoxelY, int VoxelZ);

@@ -95,9 +95,11 @@ void AVoxel_World::LoadChunk(int ChunkX, int ChunkY, int ChunkZ)
 		ChunkKey.Append(FString().SanitizeFloat(ChunkY));
 		ChunkKey.Append(",");
 		ChunkKey.Append(FString().SanitizeFloat(ChunkZ));
-		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, ChunkKey);
-		ChunkMap.Add(ChunkKey, GetWorld()->SpawnActor<AVoxel_Chunk>(FVector(ChunkX * 1000, ChunkY * 1000, ChunkZ * 1000), FRotator(0, 0, 0), SpawnInfo));
-		ChunkMap[ChunkKey]->Init(ChunkX, ChunkY, ChunkZ, &perlin);
+		if (!ChunkMap.Contains(ChunkKey))
+		{
+			ChunkMap.Add(ChunkKey, GetWorld()->SpawnActor<AVoxel_Chunk>(FVector(ChunkX * 1000, ChunkY * 1000, ChunkZ * 1000), FRotator(0, 0, 0), SpawnInfo));
+			ChunkMap[ChunkKey]->Init(ChunkX, ChunkY, ChunkZ, &perlin);
+		}
 	}
 }
 
@@ -110,8 +112,12 @@ void AVoxel_World::UnloadChunk(int ChunkX, int ChunkY, int ChunkZ)
 		ChunkKey.Append(FString().SanitizeFloat(ChunkY));
 		ChunkKey.Append(",");
 		ChunkKey.Append(FString().SanitizeFloat(ChunkZ));
-		ChunkMap[ChunkKey]->Destroy();
-		ChunkMap.Remove(ChunkKey);
+		if (ChunkMap.Contains(ChunkKey))
+		{
+			ChunkMap[ChunkKey]->SaveChunk();
+			ChunkMap[ChunkKey]->Destroy();
+			ChunkMap.Remove(ChunkKey);
+		}
 	}
 }
 
