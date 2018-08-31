@@ -3,6 +3,7 @@
 #include "Voxel_Chunk.h"
 #include <cmath>
 #include <vector>
+#include <algorithm>
 
 
 AVoxel_Chunk::AVoxel_Chunk()
@@ -107,13 +108,7 @@ void AVoxel_Chunk::SetBlock(int VoxelX, int VoxelY, int VoxelZ, int Id)
 		OnRep_NetworkData();
 	}
 }
-std::vector<int> AVoxel_Chunk::Neighbors(int VoxX, int VoxY, int VoxZ){
-	std::vector<int> n{ChunkData[VoxX][VoxY][VoxZ+1],ChunkData[VoxX][VoxY][VoxZ-1], ChunkData[VoxX+1][VoxY][VoxZ], ChunkData[VoxX][VoxY+1][VoxZ], ChunkData[VoxX-1][VoxY][VoxZ], ChunkData[VoxX][VoxY-1][VoxZ]};
-	//Drop that in order T, B, N, E, S, W
-	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(ChunkData[VoxX][VoxY][VoxZ]));
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(NetworkData[VoxX + (VoxY * 10) + (VoxZ * 100)]));
-	return n;
-}
+
 void AVoxel_Chunk::SaveChunk()
 {
 	//Todo
@@ -138,31 +133,19 @@ void AVoxel_Chunk::Generate()
 				for (int8 VoxelZ = 0; VoxelZ < 10; VoxelZ++)
 				{
 					//NetworkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = Shape(VoxelX, VoxelY, VoxelZ);
-					int Value = Height(VoxelX, VoxelY, VoxelZ);
-					if (Value == 0) {
+					std::vector<int> pos{ VoxelX, VoxelY, VoxelZ };
+					int Value = Mountains(pos);
+
+					/*if (Value == 0) {
 						Value = Noise(VoxelX, VoxelY, VoxelZ);
 						int i = 1;
-					}
+					}*/
 					NetworkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = Value;
 
 					
 				}
 			}
 		}
-		// Pass 2 modifies blocks according to air exposure
-		/*for (int8 VoxelX = 0; VoxelX < 10; VoxelX++)
-		{
-			for (int8 VoxelY = 0; VoxelY < 10; VoxelY++)
-			{
-				for (int8 VoxelZ = 0; VoxelZ < 10; VoxelZ++)
-				{
-					//NetworkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = Shape(VoxelX, VoxelY, VoxelZ);
-					int Value = Grass(VoxelX, VoxelY, VoxelZ);
-					NetworkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = Value;
-
-				}
-			}
-		}*/
 
 		OnRep_NetworkData();
 	}
@@ -217,22 +200,38 @@ int AVoxel_Chunk::Height(int VoxX, int VoxY, int VoxZ)
 	Height *= 20;
 	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(Height));
 	
-	if ((VoxZ + (PosZ * 10)) < Height)
+	if ((VoxZ + (PosZ * 10)) < (Height-1))
 	{
 		return 2;
+	}
+	else if ((VoxZ + (PosZ * 10)) < Height) {
+		return 3;
 	}
 	else
 	{
 		return 0;
 	}
 }
-int AVoxel_Chunk::Grass(int VoxX, int VoxY, int VoxZ) {
-	if (Neighbors(VoxX, VoxY, VoxZ)[0] == 1 && NetworkData[VoxX + (VoxY * 10) + (VoxZ * 100)]!=0) {
-		return 4;
+int AVoxel_Chunk::Mountains(std::vector<int> vox) {
+	//Before I forget this takes a 2d height map and drops it on 3d noise
+	
+	float Mheight = TheNoise->GetPerlinFractal((vox[0] + (PosX * 10)) * 1, (vox[1] + (PosY * 10)) * 1);
+	Mheight *= 20;
+	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(Height));
+
+	if ((vox[2] + (PosZ * 10)) < (Mheight))
+	{
+		//This means we would normally solid fill under it
+		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(TheNoise->GetPerlin(((vox[0] + (PosX * 10)) * 1, (vox[1] + (PosY * 10)) * 1), (vox[2] + (PosZ * 10)) * 1)));
+		if ((std::abs(TheNoise->GetPerlin(vox[0] + (PosX * 100), vox[1] + (PosY * 100), vox[2] + (PosZ * 100))) <= 0.1)) {
+			return 2;
+		}
+		else {
+			return 0;
+		}
+		
 	}
-	else {
-		return NetworkData[VoxX + (VoxY * 10) + (VoxZ * 100)];
-	}
+	return 0;
 }
 
 void AVoxel_Chunk::UpdateChunk()
