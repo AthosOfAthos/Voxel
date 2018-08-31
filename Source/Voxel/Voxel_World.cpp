@@ -46,7 +46,6 @@ void AVoxel_World::Tick(float DeltaTime)
 
 	if (HasAuthority())
 	{
-		PlayerLocations[0].X += DeltaTime * 1;
 		//TODO: dont do this every tick
 		ManageChunks();
 	}
