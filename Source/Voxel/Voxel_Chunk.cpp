@@ -4,6 +4,7 @@
 #include <cmath>
 #include <vector>
 #include <algorithm>
+#include <UnrealMathUtility.h>
 
 
 AVoxel_Chunk::AVoxel_Chunk()
@@ -134,7 +135,6 @@ void AVoxel_Chunk::Generate()
 			{
 				for (int8 VoxelZ = 0; VoxelZ < 10; VoxelZ++)
 				{
-					//NetworkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = Shape(VoxelX, VoxelY, VoxelZ);
 					std::vector<int> pos{ VoxelX, VoxelY, VoxelZ };
 					int Value = Mountains(pos);
 
@@ -148,8 +148,39 @@ void AVoxel_Chunk::Generate()
 				}
 			}
 		}
+		for (int8 VoxelX = 0; VoxelX < 10; VoxelX++)
+		{
+			for (int8 VoxelY = 0; VoxelY < 10; VoxelY++)
+			{
+				for (int8 VoxelZ = 0; VoxelZ < 10; VoxelZ++)
+				{
+					
+					std::vector<int> pos{ VoxelX, VoxelY, VoxelZ };
+					if (NetworkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] == 3) {
+						GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(FMath::FRandRange(0, 2)));
+						if ((int)FMath::FRandRange(0,treeDensity)==1) {
+							NetworkData[VoxelX + (VoxelY * 10) + ((VoxelZ + 1) * 100)] = 4;
+							Tree(VoxelX, VoxelY, VoxelZ);
+						}
+					}
 
+
+				}
+			}
+		}
 		OnRep_NetworkData();
+	}
+}
+void AVoxel_Chunk::Tree(int VoxX, int VoxY, int VoxZ) {
+	int h = (int)FMath::FRandRange(6, 10);
+	for (int i = 1; i < h; i++) {
+		NetworkData[VoxX + (VoxY * 10) + ((VoxZ + i) * 100)] = 4;
+	}
+	for (int i = 3; i < h; i++) {
+		NetworkData[VoxX+1 + (VoxY * 10) + ((VoxZ + i) * 100)] = 1;
+		NetworkData[VoxX-1 + (VoxY * 10) + ((VoxZ + i) * 100)] = 1;
+		NetworkData[VoxX + ((VoxY+1) * 10) + ((VoxZ + i) * 100)] = 1;
+		NetworkData[VoxX + ((VoxY-1) * 10) + ((VoxZ + i) * 100)] = 1;
 	}
 }
 int AVoxel_Chunk::Noise(int VoxX, int VoxY, int VoxZ)

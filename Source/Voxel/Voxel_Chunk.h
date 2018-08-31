@@ -49,6 +49,10 @@ public:
 	int Noise(int VoxelX, int VoxelY, int VoxelZ);
 	int Shape(int VoxelX, int VoxelY, int VoxelZ);
 	int Mountains(std::vector<int> pos);
+
+	void Tree(int VoxelX, int VoxelY, int VoxelZ);
+	
+	int treeDensity = 20; //1/number = trees 
 	
 
 	UFUNCTION()
