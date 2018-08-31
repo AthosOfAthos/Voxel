@@ -118,7 +118,11 @@ uint16 AVoxel_World::GetBlock(int VoxelX, int VoxelY, int VoxelZ)
 {
 	FString ChunkKey = GetChunkKey(VoxelX / 10, VoxelY / 10, VoxelZ / 10);
 
-	return ChunkMap[ChunkKey]->GetBlock(VoxelX, VoxelY, VoxelZ);
+	if (ChunkMap.Contains(ChunkKey))
+		return ChunkMap[ChunkKey]->GetBlock(VoxelX, VoxelY, VoxelZ);
+	else
+		return 0;
+	
 }
 
 void AVoxel_World::SetBlock(int VoxelX, int VoxelY, int VoxelZ, int Id)
@@ -127,6 +131,7 @@ void AVoxel_World::SetBlock(int VoxelX, int VoxelY, int VoxelZ, int Id)
 	{
 		FString ChunkKey = GetChunkKey(VoxelX / 10, VoxelY / 10, VoxelZ / 10);
 
-		ChunkMap[ChunkKey]->SetBlock(VoxelX, VoxelY, VoxelZ, Id);
+		if (ChunkMap.Contains(ChunkKey))
+			ChunkMap[ChunkKey]->SetBlock(VoxelX, VoxelY, VoxelZ, Id);
 	}
 }
