@@ -1,0 +1,47 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "Engine.h"
+#include "UnrealNetwork.h"
+#include "App.h"
+#include "Components/StaticMeshComponent.h"
+#include "Engine/StaticMesh.h"
+#include "Engine/StaticMeshActor.h"
+#include "Components/BoxComponent.h"
+#include "GameFramework/Actor.h"
+#include "HoverBoard.generated.h"
+
+UCLASS()
+class VOXEL_API AHoverBoard : public AActor
+{
+	GENERATED_BODY()
+	
+public:	
+	// Sets default values for this actor's properties
+	AHoverBoard();
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+public:	
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION(Server, Reliable, WithValidation)
+	void AddPitch(float inputAmount);
+	UFUNCTION(Server, Reliable, WithValidation)
+	void AddRoll(float inputAmount);
+
+	UBoxComponent* BoardCollision;
+	UStaticMeshComponent* BoardMesh;
+
+	UPROPERTY(Replicated)
+	FRotator BoardRotation;
+
+	float PitchResponse = 80;
+	float RollResponse = 120;
+	float YawResponse = 90;
+	
+};
