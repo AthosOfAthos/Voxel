@@ -4,6 +4,7 @@
 
 #include "Engine.h"
 #include "UnrealNetwork.h"
+#include "HoverBoard.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -42,10 +43,18 @@ public:
 	void JumpPressed();
 	void JumpReleased();
 
+	void UseBoardPressed();
+
 	void SetGravity(float);
 	UFUNCTION(Server, Reliable, WithValidation)
 		void SetGravityServer(float NewGravity);
-	
+
+	UFUNCTION(Server, Reliable, WithValidation)
+		void SpawnBoard();
+
+	UPROPERTY(Replicated)
+	AHoverBoard* ControlledBoard;
+
 	float GravityNormal = 3;
 	float GravityJump = 1.5;
 	float JumpPower = 1200;

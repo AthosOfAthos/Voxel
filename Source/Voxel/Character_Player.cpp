@@ -36,6 +36,13 @@ ACharacter_Player::ACharacter_Player()
 	GetMesh()->SetAnimInstanceClass(AnimationBP->GetAnimBlueprintGeneratedClass());
 }
 
+void ACharacter_Player::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ACharacter_Player, ControlledBoard);
+}
+
 // Called when the game starts or when spawned
 void ACharacter_Player::BeginPlay()
 {
@@ -50,6 +57,11 @@ void ACharacter_Player::Tick(float DeltaTime)
 
 	CameraArm->SetWorldRotation(GetControlRotation());
 
+	if (ControlledBoard != nullptr)
+	{
+		SetActorLocation(ControlledBoard->GetActorLocation());
+	}
+
 }
 
 // Called to bind functionality to input
@@ -63,24 +75,40 @@ void ACharacter_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter_Player::JumpPressed);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter_Player::JumpReleased);
+
+	PlayerInputComponent->BindAction("UseBoard", IE_Pressed, this, &ACharacter_Player::UseBoardPressed);
 }
 
 void ACharacter_Player::MoveY(float inputVal)
 {
-	FVector inputVector(inputVal, 0, 0);
-	FRotator inputRotation = FRotator(0,0,0);
-	inputRotation.Yaw = GetControlRotation().Yaw;
-	inputVector = inputRotation.RotateVector(inputVector);
-	AddMovementInput(inputVector);
+	if (ControlledBoard != nullptr)
+	{
+		ControlledBoard->AddPitch(inputVal);
+	}
+	else
+	{
+		FVector inputVector(inputVal, 0, 0);
+		FRotator inputRotation = FRotator(0, 0, 0);
+		inputRotation.Yaw = GetControlRotation().Yaw;
+		inputVector = inputRotation.RotateVector(inputVector);
+		AddMovementInput(inputVector);
+	}
 }
 
 void ACharacter_Player::MoveX(float inputVal)
 {
-	FVector inputVector(0, inputVal, 0);
-	FRotator inputRotation = FRotator(0, 0, 0);
-	inputRotation.Yaw = GetControlRotation().Yaw;
-	inputVector = inputRotation.RotateVector(inputVector);
-	AddMovementInput(inputVector);
+	if (ControlledBoard != nullptr)
+	{
+		ControlledBoard->AddRoll(inputVal);
+	}
+	else
+	{
+		FVector inputVector(0, inputVal, 0);
+		FRotator inputRotation = FRotator(0, 0, 0);
+		inputRotation.Yaw = GetControlRotation().Yaw;
+		inputVector = inputRotation.RotateVector(inputVector);
+		AddMovementInput(inputVector);
+	}
 }
 
 void ACharacter_Player::LookY(float inputVal)
@@ -106,6 +134,11 @@ void ACharacter_Player::JumpReleased()
 	SetGravityServer(GravityNormal);
 }
 
+void ACharacter_Player::UseBoardPressed()
+{
+	SpawnBoard();
+}
+
 void ACharacter_Player::SetGravity(float NewGravity)
 {
 	GetCharacterMovement()->GravityScale = NewGravity;
@@ -120,4 +153,30 @@ bool ACharacter_Player::SetGravityServer_Validate(float NewGravity)
 void ACharacter_Player::SetGravityServer_Implementation(float NewGravity)
 {
 	SetGravity(NewGravity);
+}
+
+bool ACharacter_Player::SpawnBoard_Validate()
+{
+	return true;
+}
+
+void ACharacter_Player::SpawnBoard_Implementation()
+{
+	if (HasAuthority())
+	{
+		if (ControlledBoard != nullptr)
+		{
+			ControlledBoard->Destroy();
+		}
+		else
+		{
+			FActorSpawnParameters SpawnInfo;
+			SpawnInfo.Owner = this;
+			SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+			SpawnInfo.Instigator = this;
+			ControlledBoard = GetWorld()->SpawnActor<AHoverBoard>(GetActorLocation(), GetActorRotation(), SpawnInfo);
+		}
+
+		
+	}
 }
