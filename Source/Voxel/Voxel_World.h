@@ -38,6 +38,8 @@ public:
 	uint16 GetBlock(int VoxelX, int VoxelY, int VoxelZ);
 	void SetBlock(int VoxelX, int VoxelY, int VoxelZ, int Id);
 
+	AVoxel_Chunk* GetChunk(int ChunkX, int ChunkY, int ChunkZ);
+
 	TArray<UStaticMesh*> VoxelMesh;
 
 	TArray<FVector> PlayerLocations;
