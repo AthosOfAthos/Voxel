@@ -39,9 +39,11 @@ public:
 
 	UPROPERTY(Replicated)
 	FRotator BoardRotation;
+	UPROPERTY(Replicated)
+	float AirSpeed = 0;
 
 	float PitchResponse = 80;
 	float RollResponse = 120;
-	float YawResponse = 90;
+	float YawResponse = 5;
 	
 };

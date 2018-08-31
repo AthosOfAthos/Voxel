@@ -9,7 +9,7 @@ AHoverBoard::AHoverBoard()
 
 	BoardCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Board Collision"));
 	BoardCollision->SetBoxExtent(FVector(75, 25, 10));
-	BoardCollision->SetCollisionProfileName(FName("BlockAll"));
+	BoardCollision->SetCollisionProfileName(FName("HoverBoard"));
 	BoardCollision->SetMobility(EComponentMobility::Movable);
 	RootComponent = BoardCollision;
 
@@ -38,7 +38,15 @@ void AHoverBoard::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	AirSpeed = 1000;
 
+	BoardRotation.Yaw += BoardRotation.Roll * YawResponse * DeltaTime;
+
+	FVector TargetLocation = GetActorLocation();
+	FVector MovementVector = FVector(AirSpeed * DeltaTime, 0, 0);
+	MovementVector = BoardRotation.RotateVector(MovementVector);
+	TargetLocation += MovementVector;
+	SetActorLocation(TargetLocation, true);
 	SetActorRotation(BoardRotation);
 }
 
@@ -50,6 +58,7 @@ bool AHoverBoard::AddPitch_Validate(float inputAmount)
 
 void AHoverBoard::AddPitch_Implementation(float inputAmount)
 {
+	inputAmount *= -1;
 	BoardRotation.Pitch += inputAmount * PitchResponse * FApp::GetDeltaTime();
 }
 
@@ -61,5 +70,5 @@ bool AHoverBoard::AddRoll_Validate(float inputAmount)
 
 void AHoverBoard::AddRoll_Implementation(float inputAmount)
 {
-	BoardRotation.Roll += inputAmount * RollResponse * FApp::GetDeltaTime();
+	BoardRotation.Roll = inputAmount * 45;
 }
