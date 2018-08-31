@@ -48,6 +48,6 @@ public:
 	
 	float GravityNormal = 3;
 	float GravityJump = 1.5;
-	float JumpPower = 600;
+	float JumpPower = 1200;
 
 };
