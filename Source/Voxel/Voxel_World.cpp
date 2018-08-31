@@ -30,10 +30,10 @@ void AVoxel_World::BeginPlay()
 		//Right here we set all the perlin noise variables 
 		perlin = FastNoise();
 		perlin.SetSeed(5); //Controls the world seed. Should be randomized 
-		perlin.SetFrequency(0.003);// Controls frequency, larger numbers mean more smaller holes, 
-		perlin.SetFractalGain(0.7); //Controls Gain, probably is persistance, keep near 0.5,
-		perlin.SetFractalLacunarity(5); //Controls Lacunarity, messes with seperation higher less, 
-		perlin.SetFractalOctaves(3); //Controls Octaves, controls detail , Base 3 Prefered control
+		perlin.SetFrequency(0.1);// Controls frequency, larger numbers mean more smaller holes, 
+		perlin.SetFractalGain(0.5); //Controls Gain, probably is persistance, keep near 0.5,
+		perlin.SetFractalLacunarity(2); //Controls Lacunarity, messes with seperation higher less, 
+		perlin.SetFractalOctaves(1); //Controls Octaves, controls detail , Base 3 Prefered control
 		
 
 	}
