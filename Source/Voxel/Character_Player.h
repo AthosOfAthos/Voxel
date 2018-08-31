@@ -54,6 +54,8 @@ public:
 
 	UPROPERTY(Replicated)
 	AHoverBoard* ControlledBoard;
+	UPROPERTY(Replicated)
+	bool IsMounted = false;;
 
 	float GravityNormal = 3;
 	float GravityJump = 1.5;

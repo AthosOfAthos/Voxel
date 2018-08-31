@@ -25,7 +25,7 @@ ACharacter_Player::ACharacter_Player()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0, 500, 0);
 
-	CameraArm->TargetArmLength = 1000;//was 500
+	CameraArm->TargetArmLength = 500;
 	CameraArm->SetRelativeLocation(FVector(0,0,75));
 
 	GetMesh()->SetSkeletalMesh(LoadObject<USkeletalMesh>(NULL, TEXT("/Game/AnimStarterPack/UE4_Mannequin/Mesh/SK_Mannequin.SK_Mannequin")));
@@ -41,13 +41,13 @@ void ACharacter_Player::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > &
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(ACharacter_Player, ControlledBoard);
+	DOREPLIFETIME(ACharacter_Player, IsMounted);
 }
 
 // Called when the game starts or when spawned
 void ACharacter_Player::BeginPlay()
 {
 	Super::BeginPlay();
-	SetActorScale3D(FVector(2,2,2));
 	
 }
 
@@ -58,7 +58,7 @@ void ACharacter_Player::Tick(float DeltaTime)
 
 	CameraArm->SetWorldRotation(GetControlRotation());
 
-	if (ControlledBoard != nullptr)
+	if (ControlledBoard != nullptr && IsMounted)
 	{
 		SetActorLocation(ControlledBoard->GetActorLocation());
 	}
@@ -82,7 +82,7 @@ void ACharacter_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 void ACharacter_Player::MoveY(float inputVal)
 {
-	if (ControlledBoard != nullptr)
+	if (ControlledBoard != nullptr && IsMounted)
 	{
 		ControlledBoard->AddPitch(inputVal);
 	}
@@ -98,7 +98,7 @@ void ACharacter_Player::MoveY(float inputVal)
 
 void ACharacter_Player::MoveX(float inputVal)
 {
-	if (ControlledBoard != nullptr)
+	if (ControlledBoard != nullptr && IsMounted)
 	{
 		ControlledBoard->AddRoll(inputVal);
 	}
@@ -165,12 +165,14 @@ void ACharacter_Player::SpawnBoard_Implementation()
 {
 	if (HasAuthority())
 	{
-		if (ControlledBoard != nullptr)
+		if (IsMounted)
 		{
+			IsMounted = false;
 			ControlledBoard->Destroy();
 		}
 		else
 		{
+			IsMounted = true;
 			FActorSpawnParameters SpawnInfo;
 			SpawnInfo.Owner = this;
 			SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
