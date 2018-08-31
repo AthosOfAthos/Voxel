@@ -10,16 +10,27 @@ ACharacter_Player::ACharacter_Player()
 	PrimaryActorTick.bCanEverTick = true;
 	bReplicates = true;
 
+	bUseControllerRotationYaw = false;
+
 	CameraArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Arm"));
 	CameraArm->SetupAttachment(RootComponent);
-	//PlayerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Player Camera"));
-	//PlayerCamera->SetupAttachment(CameraArm);
+	PlayerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Player Camera"));
+	PlayerCamera->SetupAttachment(CameraArm);
 
 	GetCharacterMovement()->GravityScale = GravityNormal;
 	GetCharacterMovement()->AirControl = 0.7f;
 	GetCharacterMovement()->JumpZVelocity = JumpPower;
 	GetCharacterMovement()->MaxAcceleration = 4096;
 	GetCharacterMovement()->MaxWalkSpeed = 500;
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->RotationRate = FRotator(0, 500, 0);
+
+	CameraArm->TargetArmLength = 500;
+	CameraArm->SetRelativeLocation(FVector(0,0,75));
+
+	GetMesh()->SetSkeletalMesh(LoadObject<USkeletalMesh>(NULL, TEXT("/Game/AnimStarterPack/UE4_Mannequin/Mesh/SK_Mannequin.SK_Mannequin")));
+	GetMesh()->SetRelativeLocation(FVector(0,0,-90));
+	GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));
 }
 
 // Called when the game starts or when spawned
@@ -33,6 +44,8 @@ void ACharacter_Player::BeginPlay()
 void ACharacter_Player::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	CameraArm->SetWorldRotation(GetControlRotation());
 
 }
 
