@@ -25,7 +25,7 @@ ACharacter_Player::ACharacter_Player()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0, 500, 0);
 
-	CameraArm->TargetArmLength = 500;
+	CameraArm->TargetArmLength = 1000;//was 500
 	CameraArm->SetRelativeLocation(FVector(0,0,75));
 
 	GetMesh()->SetSkeletalMesh(LoadObject<USkeletalMesh>(NULL, TEXT("/Game/AnimStarterPack/UE4_Mannequin/Mesh/SK_Mannequin.SK_Mannequin")));
@@ -40,6 +40,7 @@ ACharacter_Player::ACharacter_Player()
 void ACharacter_Player::BeginPlay()
 {
 	Super::BeginPlay();
+	SetActorScale3D(FVector(2,2,2));
 	
 }
 

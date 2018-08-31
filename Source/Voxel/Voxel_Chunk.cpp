@@ -63,7 +63,8 @@ void AVoxel_Chunk::BeginPlay()
 	
 	if (HasAuthority())
 	{
-
+		perlin.SetFractalOctaves(6);
+		perlin.SetFrequency(0.03);
 	}
 
 }
@@ -216,8 +217,9 @@ int AVoxel_Chunk::Height(int VoxX, int VoxY, int VoxZ)
 int AVoxel_Chunk::Mountains(std::vector<int> vox) {
 	
 	float Mheight = TheNoise->GetCellular((vox[0] + (PosX * 10)) * 1, (vox[1] + (PosY * 10)) * 1);
-	Mheight *= 20;
-	if ((std::abs(perlin.GetPerlinFractal(vox[0] + (PosX * 100), vox[1] + (PosY * 100), vox[2] + (PosZ * 100))) <= 0.1)) {
+	Mheight *= 40;
+	
+	if ((perlin.GetPerlinFractal(vox[0] + (PosX * 100), vox[1] + (PosY * 100), vox[2] + (PosZ * 100)) <= 0.01)) {
 		if ((vox[2] + (PosZ * 10)) < (Mheight - 1)) {
 			return 2;
 

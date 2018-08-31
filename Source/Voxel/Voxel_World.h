@@ -46,6 +46,6 @@ public:
 
 	FastNoise cellular;
 
-	int ViewRadius = 5;
+	int ViewRadius = 7;
 	
 };

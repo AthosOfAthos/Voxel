@@ -30,7 +30,7 @@ void AVoxel_World::BeginPlay()
 		 
 		cellular = FastNoise();
 		cellular.SetSeed(5); //Controls the world seed. Should be randomized 
-		cellular.SetFrequency(0.15);// Controls frequency, larger numbers mean more smaller holes, 
+		cellular.SetFrequency(0.05);// Controls frequency, larger numbers mean more smaller holes, 
 		cellular.SetCellularJitter(0.5);//randomness
 
 		
