@@ -31,6 +31,9 @@ ACharacter_Player::ACharacter_Player()
 	GetMesh()->SetSkeletalMesh(LoadObject<USkeletalMesh>(NULL, TEXT("/Game/AnimStarterPack/UE4_Mannequin/Mesh/SK_Mannequin.SK_Mannequin")));
 	GetMesh()->SetRelativeLocation(FVector(0,0,-90));
 	GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));
+
+	AnimationBP = LoadObject<UAnimBlueprint>(NULL, TEXT("AnimBlueprint'/Game/Blueprints/Animation_Player.Animation_Player'"));
+	GetMesh()->SetAnimInstanceClass(AnimationBP->GetAnimBlueprintGeneratedClass());
 }
 
 // Called when the game starts or when spawned

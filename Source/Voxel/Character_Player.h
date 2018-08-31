@@ -8,6 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Animation/AnimBlueprint.h"
 #include "Character_Player.generated.h"
 
 UCLASS()
@@ -29,6 +30,7 @@ public:
 
 	UCameraComponent* PlayerCamera;
 	USpringArmComponent* CameraArm;
+	UAnimBlueprint* AnimationBP;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
