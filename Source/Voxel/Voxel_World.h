@@ -46,6 +46,6 @@ public:
 
 	FastNoise perlin;
 
-	int ViewRadius = 2;
+	int ViewRadius = 5;
 	
 };
