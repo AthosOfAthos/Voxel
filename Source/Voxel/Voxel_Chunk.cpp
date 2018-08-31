@@ -217,16 +217,12 @@ int AVoxel_Chunk::Mountains(std::vector<int> vox) {
 	
 	float Mheight = TheNoise->GetCellular((vox[0] + (PosX * 10)) * 1, (vox[1] + (PosY * 10)) * 1);
 	Mheight *= 20;
-
-	if ((vox[2] + (PosZ * 10)) < (Mheight))
-	{
-		//This means we would normally solid fill under it
-		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(TheNoise->GetPerlin(((vox[0] + (PosX * 10)) * 1, (vox[1] + (PosY * 10)) * 1), (vox[2] + (PosZ * 10)) * 1)));
-		if ((std::abs(perlin.GetPerlinFractal(vox[0] + (PosX * 100), vox[1] + (PosY * 100), vox[2] + (PosZ * 100))) <= 0.1)) {
+	if ((std::abs(perlin.GetPerlinFractal(vox[0] + (PosX * 100), vox[1] + (PosY * 100), vox[2] + (PosZ * 100))) <= 0.1)) {
+		if ((vox[2] + (PosZ * 10)) < (Mheight - 1)) {
 			return 2;
-		}
-		else {
-			return 0;
+
+		}else if ((vox[2] + (PosZ * 10)) <= (Mheight)) {
+			return 3;
 		}
 		
 	}
