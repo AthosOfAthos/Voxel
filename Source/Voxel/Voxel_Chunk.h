@@ -40,7 +40,6 @@ public:
 	
 	uint16 GetBlock(int VoxelX, int VoxelY, int VoxelZ);
 	void SetBlock(int VoxelX, int VoxelY, int VoxelZ, int Id);
-	std::vector<int> Neighbors(int VoxelX, int VoxelY, int VoxelZ);
 
 	void SaveChunk();
 
@@ -48,8 +47,8 @@ public:
 	int Height(int VoxelX, int VoxelY, int VoxelZ);
 	int Noise(int VoxelX, int VoxelY, int VoxelZ);
 	int Shape(int VoxelX, int VoxelY, int VoxelZ);
-	int Grass(int VoxelX, int VoxelY, int VoxelZ);
-	//int Grow(int VoxelX, int VoxelY, int VoxelZ);
+	int Mountains(std::vector<int> pos);
+	
 
 	UFUNCTION()
 	virtual void OnRep_NetworkData();
