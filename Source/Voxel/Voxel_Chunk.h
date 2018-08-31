@@ -35,6 +35,7 @@ public:
 
 	//FastNoise mynoise;
 	FastNoise* TheNoise;
+	FastNoise perlin;
 
 	void Init(int PosX, int PosY, int PosZ, FastNoise* noise);
 	

@@ -27,13 +27,12 @@ void AVoxel_World::BeginPlay()
 	Super::BeginPlay();
 	if (HasAuthority())
 	{
-		//Right here we set all the perlin noise variables 
-		perlin = FastNoise();
-		perlin.SetSeed(5); //Controls the world seed. Should be randomized 
-		perlin.SetFrequency(0.1);// Controls frequency, larger numbers mean more smaller holes, 
-		perlin.SetFractalGain(0.5); //Controls Gain, probably is persistance, keep near 0.5,
-		perlin.SetFractalLacunarity(2); //Controls Lacunarity, messes with seperation higher less, 
-		perlin.SetFractalOctaves(1); //Controls Octaves, controls detail , Base 3 Prefered control
+		 
+		cellular = FastNoise();
+		cellular.SetSeed(5); //Controls the world seed. Should be randomized 
+		cellular.SetFrequency(0.35);// Controls frequency, larger numbers mean more smaller holes, 
+		cellular.SetCellularJitter(0.5);//randomness
+
 		
 
 	}
@@ -96,7 +95,7 @@ void AVoxel_World::LoadChunk(int ChunkX, int ChunkY, int ChunkZ)
 		if (!ChunkMap.Contains(ChunkKey))
 		{
 			ChunkMap.Add(ChunkKey, GetWorld()->SpawnActor<AVoxel_Chunk>(FVector(ChunkX * 1000, ChunkY * 1000, ChunkZ * 1000), FRotator(0, 0, 0), SpawnInfo));
-			ChunkMap[ChunkKey]->Init(ChunkX, ChunkY, ChunkZ, &perlin);
+			ChunkMap[ChunkKey]->Init(ChunkX, ChunkY, ChunkZ, &cellular);
 		}
 	}
 }

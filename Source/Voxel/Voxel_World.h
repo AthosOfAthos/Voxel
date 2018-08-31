@@ -44,7 +44,7 @@ public:
 
 	TMap<FString, AVoxel_Chunk*> ChunkMap;
 
-	FastNoise perlin;
+	FastNoise cellular;
 
 	int ViewRadius = 5;
 	

@@ -88,6 +88,7 @@ void AVoxel_Chunk::Init(int LocX, int LocY, int LocZ, FastNoise* noise)
 		PosY = LocY;
 		PosZ = LocZ;
 		TheNoise = noise;
+		perlin = FastNoise();
 		Generate();
 	}
 }
@@ -185,7 +186,7 @@ int AVoxel_Chunk::Shape(int VoxX, int VoxY, int VoxZ)
 	}
 
 	
-	// GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat((pow(PosX * 100 + VoxX, 2) + pow(PosY * 100 + VoxY, 2) + pow(PosZ * 100 + VoxZ, 2))));
+	
 	
 	/*if ((VoxX%10 == 0) && (VoxY%10 == 0) && (VoxZ%10 == 0)) {
 		return 1;
@@ -213,17 +214,15 @@ int AVoxel_Chunk::Height(int VoxX, int VoxY, int VoxZ)
 	}
 }
 int AVoxel_Chunk::Mountains(std::vector<int> vox) {
-	//Before I forget this takes a 2d height map and drops it on 3d noise
 	
-	float Mheight = TheNoise->GetPerlinFractal((vox[0] + (PosX * 10)) * 1, (vox[1] + (PosY * 10)) * 1);
+	float Mheight = TheNoise->GetCellular((vox[0] + (PosX * 10)) * 1, (vox[1] + (PosY * 10)) * 1);
 	Mheight *= 20;
-	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(Height));
 
 	if ((vox[2] + (PosZ * 10)) < (Mheight))
 	{
 		//This means we would normally solid fill under it
 		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(TheNoise->GetPerlin(((vox[0] + (PosX * 10)) * 1, (vox[1] + (PosY * 10)) * 1), (vox[2] + (PosZ * 10)) * 1)));
-		if ((std::abs(TheNoise->GetPerlin(vox[0] + (PosX * 100), vox[1] + (PosY * 100), vox[2] + (PosZ * 100))) <= 0.1)) {
+		if ((std::abs(perlin.GetPerlinFractal(vox[0] + (PosX * 100), vox[1] + (PosY * 100), vox[2] + (PosZ * 100))) <= 0.1)) {
 			return 2;
 		}
 		else {
