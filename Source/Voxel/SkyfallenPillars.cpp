@@ -23,9 +23,9 @@ Very Important! Pass this method only the total position (voxel pos + chunk pos 
 */
 int SkyfallenPillars::Generate(int VoxelX, int VoxelY, int VoxelZ) {
 		int Value = Land(VoxelX, VoxelY, VoxelZ);
-		if ((abs(perlin.GetPerlin(VoxelX*20, VoxelY*20, VoxelZ*20))>folliage)&&Value ==3) {
-			Value = Detail(VoxelX, VoxelY, VoxelZ);
-		}
+		
+		Value = Detail(VoxelX, VoxelY, VoxelZ, Value);
+	
 
 		return Value;
 }
@@ -45,6 +45,9 @@ int SkyfallenPillars::Land(int VoxelX, int VoxelY, int VoxelZ) {
 	}
 	return 0;
 }
-int SkyfallenPillars::Detail(int VoxelX, int VoxelY, int VoxelZ) {
-	return 4; //So the tricky part here is it can only pass 1 block and needs to place like a tree or something, which could be algebraic trees or be grown
+int SkyfallenPillars::Detail(int VoxelX, int VoxelY, int VoxelZ, int Value) {
+	if ((abs(perlin.GetPerlin(VoxelX * 20, VoxelY * 20, VoxelZ * 20)) > folliage) && Value == 3) {
+		return 4;
+	}
+	return Value; //So the tricky part here is it can only pass 1 block and needs to place like a tree or something, which could be algebraic trees or be grown
 }
