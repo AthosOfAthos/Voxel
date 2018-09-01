@@ -74,6 +74,23 @@ void AVoxel_World::ManageChunks()
 	for (int i = 0; i < PlayerLocations.Num(); i++)
 	{
 		FVector PlayerChunk = FVector(PlayerLocations[i].X / 10, PlayerLocations[i].Y / 10, PlayerLocations[i].Z / 10);
+
+		for (int ChunkX = PlayerChunk.X - 2; ChunkX < PlayerChunk.X + 2; ChunkX++)
+		{
+			for (int ChunkY = PlayerChunk.Y - 2; ChunkY < PlayerChunk.Y + 2; ChunkY++)
+			{
+				for (int ChunkZ = PlayerChunk.Z - 2; ChunkZ < PlayerChunk.Z + 2; ChunkZ++)
+				{
+					FString ChunkKey = GetChunkKey(ChunkX, ChunkY, ChunkZ);
+					if (!ChunkMap.Contains(ChunkKey))
+					{
+						LoadChunk(ChunkX, ChunkY, ChunkZ);
+						return;
+					}
+				}
+			}
+		}
+
 		for (int ChunkX = PlayerChunk.X - ViewRadius; ChunkX < PlayerChunk.X + ViewRadius; ChunkX++)
 		{
 			for (int ChunkY = PlayerChunk.Y - ViewRadius; ChunkY < PlayerChunk.Y + ViewRadius; ChunkY++)
