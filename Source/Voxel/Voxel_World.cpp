@@ -33,16 +33,18 @@ void AVoxel_World::BeginPlay()
 		cellular.SetFrequency(0.05);// Controls frequency, larger numbers mean more smaller holes, 
 		cellular.SetCellularJitter(0.5);//randomness
 
-		for (int ChunkX = -2; ChunkX < 2; ChunkX++)
+		//preload world
+		for (int ChunkX = -3; ChunkX < 3; ChunkX++)
 		{
-			for (int ChunkY = -2; ChunkY < 2; ChunkY++)
+			for (int ChunkY = -3; ChunkY < 3; ChunkY++)
 			{
-				for (int ChunkZ = -2; ChunkZ < 2; ChunkZ++)
+				for (int ChunkZ = -3; ChunkZ < 3; ChunkZ++)
 				{
 					LoadChunk(ChunkX, ChunkY, ChunkZ);
 				}
 			}
 		}
+		PreloadComplete = true;
 
 		GetWorld()->GetTimerManager().SetTimer(ChunkTimer, this, &AVoxel_World::ManageChunks, 0.1, true, 0);
 	}
