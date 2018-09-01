@@ -21,5 +21,5 @@ public:
 	FastNoise perlin;
 	FastNoise cellular;
 
-	int folliageDensity;
+	double folliageDensity;
 };

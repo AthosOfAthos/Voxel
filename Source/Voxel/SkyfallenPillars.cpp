@@ -12,8 +12,7 @@ SkyfallenPillars::SkyfallenPillars()
 	perlin = FastNoise();
 	perlin.SetSeed(5);
 	perlin.SetFrequency(0.05);
-	folliageDensity = 0.5;
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(folliageDensity));
+	folliageDensity = 0.2;
 }
 
 SkyfallenPillars::~SkyfallenPillars()
@@ -25,9 +24,7 @@ Very Important! Pass this method only the total position (voxel pos + chunk pos 
 int SkyfallenPillars::Generate(int VoxelX, int VoxelY, int VoxelZ) {
 		int Value = Land(VoxelX, VoxelY, VoxelZ);
 		if ((abs(perlin.GetPerlin(VoxelX, VoxelY, VoxelZ))>folliageDensity)&&Value ==3) {
-			//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(abs(perlin.GetPerlin(VoxelX, VoxelY, VoxelZ))));
-			//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(folliageDensity));
-			Value = Detail(VoxelX, VoxelY, VoxelZ);
+			Value = Detail(VoxelX*10, VoxelY*10, VoxelZ*10);
 		}
 
 		return Value;
