@@ -34,11 +34,11 @@ void AVoxel_World::BeginPlay()
 		cellular.SetCellularJitter(0.5);//randomness
 
 		//preload world
-		for (int ChunkX = -3; ChunkX < 3; ChunkX++)
+		for (int ChunkX = -2; ChunkX < 2; ChunkX++)
 		{
-			for (int ChunkY = -3; ChunkY < 3; ChunkY++)
+			for (int ChunkY = -2; ChunkY < 2; ChunkY++)
 			{
-				for (int ChunkZ = -3; ChunkZ < 3; ChunkZ++)
+				for (int ChunkZ = -2; ChunkZ < 2; ChunkZ++)
 				{
 					LoadChunk(ChunkX, ChunkY, ChunkZ);
 				}
@@ -81,11 +81,11 @@ void AVoxel_World::ManageChunks()
 			FVector PlayerChunk = FVector(PlayerLocations[i].X / 1000, PlayerLocations[i].Y / 1000, PlayerLocations[i].Z / 1000);
 
 			//Quick load near chunks
-			for (int ChunkX = PlayerChunk.X - 2; ChunkX < PlayerChunk.X + 2; ChunkX++)
+			for (int ChunkX = PlayerChunk.X - 3; ChunkX < PlayerChunk.X + 3; ChunkX++)
 			{
-				for (int ChunkY = PlayerChunk.Y - 2; ChunkY < PlayerChunk.Y + 2; ChunkY++)
+				for (int ChunkY = PlayerChunk.Y - 3; ChunkY < PlayerChunk.Y + 3; ChunkY++)
 				{
-					for (int ChunkZ = PlayerChunk.Z - 2; ChunkZ < PlayerChunk.Z + 2; ChunkZ++)
+					for (int ChunkZ = PlayerChunk.Z - 3; ChunkZ < PlayerChunk.Z + 3; ChunkZ++)
 					{
 						FString ChunkKey = GetChunkKey(ChunkX, ChunkY, ChunkZ);
 						if (!ChunkMap.Contains(ChunkKey))
@@ -97,6 +97,39 @@ void AVoxel_World::ManageChunks()
 			}
 		}
 		
+		//ManageCleanup();
+
+		for (int i = 0; i < PlayerLocations.Num(); i++)
+		{
+			//Correct world space to chunk space
+			FVector PlayerChunk = FVector(PlayerLocations[i].X / 1000, PlayerLocations[i].Y / 1000, PlayerLocations[i].Z / 1000);
+
+			for (int ChunkX = PlayerChunk.X - ViewRadius; ChunkX < PlayerChunk.X + ViewRadius; ChunkX++)
+			{
+				for (int ChunkY = PlayerChunk.Y - ViewRadius; ChunkY < PlayerChunk.Y + ViewRadius; ChunkY++)
+				{
+					for (int ChunkZ = PlayerChunk.Z - ViewRadius; ChunkZ < PlayerChunk.Z + ViewRadius; ChunkZ++)
+					{
+						FString ChunkKey = GetChunkKey(ChunkX, ChunkY, ChunkZ);
+						if (!ChunkMap.Contains(ChunkKey))
+						{
+							LoadChunk(ChunkX, ChunkY, ChunkZ);
+							return;
+						}
+					}
+				}
+			}
+		}
+
+
+
+	}
+}
+
+void AVoxel_World::ManageCleanup()
+{
+	if (HasAuthority())
+	{
 		//Clean far Chunks
 		int MaxX = 0;
 		int MaxY = 0;
@@ -118,35 +151,17 @@ void AVoxel_World::ManageChunks()
 			}
 
 			if (FMath::Abs(MaxX) > ViewRadius + 1 || FMath::Abs(MaxY) > ViewRadius + 1 || FMath::Abs(MaxZ) > ViewRadius + 1)
+			{
 				UnloadChunk(LoadedChunks[i]->PosX, LoadedChunks[i]->PosY, LoadedChunks[i]->PosZ);
+				return;
+			}
 
 			//UE_LOG(LogTemp, Warning, TEXT("Distance: %s"), *FVector(MaxX, MaxY, MaxZ).ToString());
 			MaxX = 0;
 			MaxY = 0;
 			MaxZ = 0;
 		}
-
-
-
-
 	}
-		/*
-		for (int ChunkX = PlayerChunk.X - ViewRadius; ChunkX < PlayerChunk.X + ViewRadius; ChunkX++)
-		{
-			for (int ChunkY = PlayerChunk.Y - ViewRadius; ChunkY < PlayerChunk.Y + ViewRadius; ChunkY++)
-			{
-				for (int ChunkZ = PlayerChunk.Z - ViewRadius; ChunkZ < PlayerChunk.Z + ViewRadius; ChunkZ++)
-				{
-					FString ChunkKey = GetChunkKey(ChunkX, ChunkY, ChunkZ);
-					if (!ChunkMap.Contains(ChunkKey))
-					{
-						LoadChunk(ChunkX, ChunkY, ChunkZ);
-						return;
-					}
-				}
-			}
-		}
-		*/
 }
 
 void AVoxel_World::LoadChunk(int ChunkX, int ChunkY, int ChunkZ)
