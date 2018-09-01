@@ -21,5 +21,5 @@ public:
 	FastNoise perlin;
 	FastNoise cellular;
 
-	const int folliageDensity = 30;
+	int folliageDensity;
 };
