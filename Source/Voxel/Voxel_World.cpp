@@ -73,28 +73,63 @@ FString AVoxel_World::GetChunkKey(int ChunkX, int ChunkY, int ChunkZ)
 
 void AVoxel_World::ManageChunks()
 {
-	for (int i = 0; i < PlayerLocations.Num(); i++)
+	if (HasAuthority())
 	{
-		//Correct world space to chunk space
-		FVector PlayerChunk = FVector(PlayerLocations[i].X / 1000, PlayerLocations[i].Y / 1000, PlayerLocations[i].Z / 1000);
-
-		//Quick load near chunks
-		for (int ChunkX = PlayerChunk.X - 2; ChunkX < PlayerChunk.X + 2; ChunkX++)
+		for (int i = 0; i < PlayerLocations.Num(); i++)
 		{
-			for (int ChunkY = PlayerChunk.Y - 2; ChunkY < PlayerChunk.Y + 2; ChunkY++)
+			//Correct world space to chunk space
+			FVector PlayerChunk = FVector(PlayerLocations[i].X / 1000, PlayerLocations[i].Y / 1000, PlayerLocations[i].Z / 1000);
+
+			//Quick load near chunks
+			for (int ChunkX = PlayerChunk.X - 2; ChunkX < PlayerChunk.X + 2; ChunkX++)
 			{
-				for (int ChunkZ = PlayerChunk.Z - 2; ChunkZ < PlayerChunk.Z + 2; ChunkZ++)
+				for (int ChunkY = PlayerChunk.Y - 2; ChunkY < PlayerChunk.Y + 2; ChunkY++)
 				{
-					FString ChunkKey = GetChunkKey(ChunkX, ChunkY, ChunkZ);
-					if (!ChunkMap.Contains(ChunkKey))
+					for (int ChunkZ = PlayerChunk.Z - 2; ChunkZ < PlayerChunk.Z + 2; ChunkZ++)
 					{
-						LoadChunk(ChunkX, ChunkY, ChunkZ);
+						FString ChunkKey = GetChunkKey(ChunkX, ChunkY, ChunkZ);
+						if (!ChunkMap.Contains(ChunkKey))
+						{
+							LoadChunk(ChunkX, ChunkY, ChunkZ);
+						}
 					}
 				}
 			}
 		}
-	}
+		
+		//Clean far Chunks
+		int MaxX = 0;
+		int MaxY = 0;
+		int MaxZ = 0;
+		TArray<AVoxel_Chunk*> LoadedChunks;
+		ChunkMap.GenerateValueArray(LoadedChunks);
+		for (int i = 0; i < LoadedChunks.Num(); i++)
+		{
+			for (int p = 0; p < PlayerLocations.Num(); p++)
+			{
+				FVector PlayerChunk = FVector(PlayerLocations[p].X / 1000, PlayerLocations[p].Y / 1000, PlayerLocations[p].Z / 1000);
 
+				if (FMath::Abs(LoadedChunks[i]->PosX - PlayerChunk.X) > MaxX)
+					MaxX = FMath::Abs(LoadedChunks[i]->PosX - PlayerChunk.X);
+				if (FMath::Abs(LoadedChunks[i]->PosY - PlayerChunk.Y) > MaxY)
+					MaxY = FMath::Abs(LoadedChunks[i]->PosY - PlayerChunk.Y);
+				if (FMath::Abs(LoadedChunks[i]->PosZ - PlayerChunk.Z) > MaxZ)
+					MaxZ = FMath::Abs(LoadedChunks[i]->PosZ - PlayerChunk.Z);
+			}
+
+			if (FMath::Abs(MaxX) > ViewRadius + 1 || FMath::Abs(MaxY) > ViewRadius + 1 || FMath::Abs(MaxZ) > ViewRadius + 1)
+				UnloadChunk(LoadedChunks[i]->PosX, LoadedChunks[i]->PosY, LoadedChunks[i]->PosZ);
+
+			//UE_LOG(LogTemp, Warning, TEXT("Distance: %s"), *FVector(MaxX, MaxY, MaxZ).ToString());
+			MaxX = 0;
+			MaxY = 0;
+			MaxZ = 0;
+		}
+
+
+
+
+	}
 		/*
 		for (int ChunkX = PlayerChunk.X - ViewRadius; ChunkX < PlayerChunk.X + ViewRadius; ChunkX++)
 		{
@@ -112,10 +147,6 @@ void AVoxel_World::ManageChunks()
 			}
 		}
 		*/
-
-
-
-		
 }
 
 void AVoxel_World::LoadChunk(int ChunkX, int ChunkY, int ChunkZ)
@@ -129,6 +160,7 @@ void AVoxel_World::LoadChunk(int ChunkX, int ChunkY, int ChunkZ)
 		FString ChunkKey = GetChunkKey(ChunkX, ChunkY, ChunkZ);
 		if (!ChunkMap.Contains(ChunkKey))
 		{
+			UE_LOG(LogTemp, Warning, TEXT("Load: %s"), *ChunkKey);
 			ChunkMap.Add(ChunkKey, GetWorld()->SpawnActor<AVoxel_Chunk>(FVector(ChunkX * 1000, ChunkY * 1000, ChunkZ * 1000), FRotator(0, 0, 0), SpawnInfo));
 			ChunkMap[ChunkKey]->Init(ChunkX, ChunkY, ChunkZ);
 		}
@@ -142,6 +174,7 @@ void AVoxel_World::UnloadChunk(int ChunkX, int ChunkY, int ChunkZ)
 		FString ChunkKey = GetChunkKey(ChunkX, ChunkY, ChunkZ);
 		if (ChunkMap.Contains(ChunkKey))
 		{
+			UE_LOG(LogTemp, Warning, TEXT("Destroy: %s"), *ChunkKey);
 			ChunkMap[ChunkKey]->SaveChunk();
 			ChunkMap[ChunkKey]->Destroy();
 			ChunkMap.Remove(ChunkKey);
