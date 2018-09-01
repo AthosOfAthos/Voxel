@@ -27,9 +27,6 @@ bool Thread_GenerateBase::Init()
 
 uint32 Thread_GenerateBase::Run()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Thread Start!"));
-	FPlatformProcess::Sleep(1);
-	
 	for (int8 VoxelX = 0; VoxelX < 10; VoxelX++)
 	{
 		for (int8 VoxelY = 0; VoxelY < 10; VoxelY++)
@@ -37,25 +34,10 @@ uint32 Thread_GenerateBase::Run()
 			for (int8 VoxelZ = 0; VoxelZ < 10; VoxelZ++)
 			{
 				ChunkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = skp.Generate(VoxelX + (PosX * 10), VoxelY + (PosY * 10), VoxelZ + (PosZ * 10));
-				/*float Height = Noise.GetPerlinFractal((VoxelX + (PosX * 10)) * 1, (VoxelY + (PosY * 10)) * 1);
-				Height *= 20;
-				if ((VoxelZ + (PosZ * 10)) < (Height - 1))
-				{
-					ChunkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = 2;
-				}
-				else if ((VoxelZ + (PosZ * 10)) < Height) {
-					ChunkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = 3;
-				}
-				else
-				{
-					ChunkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = 0;
-				}*/
 			}
 		}
 	}
-	
-	
-	UE_LOG(LogTemp, Warning, TEXT("Thread End!"));
+
 	IsFinished = true;
 	return 0;
 }
