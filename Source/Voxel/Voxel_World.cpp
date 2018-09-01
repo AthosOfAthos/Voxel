@@ -77,7 +77,8 @@ void AVoxel_World::ManageChunks()
 	{
 		//Correct world space to chunk space
 		FVector PlayerChunk = FVector(PlayerLocations[i].X / 1000, PlayerLocations[i].Y / 1000, PlayerLocations[i].Z / 1000);
-		
+
+		//Quick load near chunks
 		for (int ChunkX = PlayerChunk.X - 2; ChunkX < PlayerChunk.X + 2; ChunkX++)
 		{
 			for (int ChunkY = PlayerChunk.Y - 2; ChunkY < PlayerChunk.Y + 2; ChunkY++)
@@ -88,11 +89,12 @@ void AVoxel_World::ManageChunks()
 					if (!ChunkMap.Contains(ChunkKey))
 					{
 						LoadChunk(ChunkX, ChunkY, ChunkZ);
-						return;
 					}
 				}
 			}
 		}
+	}
+
 		/*
 		for (int ChunkX = PlayerChunk.X - ViewRadius; ChunkX < PlayerChunk.X + ViewRadius; ChunkX++)
 		{
@@ -114,7 +116,6 @@ void AVoxel_World::ManageChunks()
 
 
 		
-	}
 }
 
 void AVoxel_World::LoadChunk(int ChunkX, int ChunkY, int ChunkZ)
