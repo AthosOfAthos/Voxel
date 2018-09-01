@@ -9,7 +9,7 @@
 
 AVoxel_Chunk::AVoxel_Chunk()
 {
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 	bReplicates = true;
 	bAlwaysRelevant = true;
 
@@ -74,10 +74,23 @@ void AVoxel_Chunk::BeginPlay()
 void AVoxel_Chunk::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 	if (HasAuthority())
 	{
-		NetworkData[1] = 1;
+		
+		if (Chunk_GenerateBase != nullptr)
+		{
+			
+			if (Chunk_GenerateBase->IsFinished)
+			{
+				
+				UpdateChunk();
+				delete Chunk_GenerateBase;
+				Chunk_GenerateBase = nullptr;
+			}
+			
+		}
+		
+		
 	}
 
 }
@@ -89,9 +102,12 @@ void AVoxel_Chunk::Init(int LocX, int LocY, int LocZ, FastNoise* noise)
 		PosX = LocX;
 		PosY = LocY;
 		PosZ = LocZ;
-		TheNoise = noise;
-		perlin = FastNoise();
-		Generate();
+		//TheNoise = noise;
+		//perlin = FastNoise();
+		//Generate();
+		Chunk_GenerateBase = new Thread_GenerateBase();
+		Chunk_GenerateBase->Setup(PosX, PosY, PosZ, NetworkData);
+		FRunnableThread::Create(Chunk_GenerateBase, TEXT("GenerationThread"), 0, TPri_Normal);
 	}
 }
 
@@ -277,6 +293,7 @@ void AVoxel_Chunk::UpdateChunk()
 			for (int8 VoxelZ = 0; VoxelZ < 10; VoxelZ++)
 			{
 				int i = ChunkData[VoxelX][VoxelY][VoxelZ];
+				i = NetworkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)];
 				if (VoxelMesh[i] != nullptr)
 					VoxelMesh[i]->AddInstance(FTransform(FRotator(0, 0, 0), FVector(VoxelX * 100, VoxelY * 100, VoxelZ * 100), FVector(1, 1, 1)));
 			}

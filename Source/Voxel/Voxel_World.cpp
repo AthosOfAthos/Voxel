@@ -33,8 +33,7 @@ void AVoxel_World::BeginPlay()
 		cellular.SetFrequency(0.05);// Controls frequency, larger numbers mean more smaller holes, 
 		cellular.SetCellularJitter(0.5);//randomness
 
-		
-
+		LoadChunk(0, 0, 0);
 	}
 }
 
@@ -45,6 +44,7 @@ void AVoxel_World::Tick(float DeltaTime)
 
 	if (HasAuthority())
 	{
+		PlayerLocations[0].X = PlayerLocations[0].X + (5 * DeltaTime);
 		//TODO: dont do this every tick
 		ManageChunks();
 	}

@@ -9,6 +9,7 @@
 #include "Engine/StaticMeshActor.h"
 #include "GameFramework/Actor.h"
 #include "Math/FastNoise.h"
+#include "Thread_GenerateBase.h"
 #include <vector>
 #include "Voxel_Chunk.generated.h"
 
@@ -37,6 +38,9 @@ public:
 	FastNoise* TheNoise;
 	FastNoise perlin;
 
+	Thread_GenerateBase* Chunk_GenerateBase;
+	FRunnableThread* TestThread;
+
 	void Init(int PosX, int PosY, int PosZ, FastNoise* noise);
 	
 	uint16 GetBlock(int VoxelX, int VoxelY, int VoxelZ);
@@ -64,8 +68,6 @@ public:
 	//The version of the chunk replicated to clients
 	UPROPERTY(ReplicatedUsing = OnRep_NetworkData)
 		uint16 NetworkData[1000];
-
-		//TArray<uint16> NetworkData;
 
 	//Blocks stored in an easy to use 3d array
 	uint16 ChunkData[10][10][10];
