@@ -21,8 +21,11 @@ public:
 	
 protected:
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
+	virtual void PostLogin(APlayerController* NewPlayer) override;
 	
 public:
 	AVoxel_World* GameWorld;
+	TArray<APlayerController*> Players;
 	
 };

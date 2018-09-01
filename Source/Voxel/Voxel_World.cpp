@@ -57,7 +57,7 @@ void AVoxel_World::Tick(float DeltaTime)
 
 	if (HasAuthority())
 	{
-		//PlayerLocations[0].X = PlayerLocations[0].X + (5 * DeltaTime);
+		
 	}
 }
 
@@ -75,8 +75,9 @@ void AVoxel_World::ManageChunks()
 {
 	for (int i = 0; i < PlayerLocations.Num(); i++)
 	{
-		FVector PlayerChunk = FVector(PlayerLocations[i].X / 10, PlayerLocations[i].Y / 10, PlayerLocations[i].Z / 10);
-
+		//Correct world space to chunk space
+		FVector PlayerChunk = FVector(PlayerLocations[i].X / 1000, PlayerLocations[i].Y / 1000, PlayerLocations[i].Z / 1000);
+		
 		for (int ChunkX = PlayerChunk.X - 2; ChunkX < PlayerChunk.X + 2; ChunkX++)
 		{
 			for (int ChunkY = PlayerChunk.Y - 2; ChunkY < PlayerChunk.Y + 2; ChunkY++)
@@ -92,7 +93,7 @@ void AVoxel_World::ManageChunks()
 				}
 			}
 		}
-
+		/*
 		for (int ChunkX = PlayerChunk.X - ViewRadius; ChunkX < PlayerChunk.X + ViewRadius; ChunkX++)
 		{
 			for (int ChunkY = PlayerChunk.Y - ViewRadius; ChunkY < PlayerChunk.Y + ViewRadius; ChunkY++)
@@ -108,13 +109,12 @@ void AVoxel_World::ManageChunks()
 				}
 			}
 		}
-
+		*/
 
 
 
 		
 	}
-	return;
 }
 
 void AVoxel_World::LoadChunk(int ChunkX, int ChunkY, int ChunkZ)
