@@ -104,7 +104,6 @@ void AVoxel_Chunk::Init(int LocX, int LocY, int LocZ, FastNoise* noise)
 		PosZ = LocZ;
 		//TheNoise = noise;
 		//perlin = FastNoise();
-		//Generate();
 		Chunk_GenerateBase = new Thread_GenerateBase();
 		Chunk_GenerateBase->Setup(PosX, PosY, PosZ, NetworkData);
 		FRunnableThread::Create(Chunk_GenerateBase, TEXT("GenerationThread"), 0, TPri_Normal);
