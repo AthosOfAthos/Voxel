@@ -95,7 +95,7 @@ void AVoxel_Chunk::Tick(float DeltaTime)
 
 }
 
-void AVoxel_Chunk::Init(int LocX, int LocY, int LocZ, FastNoise* noise)
+void AVoxel_Chunk::Init(int LocX, int LocY, int LocZ)
 {
 	if (HasAuthority())
 	{

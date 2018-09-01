@@ -113,7 +113,7 @@ void AVoxel_World::LoadChunk(int ChunkX, int ChunkY, int ChunkZ)
 		if (!ChunkMap.Contains(ChunkKey))
 		{
 			ChunkMap.Add(ChunkKey, GetWorld()->SpawnActor<AVoxel_Chunk>(FVector(ChunkX * 1000, ChunkY * 1000, ChunkZ * 1000), FRotator(0, 0, 0), SpawnInfo));
-			ChunkMap[ChunkKey]->Init(ChunkX, ChunkY, ChunkZ, &cellular);
+			ChunkMap[ChunkKey]->Init(ChunkX, ChunkY, ChunkZ);
 		}
 	}
 }

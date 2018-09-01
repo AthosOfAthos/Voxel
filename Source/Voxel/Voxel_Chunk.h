@@ -44,7 +44,7 @@ public:
 	FRunnableThread* TestThread;
 
 
-	void Init(int PosX, int PosY, int PosZ, FastNoise* noise);
+	void Init(int PosX, int PosY, int PosZ);
 	
 	uint16 GetBlock(int VoxelX, int VoxelY, int VoxelZ);
 	void SetBlock(int VoxelX, int VoxelY, int VoxelZ, int Id);

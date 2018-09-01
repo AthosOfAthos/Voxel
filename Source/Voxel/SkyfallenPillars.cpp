@@ -5,7 +5,12 @@
 SkyfallenPillars::SkyfallenPillars()
 {
 	cellular = FastNoise();
+	cellular.SetSeed(5);  
+	cellular.SetFrequency(0.05); 
+	cellular.SetCellularJitter(0.5);
+
 	perlin = FastNoise();
+	perlin.SetSeed(5);
 }
 
 SkyfallenPillars::~SkyfallenPillars()
