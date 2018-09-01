@@ -48,6 +48,8 @@ public:
 
 	FastNoise cellular;
 
-	int ViewRadius = 2;
+	FTimerHandle ChunkTimer;
+
+	int ViewRadius = 3;
 	
 };

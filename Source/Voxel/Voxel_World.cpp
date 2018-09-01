@@ -33,7 +33,18 @@ void AVoxel_World::BeginPlay()
 		cellular.SetFrequency(0.05);// Controls frequency, larger numbers mean more smaller holes, 
 		cellular.SetCellularJitter(0.5);//randomness
 
-		LoadChunk(0, 0, 0);
+		for (int ChunkX = -2; ChunkX < 2; ChunkX++)
+		{
+			for (int ChunkY = -2; ChunkY < 2; ChunkY++)
+			{
+				for (int ChunkZ = -2; ChunkZ < 2; ChunkZ++)
+				{
+					LoadChunk(ChunkX, ChunkY, ChunkZ);
+				}
+			}
+		}
+
+		GetWorld()->GetTimerManager().SetTimer(ChunkTimer, this, &AVoxel_World::ManageChunks, 0.2, true, 0);
 	}
 }
 
@@ -44,9 +55,7 @@ void AVoxel_World::Tick(float DeltaTime)
 
 	if (HasAuthority())
 	{
-		PlayerLocations[0].X = PlayerLocations[0].X + (5 * DeltaTime);
-		//TODO: dont do this every tick
-		ManageChunks();
+		//PlayerLocations[0].X = PlayerLocations[0].X + (5 * DeltaTime);
 	}
 }
 
@@ -62,6 +71,7 @@ FString AVoxel_World::GetChunkKey(int ChunkX, int ChunkY, int ChunkZ)
 
 void AVoxel_World::ManageChunks()
 {
+	int LoadedChunks = 0;
 	for (int i = 0; i < PlayerLocations.Num(); i++)
 	{
 		FVector PlayerChunk = FVector(PlayerLocations[i].X / 10, PlayerLocations[i].Y / 10, PlayerLocations[i].Z / 10);
@@ -73,14 +83,22 @@ void AVoxel_World::ManageChunks()
 				{
 					FString ChunkKey = GetChunkKey(ChunkX, ChunkY, ChunkZ);
 					if (!ChunkMap.Contains(ChunkKey))
-						LoadChunk(ChunkX,ChunkY, ChunkZ);
+					{
+						LoadChunk(ChunkX, ChunkY, ChunkZ);
+						LoadedChunks++;
+						if (LoadedChunks < 2)
+							return;
+					}
 				}
 			}
 		}
 
 
 
+
+		
 	}
+	return;
 }
 
 void AVoxel_World::LoadChunk(int ChunkX, int ChunkY, int ChunkZ)
