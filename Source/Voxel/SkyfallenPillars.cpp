@@ -6,13 +6,13 @@ SkyfallenPillars::SkyfallenPillars()
 {
 	cellular = FastNoise();
 	cellular.SetSeed(5);  
-	cellular.SetFrequency(0.05); 
+	cellular.SetFrequency(0.06); 
 	cellular.SetCellularJitter(0.5);
 
 	perlin = FastNoise();
 	perlin.SetSeed(5);
-	perlin.SetFrequency(0.05);
-	folliageDensity = 0.2;
+	perlin.SetFrequency(0.07);
+	folliage = 0.4;
 }
 
 SkyfallenPillars::~SkyfallenPillars()
@@ -23,8 +23,8 @@ Very Important! Pass this method only the total position (voxel pos + chunk pos 
 */
 int SkyfallenPillars::Generate(int VoxelX, int VoxelY, int VoxelZ) {
 		int Value = Land(VoxelX, VoxelY, VoxelZ);
-		if ((abs(perlin.GetPerlin(VoxelX, VoxelY, VoxelZ))>folliageDensity)&&Value ==3) {
-			Value = Detail(VoxelX*10, VoxelY*10, VoxelZ*10);
+		if ((abs(perlin.GetPerlin(VoxelX*20, VoxelY*20, VoxelZ*20))>folliage)&&Value ==3) {
+			Value = Detail(VoxelX, VoxelY, VoxelZ);
 		}
 
 		return Value;
@@ -33,7 +33,7 @@ int SkyfallenPillars::Land(int VoxelX, int VoxelY, int VoxelZ) {
 	float Mheight = cellular.GetCellular((VoxelX) * 1, (VoxelY) * 1);
 	Mheight *= 30;
 
-	if (perlin.GetPerlinFractal(VoxelX, VoxelY, VoxelZ) <= 0.01) {
+	if (perlin.GetPerlinFractal(VoxelX, VoxelY, VoxelZ) <= 0.015) {
 		if (VoxelZ < (Mheight - 1)) {
 			return 2;
 

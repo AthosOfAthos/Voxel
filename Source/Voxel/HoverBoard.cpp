@@ -38,7 +38,7 @@ void AHoverBoard::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	AirSpeed = 1000;
+	AirSpeed = 900;
 
 	BoardRotation.Yaw += BoardRotation.Roll * YawResponse * DeltaTime;
 

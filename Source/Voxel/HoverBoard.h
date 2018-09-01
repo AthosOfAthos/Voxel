@@ -44,6 +44,6 @@ public:
 
 	float PitchResponse = 80;
 	float RollResponse = 120;
-	float YawResponse = 5;
+	float YawResponse = 4;
 	
 };
