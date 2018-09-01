@@ -44,7 +44,7 @@ void AVoxel_World::BeginPlay()
 			}
 		}
 
-		GetWorld()->GetTimerManager().SetTimer(ChunkTimer, this, &AVoxel_World::ManageChunks, 0.2, true, 0);
+		GetWorld()->GetTimerManager().SetTimer(ChunkTimer, this, &AVoxel_World::ManageChunks, 0.1, true, 0);
 	}
 }
 
@@ -71,7 +71,6 @@ FString AVoxel_World::GetChunkKey(int ChunkX, int ChunkY, int ChunkZ)
 
 void AVoxel_World::ManageChunks()
 {
-	int LoadedChunks = 0;
 	for (int i = 0; i < PlayerLocations.Num(); i++)
 	{
 		FVector PlayerChunk = FVector(PlayerLocations[i].X / 10, PlayerLocations[i].Y / 10, PlayerLocations[i].Z / 10);
@@ -85,9 +84,7 @@ void AVoxel_World::ManageChunks()
 					if (!ChunkMap.Contains(ChunkKey))
 					{
 						LoadChunk(ChunkX, ChunkY, ChunkZ);
-						LoadedChunks++;
-						if (LoadedChunks < 2)
-							return;
+						return;
 					}
 				}
 			}
