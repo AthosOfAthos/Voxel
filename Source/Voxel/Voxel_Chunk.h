@@ -9,7 +9,7 @@
 #include "Engine/StaticMeshActor.h"
 #include "GameFramework/Actor.h"
 #include "Math/FastNoise.h"
-#include <vector>
+#include "SkyfallenPillars.h"
 #include "Voxel_Chunk.generated.h"
 
 UCLASS()
@@ -37,6 +37,7 @@ public:
 	FastNoise* TheNoise;
 	FastNoise perlin;
 
+	SkyfallenPillars skp = SkyfallenPillars();
 	void Init(int PosX, int PosY, int PosZ, FastNoise* noise);
 	
 	uint16 GetBlock(int VoxelX, int VoxelY, int VoxelZ);
@@ -45,15 +46,6 @@ public:
 	void SaveChunk();
 
 	void Generate();
-	int Height(int VoxelX, int VoxelY, int VoxelZ);
-	int Noise(int VoxelX, int VoxelY, int VoxelZ);
-	int Shape(int VoxelX, int VoxelY, int VoxelZ);
-	int Mountains(std::vector<int> pos);
-
-	void Tree(int VoxelX, int VoxelY, int VoxelZ);
-	
-	int treeDensity = 20; //1/number = trees 
-	
 
 	UFUNCTION()
 	virtual void OnRep_NetworkData();
