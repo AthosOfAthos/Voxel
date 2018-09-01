@@ -4,6 +4,7 @@
 
 #include "Engine.h"
 #include "Runnable.h"
+#include "SkyfallenPillars.h"
 #include "Math/FastNoise.h"
 
 class Thread_GenerateBase : public FRunnable
@@ -22,6 +23,8 @@ public:
 	FastNoise Noise;
 
 	bool IsFinished = false;
+
+	SkyfallenPillars skp = SkyfallenPillars();
 
 	int PosX, PosY, PosZ;
 };

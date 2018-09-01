@@ -8,7 +8,6 @@
 #include "Engine/StaticMesh.h"
 #include "Engine/StaticMeshActor.h"
 #include "GameFramework/Actor.h"
-#include "Math/FastNoise.h"
 #include "Voxel_World.generated.h"
 
 
@@ -45,8 +44,6 @@ public:
 	TArray<FVector> PlayerLocations;
 
 	TMap<FString, AVoxel_Chunk*> ChunkMap;
-
-	FastNoise cellular;
 
 	int ViewRadius = 2;
 	
