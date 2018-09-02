@@ -4,7 +4,8 @@
 
 #include "Engine.h"
 #include "Runnable.h"
-#include "SkyfallenPillars.h"
+#include "Pillars.h"
+#include "Rings.h"
 #include "Math/FastNoise.h"
 
 class Thread_GenerateBase : public FRunnable
@@ -24,7 +25,8 @@ public:
 
 	bool IsFinished = false;
 
-	SkyfallenPillars skp = SkyfallenPillars();
+	Pillars pillars = Pillars();
+	Rings rings = Rings();
 
 	int PosX, PosY, PosZ;
 };

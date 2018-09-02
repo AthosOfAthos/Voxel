@@ -33,7 +33,7 @@ uint32 Thread_GenerateBase::Run()
 		{
 			for (int8 VoxelZ = 0; VoxelZ < 10; VoxelZ++)
 			{
-				ChunkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = skp.Generate(VoxelX + (PosX * 10), VoxelY + (PosY * 10), VoxelZ + (PosZ * 10));
+				ChunkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = rings.Generate(VoxelX + (PosX * 10), VoxelY + (PosY * 10), VoxelZ + (PosZ * 10));
 			}
 		}
 	}

@@ -9,7 +9,7 @@
 #include "Engine/StaticMeshActor.h"
 #include "GameFramework/Actor.h"
 #include "Math/FastNoise.h"
-#include "SkyfallenPillars.h"
+#include "Pillars.h"
 #include "Thread_GenerateBase.h"
 #include "Voxel_Chunk.generated.h"
 
@@ -38,7 +38,7 @@ public:
 	FastNoise* TheNoise;
 	FastNoise perlin;
 
-	SkyfallenPillars skp = SkyfallenPillars();
+	Pillars skp = Pillars();
 
 	Thread_GenerateBase* Chunk_GenerateBase;
 	FRunnableThread* TestThread;

@@ -1,12 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "SkyfallenPillars.h"
+#include "Rings.h"
 //This class generates the known and loved skyfallen pillar terrain
-SkyfallenPillars::SkyfallenPillars()
+Rings::Rings()
 {
 	cellular = FastNoise();
-	cellular.SetSeed(5);  
-	cellular.SetFrequency(0.06); 
+	cellular.SetSeed(5);
+	cellular.SetFrequency(0.06);
 	cellular.SetCellularJitter(0.5);
 
 	perlin = FastNoise();
@@ -15,22 +15,22 @@ SkyfallenPillars::SkyfallenPillars()
 	folliage = 0.4;
 }
 
-SkyfallenPillars::~SkyfallenPillars()
+Rings::~Rings()
 {
 }
 /*
 Very Important! Pass this method only the total position (voxel pos + chunk pos * 10
 */
-int SkyfallenPillars::Generate(int VoxelX, int VoxelY, int VoxelZ) {
-		int Value = Land(VoxelX, VoxelY, VoxelZ);
-		
-		Value = Detail(VoxelX, VoxelY, VoxelZ, Value);
-	
+int Rings::Generate(int VoxelX, int VoxelY, int VoxelZ) {
+	int Value = Land(VoxelX, VoxelY, VoxelZ);
 
-		return Value;
+	Value = Detail(VoxelX, VoxelY, VoxelZ, Value);
+
+
+	return Value;
 }
-int SkyfallenPillars::Land(int VoxelX, int VoxelY, int VoxelZ) {
-	float Mheight = cellular.GetCellular((VoxelX) * 1, (VoxelY) * 1);
+int Rings::Land(int VoxelX, int VoxelY, int VoxelZ) {
+	float Mheight = cellular.GetCubic((VoxelX) * 1, (VoxelY) * 1);
 	Mheight *= 30;
 
 	if (perlin.GetPerlinFractal(VoxelX, VoxelY, VoxelZ) <= 0.015) {
@@ -43,9 +43,9 @@ int SkyfallenPillars::Land(int VoxelX, int VoxelY, int VoxelZ) {
 		}
 
 	}
-	return 0;
+	return 2;
 }
-int SkyfallenPillars::Detail(int VoxelX, int VoxelY, int VoxelZ, int Value) {
+int Rings::Detail(int VoxelX, int VoxelY, int VoxelZ, int Value) {
 	if ((abs(perlin.GetPerlin(VoxelX * 20, VoxelY * 20, VoxelZ * 20)) > folliage) && Value == 3) {
 		return 4;
 	}
