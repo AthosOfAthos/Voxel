@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "SkyfallenPillars.h"
+#include "Pillars.h"
 //This class generates the known and loved skyfallen pillar terrain
-SkyfallenPillars::SkyfallenPillars()
+Pillars::Pillars()
 {
 	cellular = FastNoise();
 	cellular.SetSeed(5);  
@@ -15,13 +15,13 @@ SkyfallenPillars::SkyfallenPillars()
 	folliage = 0.4;
 }
 
-SkyfallenPillars::~SkyfallenPillars()
+Pillars::~Pillars()
 {
 }
 /*
 Very Important! Pass this method only the total position (voxel pos + chunk pos * 10
 */
-int SkyfallenPillars::Generate(int VoxelX, int VoxelY, int VoxelZ) {
+int Pillars::Generate(int VoxelX, int VoxelY, int VoxelZ) {
 		int Value = Land(VoxelX, VoxelY, VoxelZ);
 		
 		Value = Detail(VoxelX, VoxelY, VoxelZ, Value);
@@ -29,7 +29,7 @@ int SkyfallenPillars::Generate(int VoxelX, int VoxelY, int VoxelZ) {
 
 		return Value;
 }
-int SkyfallenPillars::Land(int VoxelX, int VoxelY, int VoxelZ) {
+int Pillars::Land(int VoxelX, int VoxelY, int VoxelZ) {
 	float Mheight = cellular.GetCellular((VoxelX) * 1, (VoxelY) * 1);
 	Mheight *= 30;
 
@@ -45,7 +45,7 @@ int SkyfallenPillars::Land(int VoxelX, int VoxelY, int VoxelZ) {
 	}
 	return 0;
 }
-int SkyfallenPillars::Detail(int VoxelX, int VoxelY, int VoxelZ, int Value) {
+int Pillars::Detail(int VoxelX, int VoxelY, int VoxelZ, int Value) {
 	if ((abs(perlin.GetPerlin(VoxelX * 20, VoxelY * 20, VoxelZ * 20)) > folliage) && Value == 3) {
 		return 4;
 	}
