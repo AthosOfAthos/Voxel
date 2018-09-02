@@ -43,6 +43,7 @@ public:
 	
 	uint16 GetBlock(int VoxelX, int VoxelY, int VoxelZ);
 	void SetBlock(int VoxelX, int VoxelY, int VoxelZ, int Id);
+	bool IsLocalOccluded(int VoxelX, int VoxelY, int VoxelZ);
 	
 	UFUNCTION()
 	void SetChunkData();
@@ -50,6 +51,8 @@ public:
 
 	UPROPERTY(ReplicatedUsing = SetChunkData)
 	uint16 ChunkData[27000];
+
+	uint16 RenderData[27000];
 
 	//Position in chunk grid
 	UPROPERTY(Replicated)

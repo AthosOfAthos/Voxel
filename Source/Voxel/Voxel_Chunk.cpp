@@ -42,6 +42,7 @@ AVoxel_Chunk::AVoxel_Chunk()
 	for (int i = 0; i < 27000; i++)
 	{
 		ChunkData[i] = 0;
+		RenderData[i] = 0;
 	}
 }
 
@@ -116,6 +117,28 @@ void AVoxel_Chunk::SetBlock(int VoxelX, int VoxelY, int VoxelZ, int Id)
 	}
 }
 
+bool AVoxel_Chunk::IsLocalOccluded(int VoxelX, int VoxelY, int VoxelZ)
+{
+	//chunk edges MUST NOT be occluded
+	if (VoxelX == 0 || VoxelX == 29 || VoxelY == 0 || VoxelY == 29 || VoxelZ == 0 || VoxelZ == 29)
+		return false;
+
+	if (ChunkData[FMath::Clamp(VoxelX + 1, 0, 29) + FMath::Clamp(VoxelY, 0, 29) * 30 + FMath::Clamp(VoxelZ, 0, 29) * 900] == 0)
+		return false;
+	if (ChunkData[FMath::Clamp(VoxelX - 1, 0, 29) + FMath::Clamp(VoxelY, 0, 29) * 30 + FMath::Clamp(VoxelZ, 0, 29) * 900] == 0)
+		return false;
+	if (ChunkData[FMath::Clamp(VoxelX, 0, 29) + FMath::Clamp(VoxelY + 1, 0, 29) * 30 + FMath::Clamp(VoxelZ, 0, 29) * 900] == 0)
+		return false;
+	if (ChunkData[FMath::Clamp(VoxelX, 0, 29) + FMath::Clamp(VoxelY - 1, 0, 29) * 30 + FMath::Clamp(VoxelZ, 0, 29) * 900] == 0)
+		return false;
+	if (ChunkData[FMath::Clamp(VoxelX, 0, 29) + FMath::Clamp(VoxelY, 0, 29) * 30 + FMath::Clamp(VoxelZ + 1, 0, 29) * 900] == 0)
+		return false;
+	if (ChunkData[FMath::Clamp(VoxelX, 0, 29) + FMath::Clamp(VoxelY, 0, 29) * 30 + FMath::Clamp(VoxelZ - 1, 0, 29) * 900] == 0)
+		return false;
+	
+	return true;
+}
+
 void AVoxel_Chunk::SetChunkData()
 {
 	UpdateChunk();
@@ -128,6 +151,21 @@ void AVoxel_Chunk::UpdateChunk()
 		if (VoxelMesh[i] != nullptr)
 			VoxelMesh[i]->ClearInstances();
 	}
+
+	for (int8 VoxelX = 0; VoxelX < 30; VoxelX++)
+	{
+		for (int8 VoxelY = 0; VoxelY < 30; VoxelY++)
+		{
+			for (int8 VoxelZ = 0; VoxelZ < 30; VoxelZ++)
+			{
+				if (IsLocalOccluded(VoxelX, VoxelY, VoxelZ))
+					RenderData[VoxelX + VoxelY * 30 + VoxelZ * 900] = 0;
+				else
+					RenderData[VoxelX + VoxelY * 30 + VoxelZ * 900] = ChunkData[VoxelX + VoxelY * 30 + VoxelZ * 900];
+			}
+		}
+	}
+
 	
 	for (int8 VoxelX = 0; VoxelX < 30; VoxelX++)
 	{
@@ -135,7 +173,7 @@ void AVoxel_Chunk::UpdateChunk()
 		{
 			for (int8 VoxelZ = 0; VoxelZ < 30; VoxelZ++)
 			{
-				int i = ChunkData[VoxelX + VoxelY * 30 + VoxelZ * 900];
+				int i = RenderData[VoxelX + VoxelY * 30 + VoxelZ * 900];
 				if (VoxelMesh[i] != nullptr)
 					VoxelMesh[i]->AddInstance(FTransform(FRotator(0, 0, 0), FVector(VoxelX * 100, VoxelY * 100, VoxelZ * 100), FVector(1, 1, 1)));
 			}
