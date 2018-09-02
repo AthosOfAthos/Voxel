@@ -18,8 +18,9 @@ public:
 	int Generate(int VoxelX, int VoxelY, int VoxelZ);
 	int Land(int VoxelX, int VoxelY, int VoxelZ);
 	int Detail(int VoxelX, int VoxelY, int VoxelZ, int Value);
-	FastNoise perlin;
-	FastNoise cellular;
+	FastNoise overhangs;
+	FastNoise pillars;
+	FastNoise land;
 
 	double folliage;
 };
