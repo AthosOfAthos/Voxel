@@ -84,6 +84,12 @@ void AVoxel_Chunk::Tick(float DeltaTime)
 				UpdateChunk();
 			}
 		}
+
+		if (NeedsUpdate)
+		{
+			NeedsUpdate = false;
+			UpdateChunk();
+		}
 		
 		
 	}
@@ -113,7 +119,12 @@ void AVoxel_Chunk::SetBlock(int VoxelX, int VoxelY, int VoxelZ, int Id)
 {
 	if (HasAuthority())
 	{
-		ChunkData[(VoxelX % 30) + ((VoxelY % 30) * 30) + ((VoxelZ % 30) * 900)] = Id;
+		//ChunkData[(VoxelX % 30) + ((VoxelY % 30) * 30) + ((VoxelZ % 30) * 900)] = Id;
+		for (int i = 0; i < 27000; i++)
+		{
+			ChunkData[i] = 0;
+		}
+		NeedsUpdate = true;
 	}
 }
 

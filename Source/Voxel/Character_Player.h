@@ -10,6 +10,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Animation/AnimBlueprint.h"
+#include "Projectile_Rocket.h"
 #include "Character_Player.generated.h"
 
 UCLASS()
@@ -43,6 +44,8 @@ public:
 	void JumpPressed();
 	void JumpReleased();
 
+	void PrimaryPressed();
+
 	void UseBoardPressed();
 
 	void SetGravity(float);
@@ -51,6 +54,9 @@ public:
 
 	UFUNCTION(Server, Reliable, WithValidation)
 		void SpawnBoard();
+
+	UFUNCTION(Server, Reliable, WithValidation)
+	void FireRocket();
 
 	UPROPERTY(Replicated)
 	AHoverBoard* ControlledBoard;

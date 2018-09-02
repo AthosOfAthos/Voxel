@@ -77,6 +77,8 @@ void ACharacter_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter_Player::JumpPressed);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter_Player::JumpReleased);
 
+	PlayerInputComponent->BindAction("Primary", IE_Pressed, this, &ACharacter_Player::PrimaryPressed);
+
 	PlayerInputComponent->BindAction("UseBoard", IE_Pressed, this, &ACharacter_Player::UseBoardPressed);
 }
 
@@ -135,6 +137,11 @@ void ACharacter_Player::JumpReleased()
 	SetGravityServer(GravityNormal);
 }
 
+void ACharacter_Player::PrimaryPressed()
+{
+	FireRocket();
+}
+
 void ACharacter_Player::UseBoardPressed()
 {
 	SpawnBoard();
@@ -181,5 +188,24 @@ void ACharacter_Player::SpawnBoard_Implementation()
 		}
 
 		
+	}
+}
+
+bool ACharacter_Player::FireRocket_Validate()
+{
+	return true;
+}
+
+void ACharacter_Player::FireRocket_Implementation()
+{
+	if (HasAuthority())
+	{
+		FActorSpawnParameters SpawnInfo;
+		SpawnInfo.Owner = this;
+		SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+		FVector SpawnLocation = GetActorLocation();
+		SpawnLocation.Z += 200;
+		GetWorld()->SpawnActor<AProjectile_Rocket>(SpawnLocation, GetControlRotation(), SpawnInfo);
 	}
 }

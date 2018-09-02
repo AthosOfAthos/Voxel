@@ -49,6 +49,8 @@ public:
 	void SetChunkData();
 	void UpdateChunk();
 
+	bool NeedsUpdate = true;
+
 	UPROPERTY(ReplicatedUsing = SetChunkData)
 	uint16 ChunkData[27000];
 
