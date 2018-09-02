@@ -38,14 +38,23 @@ void AHoverBoard::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	AirSpeed = 900;
-
+	BoardRotation.Roll = FMath::FInterpTo(BoardRotation.Roll, TargetRoll, DeltaTime, RollResponse);
 	BoardRotation.Yaw += BoardRotation.Roll * YawResponse * DeltaTime;
+
+	AirSpeed += FMath::Sin(FMath::DegreesToRadians(BoardRotation.Pitch)) * GravityZ * DeltaTime;
+	AirSpeed += (Thrust / Mass) * DeltaTime;
+	AirSpeed -= ((0.5) * (DragCoefficient * FMath::Square(AirSpeed / 10))) / Mass;
+	AirSpeed = FMath::Clamp(AirSpeed, (float)0, Vne);
+
+	//TODO
+	Lift = 0;
 
 	FVector TargetLocation = GetActorLocation();
 	FVector MovementVector = FVector(AirSpeed * DeltaTime, 0, 0);
+	FVector LiftVector = FVector(0, 0, Lift * DeltaTime);
 	MovementVector = BoardRotation.RotateVector(MovementVector);
 	TargetLocation += MovementVector;
+	TargetLocation += LiftVector;
 	SetActorLocation(TargetLocation, true);
 	SetActorRotation(BoardRotation);
 }
@@ -80,5 +89,5 @@ bool AHoverBoard::AddRollServer_Validate(float inputAmount)
 
 void AHoverBoard::AddRollServer_Implementation(float inputAmount)
 {
-	BoardRotation.Roll = inputAmount * 45;
+	TargetRoll = inputAmount * 45;
 }

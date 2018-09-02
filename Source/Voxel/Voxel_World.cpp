@@ -27,7 +27,22 @@ void AVoxel_World::BeginPlay()
 	Super::BeginPlay();
 	if (HasAuthority())
 	{
-		GetWorld()->GetTimerManager().SetTimer(ChunkTimer, this, &AVoxel_World::ManageChunks, 0.1, true, 0);
+		GetWorld()->GetTimerManager().SetTimer(ChunkTimer, this, &AVoxel_World::ManageChunks, 0.6, true, 0);
+
+		//preload spawn
+		for (int ChunkX = -2; ChunkX < 2; ChunkX++)
+		{
+			for (int ChunkY = -2; ChunkY < 2; ChunkY++)
+			{
+				for (int ChunkZ = -2; ChunkZ < 2; ChunkZ++)
+				{
+					if (!ChunkMap.Contains(GetChunkKey(ChunkX, ChunkY, ChunkZ)))
+					{
+						LoadChunk(ChunkX, ChunkY, ChunkZ);
+					}
+				}
+			}
+		}
 	}
 }
 
