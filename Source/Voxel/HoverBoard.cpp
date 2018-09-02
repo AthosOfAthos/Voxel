@@ -50,25 +50,35 @@ void AHoverBoard::Tick(float DeltaTime)
 	SetActorRotation(BoardRotation);
 }
 
-bool AHoverBoard::AddPitch_Validate(float inputAmount)
+void AHoverBoard::AddPitch(float inputAmount)
+{
+	AddPitchServer(inputAmount);
+}
+
+void AHoverBoard::AddRoll(float inputAmount)
+{
+	AddRollServer(inputAmount);
+}
+
+bool AHoverBoard::AddPitchServer_Validate(float inputAmount)
 {
 	//its all good
 	return true;
 }
 
-void AHoverBoard::AddPitch_Implementation(float inputAmount)
+void AHoverBoard::AddPitchServer_Implementation(float inputAmount)
 {
 	inputAmount *= -1;
 	BoardRotation.Pitch += inputAmount * PitchResponse * FApp::GetDeltaTime();
 }
 
-bool AHoverBoard::AddRoll_Validate(float inputAmount)
+bool AHoverBoard::AddRollServer_Validate(float inputAmount)
 {
 	//its all good
 	return true;
 }
 
-void AHoverBoard::AddRoll_Implementation(float inputAmount)
+void AHoverBoard::AddRollServer_Implementation(float inputAmount)
 {
 	BoardRotation.Roll = inputAmount * 45;
 }

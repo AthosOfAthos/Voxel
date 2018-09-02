@@ -29,10 +29,13 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION(Server, Reliable, WithValidation)
 	void AddPitch(float inputAmount);
-	UFUNCTION(Server, Reliable, WithValidation)
 	void AddRoll(float inputAmount);
+
+	UFUNCTION(Server, Reliable, WithValidation)
+	void AddPitchServer(float inputAmount);
+	UFUNCTION(Server, Reliable, WithValidation)
+	void AddRollServer(float inputAmount);
 
 	UBoxComponent* BoardCollision;
 	UStaticMeshComponent* BoardMesh;
