@@ -4,7 +4,7 @@
 
 Thread_GenerateBase::Thread_GenerateBase()
 {
-	
+
 }
 
 Thread_GenerateBase::~Thread_GenerateBase()
@@ -12,12 +12,12 @@ Thread_GenerateBase::~Thread_GenerateBase()
 
 }
 
-void Thread_GenerateBase::Setup(int NewX, int NewY, int NewZ, uint16* ChunkRef)
+void Thread_GenerateBase::Setup(int NewX, int NewY, int NewZ, uint16* RefChunkData)
 {
 	Thread_GenerateBase::PosX = NewX;
 	Thread_GenerateBase::PosY = NewY;
 	Thread_GenerateBase::PosZ = NewZ;
-	Thread_GenerateBase::ChunkData = ChunkRef;
+	Thread_GenerateBase::ChunkData = RefChunkData;
 }
 
 bool Thread_GenerateBase::Init()
@@ -27,13 +27,13 @@ bool Thread_GenerateBase::Init()
 
 uint32 Thread_GenerateBase::Run()
 {
-	for (int8 VoxelX = 0; VoxelX < 10; VoxelX++)
+	for (int8 VoxelX = 0; VoxelX < 30; VoxelX++)
 	{
-		for (int8 VoxelY = 0; VoxelY < 10; VoxelY++)
+		for (int8 VoxelY = 0; VoxelY < 30; VoxelY++)
 		{
-			for (int8 VoxelZ = 0; VoxelZ < 10; VoxelZ++)
+			for (int8 VoxelZ = 0; VoxelZ < 30; VoxelZ++)
 			{
-				ChunkData[VoxelX + (VoxelY * 10) + (VoxelZ * 100)] = skp.Generate(VoxelX + (PosX * 10), VoxelY + (PosY * 10), VoxelZ + (PosZ * 10));
+				ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = skp.Generate(VoxelX + (PosX * 30), VoxelY + (PosY * 30), VoxelZ + (PosZ * 30));
 			}
 		}
 	}

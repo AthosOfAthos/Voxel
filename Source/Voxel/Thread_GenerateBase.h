@@ -13,14 +13,13 @@ public:
 	Thread_GenerateBase();
 	virtual ~Thread_GenerateBase();
 
-	void Setup(int NewX, int NewY, int NewZ, uint16* ChunkRef);
+	void Setup(int NewX, int NewY, int NewZ, uint16* RefChunkData);
 
 	virtual bool Init();
 	virtual uint32 Run();
 	virtual void Stop();
 
 	uint16* ChunkData;
-	FastNoise Noise;
 
 	bool IsFinished = false;
 

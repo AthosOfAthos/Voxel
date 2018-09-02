@@ -31,7 +31,6 @@ public:
 	FString GetChunkKey(int ChunkX, int ChunkY, int ChunkZ);
 
 	void ManageChunks();
-	void ManageCleanup();
 	void LoadChunk(int ChunkX, int ChunkY, int ChunkZ);
 	void UnloadChunk(int ChunkX, int ChunkY, int ChunkZ);
 
@@ -46,11 +45,8 @@ public:
 
 	TMap<FString, AVoxel_Chunk*> ChunkMap;
 
-	FastNoise cellular;
-
 	FTimerHandle ChunkTimer;
 
 	int ViewRadius = 5;
-	bool PreloadComplete = false;
 	
 };

@@ -34,48 +34,30 @@ public:
 	UInstancedStaticMeshComponent* GenericVoxel;
 	TArray<UInstancedStaticMeshComponent*> VoxelMesh;
 
-	//FastNoise mynoise;
-	FastNoise* TheNoise;
-	FastNoise perlin;
-
 	SkyfallenPillars skp = SkyfallenPillars();
 
 	Thread_GenerateBase* Chunk_GenerateBase;
 	FRunnableThread* TestThread;
 
-
 	void Init(int PosX, int PosY, int PosZ);
 	
 	uint16 GetBlock(int VoxelX, int VoxelY, int VoxelZ);
 	void SetBlock(int VoxelX, int VoxelY, int VoxelZ, int Id);
-
-	void SaveChunk();
-
-	void Generate();
-
+	
 	UFUNCTION()
-	virtual void OnRep_NetworkData();
-
-	//Logic for updating chunks
+	void SetChunkData();
 	void UpdateChunk();
 
-	//The version of the chunk replicated to clients
-	UPROPERTY(ReplicatedUsing = OnRep_NetworkData)
-		uint16 NetworkData[1000];
-
-	//Blocks stored in an easy to use 3d array
-	uint16 ChunkData[10][10][10];
-
-	//tldr what actualy 'spawns' in the world
-	uint16 RenderData[10][10][10];
+	UPROPERTY(ReplicatedUsing = SetChunkData)
+	uint16 ChunkData[27000];
 
 	//Position in chunk grid
 	UPROPERTY(Replicated)
-		int PosX;
+	int PosX;
 	UPROPERTY(Replicated)
-		int PosY;
+	int PosY;
 	UPROPERTY(Replicated)
-		int PosZ;
+	int PosZ;
 
 
 };
