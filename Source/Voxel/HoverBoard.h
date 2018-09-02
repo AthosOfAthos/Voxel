@@ -45,8 +45,17 @@ public:
 	UPROPERTY(Replicated)
 	float AirSpeed = 0;
 
-	float PitchResponse = 80;
-	float RollResponse = 120;
-	float YawResponse = 4;
-	
+	float Thrust = 15000;
+	float Lift = 0;
+
+	float Mass = 50;
+	float DragCoefficient = 0.01;
+
+	float TargetRoll = 0;
+	float PitchResponse = 100;
+	float RollResponse = 4;
+	float YawResponse = 3;
+
+	float GravityZ = -1000;
+	float Vne = 2500;
 };
