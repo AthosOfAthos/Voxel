@@ -44,16 +44,23 @@ public:
 	void JumpPressed();
 	void JumpReleased();
 
+	void SprintPressed();
+	void SprintReleased();
+
 	void PrimaryPressed();
 
 	void UseBoardPressed();
 
 	void SetGravity(float);
 	UFUNCTION(Server, Reliable, WithValidation)
-		void SetGravityServer(float NewGravity);
+	void SetGravityServer(float NewGravity);
+
+	void SetSprint(bool NewSprint);
+	UFUNCTION(Server, Reliable, WithValidation)
+	void SetSprintServer(bool NewSprint);
 
 	UFUNCTION(Server, Reliable, WithValidation)
-		void SpawnBoard();
+	void SpawnBoard();
 
 	UFUNCTION(Server, Reliable, WithValidation)
 	void FireRocket();
@@ -67,4 +74,9 @@ public:
 	float GravityJump = 1.5;
 	float JumpPower = 900;
 
+	float FOV = 110;
+	float FOVNormal = 110;
+	float FOVSprinting = 120;
+
+	bool IsSprinting = false;
 };

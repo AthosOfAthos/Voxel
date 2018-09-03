@@ -2,11 +2,8 @@
 
 #include "Character_Player.h"
 
-
-// Sets default values
 ACharacter_Player::ACharacter_Player()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	bReplicates = true;
 
@@ -25,8 +22,10 @@ ACharacter_Player::ACharacter_Player()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0, 500, 0);
 
-	CameraArm->TargetArmLength = 500;
-	CameraArm->SetRelativeLocation(FVector(0,0,75));
+	PlayerCamera->FieldOfView = FOVNormal;
+
+	CameraArm->TargetArmLength = 300;
+	CameraArm->SetRelativeLocation(FVector(0,0,125));
 
 	GetMesh()->SetSkeletalMesh(LoadObject<USkeletalMesh>(NULL, TEXT("/Game/AnimStarterPack/UE4_Mannequin/Mesh/SK_Mannequin.SK_Mannequin")));
 	GetMesh()->SetRelativeLocation(FVector(0,0,-90));
@@ -44,19 +43,27 @@ void ACharacter_Player::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > &
 	DOREPLIFETIME(ACharacter_Player, IsMounted);
 }
 
-// Called when the game starts or when spawned
 void ACharacter_Player::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
-// Called every frame
 void ACharacter_Player::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (HasAuthority())
+	{
+
+	}
+	else
+	{
+		PlayerCamera->FieldOfView = FMath::FInterpTo(PlayerCamera->FieldOfView, FOV, DeltaTime, 5);
+	}
+
 	CameraArm->SetWorldRotation(GetControlRotation());
+
 
 	if (ControlledBoard != nullptr && IsMounted)
 	{
@@ -65,7 +72,6 @@ void ACharacter_Player::Tick(float DeltaTime)
 
 }
 
-// Called to bind functionality to input
 void ACharacter_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
@@ -76,6 +82,9 @@ void ACharacter_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter_Player::JumpPressed);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter_Player::JumpReleased);
+
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &ACharacter_Player::SprintPressed);
+	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &ACharacter_Player::SprintReleased);
 
 	PlayerInputComponent->BindAction("Primary", IE_Pressed, this, &ACharacter_Player::PrimaryPressed);
 
@@ -137,6 +146,18 @@ void ACharacter_Player::JumpReleased()
 	SetGravityServer(GravityNormal);
 }
 
+void ACharacter_Player::SprintPressed()
+{
+	SetSprint(true);
+	SetSprintServer(true);
+}
+
+void ACharacter_Player::SprintReleased()
+{
+	SetSprint(false);
+	SetSprintServer(false);
+}
+
 void ACharacter_Player::PrimaryPressed()
 {
 	FireRocket();
@@ -161,6 +182,34 @@ bool ACharacter_Player::SetGravityServer_Validate(float NewGravity)
 void ACharacter_Player::SetGravityServer_Implementation(float NewGravity)
 {
 	SetGravity(NewGravity);
+}
+
+void ACharacter_Player::SetSprint(bool NewSprint)
+{
+	IsSprinting = NewSprint;
+	if (IsSprinting)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = 800;
+		FOV = FOVSprinting;
+	}
+	else
+	{
+		GetCharacterMovement()->MaxWalkSpeed = 500;
+		FOV = FOVNormal;
+	}
+}
+
+bool ACharacter_Player::SetSprintServer_Validate(bool NewSprint)
+{
+	return true;
+}
+
+void ACharacter_Player::SetSprintServer_Implementation(bool NewSprint)
+{
+	if (HasAuthority())
+	{
+		SetSprint(NewSprint);
+	}
 }
 
 bool ACharacter_Player::SpawnBoard_Validate()
