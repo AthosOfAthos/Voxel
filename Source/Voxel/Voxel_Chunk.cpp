@@ -112,18 +112,35 @@ void AVoxel_Chunk::Init(int LocX, int LocY, int LocZ)
 
 uint16 AVoxel_Chunk::GetBlock(int VoxelX, int VoxelY, int VoxelZ)
 {
-	return ChunkData[(VoxelX % 30) + ((VoxelY % 30) * 30) + ((VoxelZ % 30) * 900)];
+	VoxelX = VoxelX % 30;
+	if (PosX < 0)
+		VoxelX += 29;
+	VoxelY = VoxelY % 30;
+	if (PosY < 0)
+		VoxelY += 29;
+	VoxelZ = VoxelZ % 30;
+	if (PosZ < 0)
+		VoxelZ += 29;
+
+	return ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)];
 }
 
 void AVoxel_Chunk::SetBlock(int VoxelX, int VoxelY, int VoxelZ, int Id)
 {
 	if (HasAuthority())
 	{
+		VoxelX = VoxelX % 30;
+		if (PosX < 0)
+			VoxelX += 29;
+		VoxelY = VoxelY % 30;
+		if (PosY < 0)
+			VoxelY += 29;
+		VoxelZ = VoxelZ % 30;
+		if (PosZ < 0)
+			VoxelZ += 29;
+
 		//ChunkData[(VoxelX % 30) + ((VoxelY % 30) * 30) + ((VoxelZ % 30) * 900)] = Id;
-		for (int i = 0; i < 27000; i++)
-		{
-			ChunkData[i] = 0;
-		}
+		ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = Id;
 		NeedsUpdate = true;
 	}
 }

@@ -27,9 +27,10 @@ void AVoxel_World::BeginPlay()
 	Super::BeginPlay();
 	if (HasAuthority())
 	{
-		GetWorld()->GetTimerManager().SetTimer(ChunkTimer, this, &AVoxel_World::ManageChunks, 0.6, true, 0);
+		//GetWorld()->GetTimerManager().SetTimer(ChunkTimer, this, &AVoxel_World::ManageChunks, 0.6, true, 0);
 
 		//preload spawn
+		
 		for (int ChunkX = -2; ChunkX < 2; ChunkX++)
 		{
 			for (int ChunkY = -2; ChunkY < 2; ChunkY++)
@@ -43,6 +44,7 @@ void AVoxel_World::BeginPlay()
 				}
 			}
 		}
+		
 	}
 }
 
@@ -137,8 +139,29 @@ void AVoxel_World::SetBlock(int VoxelX, int VoxelY, int VoxelZ, int Id)
 {
 	if (HasAuthority())
 	{
-		FString ChunkKey = GetChunkKey(VoxelX / 30, VoxelY / 30, VoxelZ / 30);
+		int ChunkX = 0;
+		int ChunkY = 0;
+		int ChunkZ = 0;
+		if (VoxelX < 0)
+		{
+			VoxelX++;
+			ChunkX--;
+		}
+		if (VoxelY < 0)
+		{
+			VoxelY++;
+			ChunkY--;
+		}
+		if (VoxelZ < 0)
+		{
+			VoxelZ++;
+			ChunkZ--;
+		}
+		ChunkX = VoxelX / 30 + ChunkX;
+		ChunkY = VoxelY / 30 + ChunkY;
+		ChunkZ = VoxelZ / 30 + ChunkZ;
 
+		FString ChunkKey = GetChunkKey(ChunkX, ChunkY, ChunkZ);
 		if (ChunkMap.Contains(ChunkKey))
 			ChunkMap[ChunkKey]->SetBlock(VoxelX, VoxelY, VoxelZ, Id);
 	}

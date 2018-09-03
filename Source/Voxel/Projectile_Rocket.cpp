@@ -44,17 +44,18 @@ void AProjectile_Rocket::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor,
 	{
 		AVoxelGameModeBase* GameMode = (AVoxelGameModeBase*)GetWorld()->GetAuthGameMode();
 
-		for (int VoxelX = -2; VoxelX < 2; VoxelX++)
+		//todo Spawn explosion
+		for (int VoxelX = -10; VoxelX < 10; VoxelX++)
 		{
-			for (int VoxelY = -2; VoxelY < 2; VoxelY++)
+			for (int VoxelY = -10; VoxelY < 10; VoxelY++)
 			{
-				for (int VoxelZ = -2; VoxelZ < 2; VoxelZ++)
+				for (int VoxelZ = -10; VoxelZ < 10; VoxelZ++)
 				{
-					GameMode->GameWorld->SetBlock(GetActorLocation().X / 100, GetActorLocation().Y / 100, GetActorLocation().Z / 100, 0);
+					GameMode->GameWorld->SetBlock((GetActorLocation().X / 100) + VoxelX, (GetActorLocation().Y / 100) + VoxelY, (GetActorLocation().Z / 100) + VoxelZ, 0);
 				}
 			}
 		}
-
+		
 		Destroy();
 	}
 }
