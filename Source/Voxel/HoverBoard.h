@@ -45,7 +45,7 @@ public:
 	UPROPERTY(Replicated)
 	float AirSpeed = 0;
 
-	float Thrust = 15000;
+	float Thrust = 25000;
 	float Lift = 0;
 
 	float Mass = 50;

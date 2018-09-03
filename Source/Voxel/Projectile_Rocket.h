@@ -36,5 +36,7 @@ public:
 
 	UBoxComponent* Collision;
 	UStaticMeshComponent* Mesh;
+
+	
 	
 };
