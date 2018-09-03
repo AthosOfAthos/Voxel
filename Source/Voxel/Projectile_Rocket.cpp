@@ -17,11 +17,11 @@ AProjectile_Rocket::AProjectile_Rocket()
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MesH"));
 	Mesh->SetCollisionProfileName("NoCollision");
 	Mesh->SetupAttachment(RootComponent);
-	Mesh->SetStaticMesh(LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Generic.Voxel_Generic")));
+	Mesh->SetStaticMesh(LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Other/game_rocket.game_rocket")));
 
 	UProjectileMovementComponent* Projectile = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileComponent"));
 	Projectile->ProjectileGravityScale = 1;
-	Projectile->InitialSpeed = 2000;
+	Projectile->InitialSpeed = 3000;
 	Projectile->Friction = 0;
 	Projectile->SetUpdatedComponent(RootComponent);
 }

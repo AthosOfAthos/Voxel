@@ -14,7 +14,7 @@ AHoverBoard::AHoverBoard()
 	RootComponent = BoardCollision;
 
 	BoardMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Board Mesh"));
-	BoardMesh->SetStaticMesh(LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Board/board.board")));
+	BoardMesh->SetStaticMesh(LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Board/game_board.game_board")));
 	BoardMesh->SetMobility(EComponentMobility::Movable);
 	BoardMesh->SetCollisionProfileName(FName("NoCollision"));
 	BoardMesh->SetupAttachment(RootComponent);
