@@ -27,15 +27,13 @@ void AVoxel_World::BeginPlay()
 	Super::BeginPlay();
 	if (HasAuthority())
 	{
-		//GetWorld()->GetTimerManager().SetTimer(ChunkTimer, this, &AVoxel_World::ManageChunks, 0.6, true, 0);
+		//GetWorld()->GetTimerManager().SetTimer(ChunkTimer, this, &AVoxel_World::ManageChunks, 0.5, true, 0);
 
-		//preload spawn
-		
-		for (int ChunkX = -2; ChunkX < 2; ChunkX++)
+		for (int ChunkX = -3; ChunkX < 3; ChunkX++)
 		{
-			for (int ChunkY = -2; ChunkY < 2; ChunkY++)
+			for (int ChunkY = -3; ChunkY < 3; ChunkY++)
 			{
-				for (int ChunkZ = -2; ChunkZ < 2; ChunkZ++)
+				for (int ChunkZ = -2; ChunkZ < 5; ChunkZ++)
 				{
 					if (!ChunkMap.Contains(GetChunkKey(ChunkX, ChunkY, ChunkZ)))
 					{
@@ -44,7 +42,6 @@ void AVoxel_World::BeginPlay()
 				}
 			}
 		}
-		
 	}
 }
 
@@ -73,19 +70,27 @@ void AVoxel_World::ManageChunks()
 {
 	if (HasAuthority())
 	{
-		for (int ChunkX = -2; ChunkX < 2; ChunkX++)
+
+		for (int i = 0; i < PlayerLocations.Num(); i++)
 		{
-			for (int ChunkY = -2; ChunkY < 2; ChunkY++)
+			int PlayerX = PlayerLocations[i].X / 3000;
+			int PlayerY = PlayerLocations[i].Y / 3000;
+			int PlayerZ = PlayerLocations[i].Z / 3000;
+
+			for (int ChunkX = -2 + PlayerX; ChunkX < 2 + PlayerX; ChunkX++)
 			{
-				for (int ChunkZ = -2; ChunkZ < 2; ChunkZ++)
+				for (int ChunkY = -2 + PlayerY; ChunkY < 2 + PlayerY; ChunkY++)
 				{
-					if (!ChunkMap.Contains(GetChunkKey(ChunkX, ChunkY, ChunkZ)))
+					for (int ChunkZ = -2; ChunkZ < 5; ChunkZ++)
 					{
-						LoadChunk(ChunkX, ChunkY, ChunkZ);
-						return;
+						if (!ChunkMap.Contains(GetChunkKey(ChunkX, ChunkY, ChunkZ)))
+						{
+							LoadChunk(ChunkX, ChunkY, ChunkZ);
+						}
 					}
 				}
 			}
+
 		}
 		
 	}
@@ -104,7 +109,6 @@ void AVoxel_World::LoadChunk(int ChunkX, int ChunkY, int ChunkZ)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Load: %s"), *ChunkKey);
 			ChunkMap.Add(ChunkKey, GetWorld()->SpawnActor<AVoxel_Chunk>(FVector(ChunkX * 3000, ChunkY * 3000, ChunkZ * 3000), FRotator(0, 0, 0), SpawnInfo));
-			ChunkMap[ChunkKey]->Init(ChunkX, ChunkY, ChunkZ);
 		}
 	}
 }
@@ -117,7 +121,6 @@ void AVoxel_World::UnloadChunk(int ChunkX, int ChunkY, int ChunkZ)
 		if (ChunkMap.Contains(ChunkKey))
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Destroy: %s"), *ChunkKey);
-			//ChunkMap[ChunkKey]->SaveChunk();
 			ChunkMap[ChunkKey]->Destroy();
 			ChunkMap.Remove(ChunkKey);
 		}

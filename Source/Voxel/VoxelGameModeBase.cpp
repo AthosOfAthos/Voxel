@@ -31,8 +31,8 @@ void AVoxelGameModeBase::Tick(float DeltaTime)
 		{
 			for (int i = 0; i < Players.Num(); i++)
 			{
-				//if (Players[i]->GetPawnOrSpectator() != nullptr)
-					//GameWorld->PlayerLocations[i] = Players[i]->GetPawnOrSpectator()->GetActorLocation();
+				if (Players[i]->GetPawnOrSpectator() != nullptr)
+					GameWorld->PlayerLocations[i] = Players[i]->GetPawnOrSpectator()->GetActorLocation();
 			}
 		}
 
@@ -45,5 +45,5 @@ void AVoxelGameModeBase::Tick(float DeltaTime)
 void AVoxelGameModeBase::PostLogin(APlayerController* NewPlayer)
 {
 	Players.Add(NewPlayer);
-	RestartPlayer(NewPlayer);
+	//RestartPlayer(NewPlayer);
 }

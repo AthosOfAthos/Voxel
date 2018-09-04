@@ -45,11 +45,11 @@ void AProjectile_Rocket::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor,
 		AVoxelGameModeBase* GameMode = (AVoxelGameModeBase*)GetWorld()->GetAuthGameMode();
 
 		//todo Spawn explosion
-		for (int VoxelX = -10; VoxelX < 10; VoxelX++)
+		for (int VoxelX = -4; VoxelX < 4; VoxelX++)
 		{
-			for (int VoxelY = -10; VoxelY < 10; VoxelY++)
+			for (int VoxelY = -4; VoxelY < 4; VoxelY++)
 			{
-				for (int VoxelZ = -10; VoxelZ < 10; VoxelZ++)
+				for (int VoxelZ = -4; VoxelZ < 4; VoxelZ++)
 				{
 					GameMode->GameWorld->SetBlock((GetActorLocation().X / 100) + VoxelX, (GetActorLocation().Y / 100) + VoxelY, (GetActorLocation().Z / 100) + VoxelZ, 0);
 				}

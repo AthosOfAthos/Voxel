@@ -51,11 +51,7 @@ void AVoxel_Chunk::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutL
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(AVoxel_Chunk, PosX);
-	DOREPLIFETIME(AVoxel_Chunk, PosY);
-	DOREPLIFETIME(AVoxel_Chunk, PosZ);
-
-	DOREPLIFETIME(AVoxel_Chunk, ChunkData);
+	DOREPLIFETIME(AVoxel_Chunk, ChunkChanged);
 }
 
 // Called when the game starts or when spawned
@@ -63,9 +59,19 @@ void AVoxel_Chunk::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	if (HasAuthority())
-	{
+	PosX = GetActorLocation().X / 3000;
+	PosY = GetActorLocation().Y / 3000;
+	PosZ = GetActorLocation().Z / 3000;
 
+	if (!ChunkChanged)
+	{
+		Chunk_GenerateBase = new Thread_GenerateBase();
+		Chunk_GenerateBase->Setup(PosX, PosY, PosZ, ChunkData);
+		FRunnableThread::Create(Chunk_GenerateBase, TEXT("GenerationThread"), 0, TPri_Normal);
+	}
+	else
+	{
+		//TODO: SYNC CHUNK
 	}
 
 }
@@ -73,40 +79,41 @@ void AVoxel_Chunk::BeginPlay()
 void AVoxel_Chunk::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (HasAuthority())
-	{
-		if (Chunk_GenerateBase != nullptr)
-		{
-			if (Chunk_GenerateBase->IsFinished)
-			{
-				delete Chunk_GenerateBase;
-				Chunk_GenerateBase = nullptr;
-				UpdateChunk();
-			}
-		}
 
-		if (NeedsUpdate)
+	if (Chunk_GenerateBase != nullptr)
+	{
+		if (Chunk_GenerateBase->IsFinished)
 		{
-			NeedsUpdate = false;
+			delete Chunk_GenerateBase;
+			Chunk_GenerateBase = nullptr;
+
+			for (int8 VoxelX = 0; VoxelX < 30; VoxelX++)
+			{
+				for (int8 VoxelY = 0; VoxelY < 30; VoxelY++)
+				{
+					for (int8 VoxelZ = 0; VoxelZ < 30; VoxelZ++)
+					{
+						if (IsLocalOccluded(VoxelX, VoxelY, VoxelZ))
+							RenderData[VoxelX + VoxelY * 30 + VoxelZ * 900] = 0;
+						else
+							RenderData[VoxelX + VoxelY * 30 + VoxelZ * 900] = ChunkData[VoxelX + VoxelY * 30 + VoxelZ * 900];
+					}
+				}
+			}
 			UpdateChunk();
+			//IsSlowUpdate = true;
 		}
-		
-		
 	}
 
-}
-
-void AVoxel_Chunk::Init(int LocX, int LocY, int LocZ)
-{
-	if (HasAuthority())
+	if (NeedsUpdate)
 	{
-		PosX = LocX;
-		PosY = LocY;
-		PosZ = LocZ;
+		NeedsUpdate = false;
+		UpdateChunk();
+	}
 
-		Chunk_GenerateBase = new Thread_GenerateBase();
-		Chunk_GenerateBase->Setup(PosX, PosY, PosZ, ChunkData);
-		FRunnableThread::Create(Chunk_GenerateBase, TEXT("GenerationThread"), 0, TPri_Normal);
+	if (IsSlowUpdate)
+	{
+		SlowUpdateChunk();
 	}
 }
 
@@ -125,24 +132,22 @@ uint16 AVoxel_Chunk::GetBlock(int VoxelX, int VoxelY, int VoxelZ)
 	return ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)];
 }
 
-void AVoxel_Chunk::SetBlock(int VoxelX, int VoxelY, int VoxelZ, int Id)
+void AVoxel_Chunk::SetBlock_Implementation(int VoxelX, int VoxelY, int VoxelZ, int Id)
 {
-	if (HasAuthority())
-	{
-		VoxelX = VoxelX % 30;
-		if (PosX < 0)
-			VoxelX += 29;
-		VoxelY = VoxelY % 30;
-		if (PosY < 0)
-			VoxelY += 29;
-		VoxelZ = VoxelZ % 30;
-		if (PosZ < 0)
-			VoxelZ += 29;
+	VoxelX = VoxelX % 30;
+	if (PosX < 0)
+		VoxelX += 29;
+	VoxelY = VoxelY % 30;
+	if (PosY < 0)
+		VoxelY += 29;
+	VoxelZ = VoxelZ % 30;
+	if (PosZ < 0)
+		VoxelZ += 29;
 
-		//ChunkData[(VoxelX % 30) + ((VoxelY % 30) * 30) + ((VoxelZ % 30) * 900)] = Id;
-		ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = Id;
-		NeedsUpdate = true;
-	}
+	//ChunkData[(VoxelX % 30) + ((VoxelY % 30) * 30) + ((VoxelZ % 30) * 900)] = Id;
+	ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = Id;
+	ChunkChanged = true;
+	NeedsUpdate = true;
 }
 
 bool AVoxel_Chunk::IsLocalOccluded(int VoxelX, int VoxelY, int VoxelZ)
@@ -208,4 +213,29 @@ void AVoxel_Chunk::UpdateChunk()
 		}
 	}
 	
+}
+
+void AVoxel_Chunk::SlowUpdateChunk()
+{
+	int BlockCount = 0;
+
+	while (SlowUpdatePos < 27000)
+	{
+		int i = RenderData[SlowUpdatePos];
+		if (VoxelMesh[i] != nullptr)
+		{
+			int VoxelX = SlowUpdatePos % 30;
+			int VoxelY = (SlowUpdatePos / 30) % 30;
+			int VoxelZ = SlowUpdatePos / 900;
+			VoxelMesh[i]->AddInstance(FTransform(FRotator(0, 0, 0), FVector(VoxelX * 100, VoxelY * 100, VoxelZ * 100), FVector(1, 1, 1)));
+			BlockCount++;
+		}
+
+		SlowUpdatePos++;
+		
+		if (BlockCount > 1)
+			return;
+	}
+
+	IsSlowUpdate = false;
 }

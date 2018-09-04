@@ -38,31 +38,30 @@ public:
 
 	Thread_GenerateBase* Chunk_GenerateBase;
 	FRunnableThread* TestThread;
-
-	void Init(int PosX, int PosY, int PosZ);
 	
 	uint16 GetBlock(int VoxelX, int VoxelY, int VoxelZ);
+	UFUNCTION( NetMulticast, Reliable )
 	void SetBlock(int VoxelX, int VoxelY, int VoxelZ, int Id);
 	bool IsLocalOccluded(int VoxelX, int VoxelY, int VoxelZ);
 	
 	UFUNCTION()
 	void SetChunkData();
 	void UpdateChunk();
+	void SlowUpdateChunk();
 
-	bool NeedsUpdate = true;
+	int16 SlowUpdatePos = 0;
 
-	UPROPERTY(ReplicatedUsing = SetChunkData)
+	UPROPERTY( Replicated ) 
+	bool ChunkChanged = false;
+	bool IsSlowUpdate = false;
+	bool NeedsUpdate = false;
+
 	uint16 ChunkData[27000];
 
 	uint16 RenderData[27000];
 
 	//Position in chunk grid
-	UPROPERTY(Replicated)
 	int PosX;
-	UPROPERTY(Replicated)
 	int PosY;
-	UPROPERTY(Replicated)
 	int PosZ;
-
-
 };
