@@ -45,5 +45,5 @@ void AVoxelGameModeBase::Tick(float DeltaTime)
 void AVoxelGameModeBase::PostLogin(APlayerController* NewPlayer)
 {
 	Players.Add(NewPlayer);
-	//RestartPlayer(NewPlayer);
+	RestartPlayer(NewPlayer);
 }
