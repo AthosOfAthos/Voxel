@@ -12,11 +12,14 @@ AVoxel_World::AVoxel_World()
 	bAlwaysRelevant = true;
 
 	//Load Generic Voxel mesh
-	VoxelMesh.Init(nullptr, 5);
-	VoxelMesh[1] = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Generic.Voxel_Generic"));
-	VoxelMesh[2] = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Stone.Voxel_Stone"));
-	VoxelMesh[3] = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Dirt.Voxel_Dirt"));
-	VoxelMesh[4] = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Sand.Voxel_Sand"));
+	VoxelMesh.Init(nullptr, 200);
+	VoxelMesh[100] = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Generic.Voxel_Generic"));
+	VoxelMesh[101] = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Stone.Voxel_Stone"));
+	VoxelMesh[130] = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Dirt.Voxel_Dirt"));
+	VoxelMesh[131] = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Grass.Voxel_Grass"));
+	VoxelMesh[132] = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Sand.Voxel_Sand"));
+
+	VoxelMesh[100] = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Generic.Voxel_Generic"));
 
 	PlayerLocations.Init(FVector(0, 0, 0), 1);
 }
@@ -29,11 +32,11 @@ void AVoxel_World::BeginPlay()
 	{
 		//GetWorld()->GetTimerManager().SetTimer(ChunkTimer, this, &AVoxel_World::ManageChunks, 0.5, true, 0);
 
-		for (int ChunkX = -3; ChunkX < 3; ChunkX++)
+		for (int ChunkX = -2; ChunkX < 2; ChunkX++)
 		{
-			for (int ChunkY = -3; ChunkY < 3; ChunkY++)
+			for (int ChunkY = -2; ChunkY < 2; ChunkY++)
 			{
-				for (int ChunkZ = -2; ChunkZ < 5; ChunkZ++)
+				for (int ChunkZ = -1; ChunkZ < 10; ChunkZ++)
 				{
 					if (!ChunkMap.Contains(GetChunkKey(ChunkX, ChunkY, ChunkZ)))
 					{
@@ -81,7 +84,7 @@ void AVoxel_World::ManageChunks()
 			{
 				for (int ChunkY = -2 + PlayerY; ChunkY < 2 + PlayerY; ChunkY++)
 				{
-					for (int ChunkZ = -2; ChunkZ < 5; ChunkZ++)
+					for (int ChunkZ = -1; ChunkZ < 10; ChunkZ++)
 					{
 						if (!ChunkMap.Contains(GetChunkKey(ChunkX, ChunkY, ChunkZ)))
 						{

@@ -33,7 +33,8 @@ uint32 Thread_GenerateBase::Run()
 		{
 			for (int8 VoxelZ = 0; VoxelZ < 30; VoxelZ++)
 			{
-				ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = pillars.Generate(VoxelX + (PosX * 30), VoxelY + (PosY * 30), VoxelZ + (PosZ * 30));
+				//ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = pillars.Generate(VoxelX + (PosX * 30), VoxelY + (PosY * 30), VoxelZ + (PosZ * 30));
+				ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = 100;
 			}
 		}
 	}

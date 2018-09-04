@@ -15,29 +15,32 @@ AVoxel_Chunk::AVoxel_Chunk()
 
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 
-	VoxelMesh.Init(nullptr, 5);
+	VoxelMesh.Init(nullptr, 200);
 
 	GenericVoxel = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Generic Voxel"));
+	GenericVoxel->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Generic.Voxel_Generic")));
 	GenericVoxel->SetupAttachment(RootComponent);
-	VoxelMesh[1] = GenericVoxel;
+	VoxelMesh[100] = GenericVoxel;
 
 	GenericVoxel = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Voxel Stone"));
+	GenericVoxel->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Stone.Voxel_Stone")));
 	GenericVoxel->SetupAttachment(RootComponent);
-	VoxelMesh[2] = GenericVoxel;
+	VoxelMesh[101] = GenericVoxel;
 
 	GenericVoxel = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Voxel Dirt"));
+	GenericVoxel->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Dirt.Voxel_Dirt")));
 	GenericVoxel->SetupAttachment(RootComponent);
-	VoxelMesh[3] = GenericVoxel;
+	VoxelMesh[130] = GenericVoxel;
+
+	GenericVoxel = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Voxel Grass"));
+	GenericVoxel->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Grass.Voxel_Grass")));
+	GenericVoxel->SetupAttachment(RootComponent);
+	VoxelMesh[131] = GenericVoxel;
 
 	GenericVoxel = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Voxel Sand"));
+	GenericVoxel->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Sand.Voxel_Sand")));
 	GenericVoxel->SetupAttachment(RootComponent);
-	VoxelMesh[4] = GenericVoxel;
-
-	//Find generic Voxel mesh world loaded for us
-	VoxelMesh[1]->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Generic.Voxel_Generic")));
-	VoxelMesh[2]->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Stone.Voxel_Stone")));
-	VoxelMesh[3]->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Dirt.Voxel_Dirt")));
-	VoxelMesh[4]->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Sand.Voxel_Sand")));
+	VoxelMesh[132] = GenericVoxel;
 
 	for (int i = 0; i < 27000; i++)
 	{
@@ -179,7 +182,7 @@ void AVoxel_Chunk::SetChunkData()
 
 void AVoxel_Chunk::UpdateChunk()
 {
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 150; i++)
 	{
 		if (VoxelMesh[i] != nullptr)
 			VoxelMesh[i]->ClearInstances();
