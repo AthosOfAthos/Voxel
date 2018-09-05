@@ -4,6 +4,7 @@
 
 #include "Engine.h"
 #include "UnrealNetwork.h"
+#include "VoxelGameModeBase.h"
 #include "HoverBoard.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -50,6 +51,8 @@ public:
 	void PrimaryPressed();
 
 	void UseBoardPressed();
+
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser);
 
 	void SetGravity(float);
 	UFUNCTION(Server, Reliable, WithValidation)

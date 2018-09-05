@@ -45,7 +45,7 @@ int Pillars::Land(int VoxelX, int VoxelY, int VoxelZ) {
 	
 	float pillar = pillars.GetCellular((VoxelX) * 1, (VoxelY) * 1);
 
-	/*if (Mheight > 0.01 && pillar>0.2) {
+	/*if (Mheight > 0.01 && pillar>0.2) { //I think this is an uh oh 
 		pillar *= 50;
 	}
 	else {

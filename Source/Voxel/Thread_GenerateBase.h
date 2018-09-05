@@ -15,6 +15,9 @@ public:
 	virtual ~Thread_GenerateBase();
 
 	void Setup(int NewX, int NewY, int NewZ, uint16* RefChunkData);
+	int GetBiome(int PosX, int PosY, int PosZ);
+	FastNoise temperature;
+	FastNoise rainfall;
 
 	virtual bool Init();
 	virtual uint32 Run();

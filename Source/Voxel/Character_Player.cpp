@@ -170,6 +170,18 @@ void ACharacter_Player::UseBoardPressed()
 	SpawnBoard();
 }
 
+float ACharacter_Player::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser)
+{
+	if (HasAuthority())
+	{
+		GetWorld()->GetAuthGameMode()->RestartPlayer(GetController());
+		if (ControlledBoard != nullptr)
+			ControlledBoard->Destroy();
+		Destroy();
+	}
+	return 0;
+}
+
 void ACharacter_Player::SetGravity(float NewGravity)
 {
 	GetCharacterMovement()->GravityScale = NewGravity;

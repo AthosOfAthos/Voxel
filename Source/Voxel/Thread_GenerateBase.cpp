@@ -4,7 +4,13 @@
 
 Thread_GenerateBase::Thread_GenerateBase()
 {
+	temperature = FastNoise();
+	temperature.SetSeed(5);
+	temperature.SetFrequency(0.01);
 
+	rainfall = FastNoise();
+	rainfall.SetSeed(6);
+	rainfall.SetFrequency(0.01);
 }
 
 Thread_GenerateBase::~Thread_GenerateBase()
@@ -33,7 +39,17 @@ uint32 Thread_GenerateBase::Run()
 		{
 			for (int8 VoxelZ = 0; VoxelZ < 30; VoxelZ++)
 			{
-				ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = pillars.Generate(VoxelX + (PosX * 30), VoxelY + (PosY * 30), VoxelZ + (PosZ * 30));
+				switch (GetBiome(PosX/30, PosY/30, PosZ/30)) {
+					case 0:
+						ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = pillars.Generate(VoxelX + (PosX * 30), VoxelY + (PosY * 30), VoxelZ + (PosZ * 30));
+						break;
+					case 1:
+						ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = rings.Generate(VoxelX + (PosX * 30), VoxelY + (PosY * 30), VoxelZ + (PosZ * 30));
+						break;
+					default:
+						ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = 0;
+				}
+				
 				//ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = 0;
 				//ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = 100;
 			}
@@ -42,6 +58,19 @@ uint32 Thread_GenerateBase::Run()
 
 	IsFinished = true;
 	return 0;
+}
+
+int Thread_GenerateBase::GetBiome(int PosX, int PosY, int PosZ) {
+	float temp = temperature.GetPerlin(PosX, PosY);
+	float rain = rainfall.GetPerlin(PosX, PosY);
+	if (temp == rain) {
+		return 0;
+	}
+	else {
+		return 1;
+	}
+	return 0;
+	//Current plan! I will have a matrix of sorts for biomes based on temp and rainfall (
 }
 
 void Thread_GenerateBase::Stop()
