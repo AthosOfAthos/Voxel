@@ -67,7 +67,10 @@ void ACharacter_Player::Tick(float DeltaTime)
 
 	if (ControlledBoard != nullptr && IsMounted)
 	{
-		SetActorLocation(ControlledBoard->GetActorLocation());
+		FVector BoardLocation = ControlledBoard->GetActorLocation();
+		BoardLocation.Z += 75;
+		SetActorLocation(BoardLocation);
+		GetMesh()->SetRelativeRotation(ControlledBoard->GetActorRotation());
 	}
 
 }

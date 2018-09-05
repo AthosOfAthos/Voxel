@@ -38,8 +38,11 @@ void AHoverBoard::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	BoardRotation.Roll = FMath::FInterpTo(BoardRotation.Roll, TargetRoll, DeltaTime, RollResponse);
-	BoardRotation.Yaw += BoardRotation.Roll * YawResponse * DeltaTime;
+	if (HasAuthority())
+	{
+		BoardRotation.Roll = FMath::FInterpTo(BoardRotation.Roll, TargetRoll, DeltaTime, RollResponse);
+		BoardRotation.Yaw += BoardRotation.Roll * YawResponse * DeltaTime;
+	}
 
 	AirSpeed += FMath::Sin(FMath::DegreesToRadians(BoardRotation.Pitch)) * GravityZ * DeltaTime;
 	AirSpeed += (Thrust / Mass) * DeltaTime;
@@ -61,6 +64,8 @@ void AHoverBoard::Tick(float DeltaTime)
 
 void AHoverBoard::AddPitch(float inputAmount)
 {
+	inputAmount *= -1;
+	BoardRotation.Pitch += inputAmount * PitchResponse * FApp::GetDeltaTime();
 	AddPitchServer(inputAmount);
 }
 
@@ -77,7 +82,6 @@ bool AHoverBoard::AddPitchServer_Validate(float inputAmount)
 
 void AHoverBoard::AddPitchServer_Implementation(float inputAmount)
 {
-	inputAmount *= -1;
 	BoardRotation.Pitch += inputAmount * PitchResponse * FApp::GetDeltaTime();
 }
 
