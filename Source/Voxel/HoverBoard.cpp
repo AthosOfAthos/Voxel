@@ -6,6 +6,7 @@ AHoverBoard::AHoverBoard()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	bReplicates = true;
+	bReplicateMovement = true;
 
 	BoardCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Board Collision"));
 	BoardCollision->SetBoxExtent(FVector(75, 25, 10));
