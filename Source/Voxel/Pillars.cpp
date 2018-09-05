@@ -78,6 +78,9 @@ int Pillars::Land(int VoxelX, int VoxelY, int VoxelZ) {
 		}
 
 	}
+	if (Value != 0 && VoxelZ == 1) {
+		Value = 132;
+	}
 	return Value;
 }
 int Pillars::Detail(int VoxelX, int VoxelY, int VoxelZ, int Value) {

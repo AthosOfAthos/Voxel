@@ -63,13 +63,13 @@ uint32 Thread_GenerateBase::Run()
 int Thread_GenerateBase::GetBiome(int PosX, int PosY, int PosZ) {
 	float temp = temperature.GetPerlin(PosX, PosY);
 	float rain = rainfall.GetPerlin(PosX, PosY);
-	if (temp == rain) {
-		return 0;
+	if (temp >= rain) {
+		return 1;
 	}
 	else {
 		return 1;
 	}
-	return 0;
+	return 1;
 	//Current plan! I will have a matrix of sorts for biomes based on temp and rainfall (
 }
 
