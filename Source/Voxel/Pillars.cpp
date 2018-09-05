@@ -60,17 +60,21 @@ int Pillars::Land(int VoxelX, int VoxelY, int VoxelZ) {
 				Value = 101;
 
 			}
-			else if (VoxelZ <= (pillar) && VoxelZ > (pow(std::abs(Mheight),2)*pillar/(pillar-5))) {
+			else if (VoxelZ <= (pillar-1) && VoxelZ > (pow(std::abs(Mheight), 2)*pillar / (pillar - 5))) {
 				Value = 130;
+			}
+			else if (VoxelZ <= (pillar) && VoxelZ > (pow(std::abs(Mheight),2)*pillar/(pillar-5))) {
+				Value = 131;
 			}
 		}
 	}else if (overhangs.GetPerlinFractal(VoxelX, VoxelY, VoxelZ) <= 0.35) {//Land cave size
 		if (VoxelZ < (Mheight - 2)) {
 			Value = 101;
 
-		}
-		else if (VoxelZ <= (Mheight)) {//pill = 0 makes dirt sorta fix
+		}else if (VoxelZ <= (Mheight-1)) {
 			Value = 130;
+		}else if (VoxelZ <= (Mheight)) {
+			Value = 131;
 		}
 
 	}
