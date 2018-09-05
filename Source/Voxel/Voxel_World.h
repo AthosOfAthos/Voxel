@@ -47,6 +47,6 @@ public:
 
 	FTimerHandle ChunkTimer;
 
-	int ViewRadius = 5;
+	int ViewRadius = 3;
 	
 };

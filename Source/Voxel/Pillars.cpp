@@ -37,8 +37,8 @@ int Pillars::Generate(int VoxelX, int VoxelY, int VoxelZ) {
 }
 int Pillars::Land(int VoxelX, int VoxelY, int VoxelZ) {
 	int Value = 0;
-	if (VoxelZ < -50) {//Controls floor stop
-		Value = 2;
+	if (VoxelZ < -0) {//Controls floor stop
+		return 0;
 	}
 
 	float Mheight = land.GetPerlinFractal((VoxelX) * 1, (VoxelY) * 1);
@@ -57,20 +57,20 @@ int Pillars::Land(int VoxelX, int VoxelY, int VoxelZ) {
 	if (VoxelZ > Mheight && pillar != 0) {//So my idea before I forget is to use this information to cut out select for at base
 		if (overhangs.GetPerlinFractal(VoxelX, VoxelY, VoxelZ) <= 0.2) { //Pillar cuts
 			if (VoxelZ < (pillar - 2)&& VoxelZ>(pow(std::abs(Mheight),2)*pillar/(pillar-5))) {//The abs is is you want to edit the 2
-				Value = 2;
+				Value = 101;
 
 			}
 			else if (VoxelZ <= (pillar) && VoxelZ > (pow(std::abs(Mheight),2)*pillar/(pillar-5))) {
-				Value = 3;
+				Value = 130;
 			}
 		}
 	}else if (overhangs.GetPerlinFractal(VoxelX, VoxelY, VoxelZ) <= 0.35) {//Land cave size
 		if (VoxelZ < (Mheight - 2)) {
-			Value = 2;
+			Value = 101;
 
 		}
 		else if (VoxelZ <= (Mheight)) {//pill = 0 makes dirt sorta fix
-			Value = 3;
+			Value = 130;
 		}
 
 	}
@@ -78,7 +78,7 @@ int Pillars::Land(int VoxelX, int VoxelY, int VoxelZ) {
 }
 int Pillars::Detail(int VoxelX, int VoxelY, int VoxelZ, int Value) {
 	if ((abs(overhangs.GetPerlin(VoxelX * 20, VoxelY * 20, VoxelZ * 20)) > folliage) && Value == 3) {
-		return 4;
+		return 132;
 	}
 	return Value; //So the tricky part here is it can only pass 1 block and needs to place like a tree or something, which could be algebraic trees or be grown
 }
