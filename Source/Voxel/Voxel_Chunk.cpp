@@ -1,11 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Voxel_Chunk.h"
-#include <cmath>
-#include <vector>
-#include <algorithm>
-#include <UnrealMathUtility.h>
-
 
 AVoxel_Chunk::AVoxel_Chunk()
 {
@@ -16,29 +11,35 @@ AVoxel_Chunk::AVoxel_Chunk()
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 
 	VoxelMesh.Init(nullptr, 200);
+	UInstancedStaticMeshComponent* GenericVoxel;
 
 	GenericVoxel = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Generic Voxel"));
 	GenericVoxel->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Generic.Voxel_Generic")));
+	GenericVoxel->SetMobility(EComponentMobility::Movable);
 	GenericVoxel->SetupAttachment(RootComponent);
 	VoxelMesh[100] = GenericVoxel;
 
 	GenericVoxel = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Voxel Stone"));
 	GenericVoxel->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Stone.Voxel_Stone")));
+	GenericVoxel->SetMobility(EComponentMobility::Movable);
 	GenericVoxel->SetupAttachment(RootComponent);
 	VoxelMesh[101] = GenericVoxel;
 
 	GenericVoxel = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Voxel Dirt"));
 	GenericVoxel->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Dirt.Voxel_Dirt")));
+	GenericVoxel->SetMobility(EComponentMobility::Movable);
 	GenericVoxel->SetupAttachment(RootComponent);
 	VoxelMesh[130] = GenericVoxel;
 
 	GenericVoxel = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Voxel Grass"));
 	GenericVoxel->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Grass.Voxel_Grass")));
+	GenericVoxel->SetMobility(EComponentMobility::Movable);
 	GenericVoxel->SetupAttachment(RootComponent);
 	VoxelMesh[131] = GenericVoxel;
 
 	GenericVoxel = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Voxel Sand"));
 	GenericVoxel->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Sand.Voxel_Sand")));
+	GenericVoxel->SetMobility(EComponentMobility::Movable);
 	GenericVoxel->SetupAttachment(RootComponent);
 	VoxelMesh[132] = GenericVoxel;
 
@@ -104,7 +105,6 @@ void AVoxel_Chunk::Tick(float DeltaTime)
 				}
 			}
 			UpdateChunk();
-			//IsSlowUpdate = true;
 		}
 	}
 
@@ -112,11 +112,6 @@ void AVoxel_Chunk::Tick(float DeltaTime)
 	{
 		NeedsUpdate = false;
 		UpdateChunk();
-	}
-
-	if (IsSlowUpdate)
-	{
-		SlowUpdateChunk();
 	}
 }
 
@@ -147,7 +142,6 @@ void AVoxel_Chunk::SetBlock_Implementation(int VoxelX, int VoxelY, int VoxelZ, i
 	if (PosZ < 0)
 		VoxelZ += 29;
 
-	//ChunkData[(VoxelX % 30) + ((VoxelY % 30) * 30) + ((VoxelZ % 30) * 900)] = Id;
 	ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = Id;
 	ChunkChanged = true;
 	NeedsUpdate = true;
@@ -175,19 +169,8 @@ bool AVoxel_Chunk::IsLocalOccluded(int VoxelX, int VoxelY, int VoxelZ)
 	return true;
 }
 
-void AVoxel_Chunk::SetChunkData()
-{
-	UpdateChunk();
-}
-
 void AVoxel_Chunk::UpdateChunk()
 {
-	for (int i = 0; i < 150; i++)
-	{
-		if (VoxelMesh[i] != nullptr)
-			VoxelMesh[i]->ClearInstances();
-	}
-
 	for (int8 VoxelX = 0; VoxelX < 30; VoxelX++)
 	{
 		for (int8 VoxelY = 0; VoxelY < 30; VoxelY++)
@@ -202,7 +185,12 @@ void AVoxel_Chunk::UpdateChunk()
 		}
 	}
 
-	
+	for (int i = 0; i < 150; i++)
+	{
+		if (VoxelMesh[i] != nullptr)
+			VoxelMesh[i]->ClearInstances();
+	}
+
 	for (int8 VoxelX = 0; VoxelX < 30; VoxelX++)
 	{
 		for (int8 VoxelY = 0; VoxelY < 30; VoxelY++)
@@ -216,29 +204,4 @@ void AVoxel_Chunk::UpdateChunk()
 		}
 	}
 	
-}
-
-void AVoxel_Chunk::SlowUpdateChunk()
-{
-	int BlockCount = 0;
-
-	while (SlowUpdatePos < 27000)
-	{
-		int i = RenderData[SlowUpdatePos];
-		if (VoxelMesh[i] != nullptr)
-		{
-			int VoxelX = SlowUpdatePos % 30;
-			int VoxelY = (SlowUpdatePos / 30) % 30;
-			int VoxelZ = SlowUpdatePos / 900;
-			VoxelMesh[i]->AddInstance(FTransform(FRotator(0, 0, 0), FVector(VoxelX * 100, VoxelY * 100, VoxelZ * 100), FVector(1, 1, 1)));
-			BlockCount++;
-		}
-
-		SlowUpdatePos++;
-		
-		if (BlockCount > 1)
-			return;
-	}
-
-	IsSlowUpdate = false;
 }
