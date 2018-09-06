@@ -8,6 +8,7 @@
 #include "Engine/StaticMesh.h"
 #include "Engine/StaticMeshActor.h"
 #include "GameFramework/Actor.h"
+#include "Thread_Generation.h"
 #include "Voxel_World.generated.h"
 
 
@@ -39,14 +40,12 @@ public:
 
 	AVoxel_Chunk* GetChunk(int ChunkX, int ChunkY, int ChunkZ);
 
+	Thread_Generation* Thread_Generation1;
 	TArray<UStaticMesh*> VoxelMesh;
-
 	TArray<FVector> PlayerLocations;
-
 	TMap<FString, AVoxel_Chunk*> ChunkMap;
-
 	FTimerHandle ChunkTimer;
-
 	int ViewRadius = 3;
+	int Seed;
 	
 };

@@ -39,6 +39,8 @@ public:
 	UPROPERTY( Replicated ) 
 	bool ChunkChanged = false;
 	bool NeedsUpdate = false;
+	bool NeedsGeneration = true;
+	bool HasGenerationTask = false;
 
 	uint16 ChunkData[27000];
 

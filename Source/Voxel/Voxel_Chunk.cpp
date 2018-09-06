@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Voxel_Chunk.h"
+#include "Voxel_World.h"
 
 AVoxel_Chunk::AVoxel_Chunk()
 {
@@ -69,9 +70,7 @@ void AVoxel_Chunk::BeginPlay()
 
 	if (!ChunkChanged)
 	{
-		Chunk_GenerateBase = new Thread_GenerateBase();
-		Chunk_GenerateBase->Setup(PosX, PosY, PosZ, ChunkData);
-		FRunnableThread::Create(Chunk_GenerateBase, TEXT("GenerationThread"), 0, TPri_Normal);
+		
 	}
 	else
 	{
@@ -84,27 +83,26 @@ void AVoxel_Chunk::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (Chunk_GenerateBase != nullptr)
+	if (NeedsGeneration && GetOwner() != nullptr)
 	{
-		if (Chunk_GenerateBase->IsFinished)
+		AVoxel_World* World = (AVoxel_World*)GetOwner();
+		if (HasGenerationTask)
 		{
-			delete Chunk_GenerateBase;
-			Chunk_GenerateBase = nullptr;
-
-			for (int8 VoxelX = 0; VoxelX < 30; VoxelX++)
+			if (World->Thread_Generation1->HasCompleted)
 			{
-				for (int8 VoxelY = 0; VoxelY < 30; VoxelY++)
-				{
-					for (int8 VoxelZ = 0; VoxelZ < 30; VoxelZ++)
-					{
-						if (IsLocalOccluded(VoxelX, VoxelY, VoxelZ))
-							RenderData[VoxelX + VoxelY * 30 + VoxelZ * 900] = 0;
-						else
-							RenderData[VoxelX + VoxelY * 30 + VoxelZ * 900] = ChunkData[VoxelX + VoxelY * 30 + VoxelZ * 900];
-					}
-				}
+				World->Thread_Generation1->Confirm();
+				NeedsGeneration = false;
+				HasGenerationTask = false;
+				NeedsUpdate = true;
 			}
-			UpdateChunk();
+		}
+		else
+		{
+			if (!World->Thread_Generation1->IsActive)
+			{
+				World->Thread_Generation1->Start(ChunkData, PosX, PosY, PosZ);
+				HasGenerationTask = true;
+			}
 		}
 	}
 

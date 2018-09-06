@@ -49,9 +49,6 @@ uint32 Thread_GenerateBase::Run()
 					default:
 						ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = 0;
 				}
-				
-				//ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = 0;
-				//ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = 100;
 			}
 		}
 	}

@@ -11,6 +11,8 @@ AVoxel_World::AVoxel_World()
 	bReplicates = true;
 	bAlwaysRelevant = true;
 
+	Seed = 0;
+
 	//Load Generic Voxel mesh
 	VoxelMesh.Init(nullptr, 200);
 	VoxelMesh[100] = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Generic.Voxel_Generic"));
@@ -28,6 +30,10 @@ AVoxel_World::AVoxel_World()
 void AVoxel_World::BeginPlay()
 {
 	Super::BeginPlay();
+
+	Thread_Generation1 = new Thread_Generation(Seed);
+	FRunnableThread::Create(Thread_Generation1, TEXT("Thread Generation 1"), 0, TPri_Normal);
+
 	if (HasAuthority())
 	{
 		GetWorld()->GetTimerManager().SetTimer(ChunkTimer, this, &AVoxel_World::ManageChunks, 0.2, true, 0);
@@ -81,9 +87,9 @@ void AVoxel_World::ManageChunks()
 			int PlayerY = PlayerLocations[i].Y / 3000;
 			int PlayerZ = PlayerLocations[i].Z / 3000;
 
-			for (int ChunkX = -2 + PlayerX; ChunkX < 2 + PlayerX; ChunkX++)
+			for (int ChunkX = -5 + PlayerX; ChunkX < 5 + PlayerX; ChunkX++)
 			{
-				for (int ChunkY = -2 + PlayerY; ChunkY < 2 + PlayerY; ChunkY++)
+				for (int ChunkY = -5 + PlayerY; ChunkY < 5 + PlayerY; ChunkY++)
 				{
 					for (int ChunkZ = -1; ChunkZ < 5; ChunkZ++)
 					{
@@ -95,9 +101,9 @@ void AVoxel_World::ManageChunks()
 				}
 			}
 
-			for (int ChunkX = -3 + PlayerX; ChunkX < 3 + PlayerX; ChunkX++)
+			for (int ChunkX = -7 + PlayerX; ChunkX < 7 + PlayerX; ChunkX++)
 			{
-				for (int ChunkY = -3 + PlayerY; ChunkY < 3 + PlayerY; ChunkY++)
+				for (int ChunkY = -7 + PlayerY; ChunkY < 7 + PlayerY; ChunkY++)
 				{
 					for (int ChunkZ = -1; ChunkZ < 5; ChunkZ++)
 					{
