@@ -51,7 +51,9 @@ void AProjectile_Rocket::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor,
 			{
 				for (int VoxelZ = -4; VoxelZ < 4; VoxelZ++)
 				{
-					GameMode->GameWorld->SetBlock((GetActorLocation().X / 100) + VoxelX, (GetActorLocation().Y / 100) + VoxelY, (GetActorLocation().Z / 100) + VoxelZ, 0);
+					if (pow(VoxelX,2)+pow(VoxelY,2)+pow(VoxelZ,2)<=5) {
+						GameMode->GameWorld->SetBlock((GetActorLocation().X / 100) + VoxelX, (GetActorLocation().Y / 100) + VoxelY, (GetActorLocation().Z / 100) + VoxelZ, 0);
+					}
 				}
 			}
 		}

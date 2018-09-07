@@ -44,7 +44,7 @@ uint32 Thread_GenerateBase::Run()
 						ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = pillars.Generate(VoxelX + (PosX * 30), VoxelY + (PosY * 30), VoxelZ + (PosZ * 30));
 						break;
 					case 1:
-						ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = rings.Generate(VoxelX + (PosX * 30), VoxelY + (PosY * 30), VoxelZ + (PosZ * 30));
+						ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = pillars.Generate(VoxelX + (PosX * 30), VoxelY + (PosY * 30), VoxelZ + (PosZ * 30));
 						break;
 					default:
 						ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = 0;
@@ -61,12 +61,12 @@ int Thread_GenerateBase::GetBiome(int PosX, int PosY, int PosZ) {
 	float temp = temperature.GetPerlin(PosX, PosY);
 	float rain = rainfall.GetPerlin(PosX, PosY);
 	if (temp >= rain) {
-		return 1;
+		return 0;
 	}
 	else {
-		return 1;
+		return 0;
 	}
-	return 1;
+	return 0;
 	//Current plan! I will have a matrix of sorts for biomes based on temp and rainfall (
 }
 

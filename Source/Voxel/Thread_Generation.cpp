@@ -43,7 +43,7 @@ uint32 Thread_Generation::Run()
 							ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = pillars.Generate(VoxelX + (PosX * 30), VoxelY + (PosY * 30), VoxelZ + (PosZ * 30));
 							break;
 						case 1:
-							ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = rings.Generate(VoxelX + (PosX * 30), VoxelY + (PosY * 30), VoxelZ + (PosZ * 30));
+							ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = pillars.Generate(VoxelX + (PosX * 30), VoxelY + (PosY * 30), VoxelZ + (PosZ * 30));
 							break;
 						default:
 							ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = 0;
