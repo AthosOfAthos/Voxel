@@ -15,6 +15,7 @@ AVoxel_World::AVoxel_World()
 
 	//Load Generic Voxel mesh
 	VoxelMesh.Init(nullptr, 200);
+	VoxelMesh[50] = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_GrassFoliage.Voxel_GrassFoliage"));
 	VoxelMesh[100] = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Generic.Voxel_Generic"));
 	VoxelMesh[101] = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Stone.Voxel_Stone"));
 	VoxelMesh[130] = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Dirt.Voxel_Dirt"));

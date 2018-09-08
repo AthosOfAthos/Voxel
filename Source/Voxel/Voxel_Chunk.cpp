@@ -14,6 +14,12 @@ AVoxel_Chunk::AVoxel_Chunk()
 	VoxelMesh.Init(nullptr, 200);
 	UInstancedStaticMeshComponent* GenericVoxel;
 
+	GenericVoxel = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Voxel Grass Foliage"));
+	GenericVoxel->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_GrassFoliage.Voxel_GrassFoliage")));
+	GenericVoxel->SetMobility(EComponentMobility::Movable);
+	GenericVoxel->SetupAttachment(RootComponent);
+	VoxelMesh[50] = GenericVoxel;
+
 	GenericVoxel = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Generic Voxel"));
 	GenericVoxel->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Generic.Voxel_Generic")));
 	GenericVoxel->SetMobility(EComponentMobility::Movable);
