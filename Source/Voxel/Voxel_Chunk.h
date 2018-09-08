@@ -8,7 +8,6 @@
 #include "Engine/StaticMesh.h"
 #include "Engine/StaticMeshActor.h"
 #include "GameFramework/Actor.h"
-#include "Thread_GenerateBase.h"
 #include "Voxel_Chunk.generated.h"
 
 UCLASS()
@@ -26,8 +25,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	TArray<UInstancedStaticMeshComponent*> VoxelMesh;
-
-	Thread_GenerateBase* Chunk_GenerateBase;
 	
 	uint16 GetBlock(int VoxelX, int VoxelY, int VoxelZ);
 	UFUNCTION( NetMulticast, Reliable )
