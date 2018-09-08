@@ -32,6 +32,7 @@ uint32 Thread_Generation::Run()
 		{
 			//Thread is active and currently generating terrain
 
+			//START// generation code
 			for (int8 VoxelX = 0; VoxelX < 30; VoxelX++)
 			{
 				for (int8 VoxelY = 0; VoxelY < 30; VoxelY++)
@@ -51,8 +52,9 @@ uint32 Thread_Generation::Run()
 					}
 				}
 			}
-			HasCompleted = true;
+			//END// generation code
 
+			HasCompleted = true;
 		}
 		else
 		{
