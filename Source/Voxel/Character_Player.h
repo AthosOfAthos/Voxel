@@ -12,6 +12,7 @@
 #include "Camera/CameraComponent.h"
 #include "Animation/AnimBlueprint.h"
 #include "Projectile_Rocket.h"
+#include "Speargun.h"
 #include "Character_Player.generated.h"
 
 UCLASS()
@@ -67,6 +68,9 @@ public:
 
 	UFUNCTION(Server, Reliable, WithValidation)
 	void FireRocket();
+
+	UFUNCTION(Server, Reliable, WithValidation)
+	void FireSpear();
 
 	UPROPERTY(Replicated)
 	AHoverBoard* ControlledBoard;

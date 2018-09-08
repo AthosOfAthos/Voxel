@@ -37,7 +37,7 @@ int Pillars::Generate(int VoxelX, int VoxelY, int VoxelZ) {
 }
 int Pillars::Land(int VoxelX, int VoxelY, int VoxelZ) {
 	int Value = 0;
-	if (VoxelZ < -0) {//Controls floor stop
+	if (VoxelZ < -10) {//Controls floor stop
 		return 0;
 	}
 
@@ -78,7 +78,7 @@ int Pillars::Land(int VoxelX, int VoxelY, int VoxelZ) {
 		}
 
 	}
-	if (Value != 0 && VoxelZ == 1) {
+	if (Value == 131 && VoxelZ <= 0) {
 		Value = 132;
 	}
 	return Value;

@@ -45,7 +45,7 @@ public:
 	TArray<FVector> PlayerLocations;
 	TMap<FString, AVoxel_Chunk*> ChunkMap;
 	FTimerHandle ChunkTimer;
-	int ViewRadius = 3;
+	int ViewRadius = 2;
 	int Seed;
 	
 };

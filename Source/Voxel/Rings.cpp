@@ -40,7 +40,7 @@ int Rings::Generate(int VoxelX, int VoxelY, int VoxelZ) {
 }
 int Rings::Land(int VoxelX, int VoxelY, int VoxelZ) {
 	int Value = 0;
-	if (VoxelZ < 0) {//Controls floor stop
+	if (VoxelZ < -10) {//Controls floor stop
 		return 0;
 	}
 
@@ -66,7 +66,7 @@ int Rings::Land(int VoxelX, int VoxelY, int VoxelZ) {
 				Value = 131;
 		}
 	}
-	if (Value != 0 && VoxelZ == 0) {
+	if (Value == 131 && VoxelZ <= 0) {
 		Value = 132;
 	}
 	return Value;

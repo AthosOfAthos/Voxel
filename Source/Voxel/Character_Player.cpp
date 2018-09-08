@@ -162,7 +162,8 @@ void ACharacter_Player::SprintReleased()
 
 void ACharacter_Player::PrimaryPressed()
 {
-	FireRocket();
+	//FireRocket();
+	FireSpear();
 }
 
 void ACharacter_Player::UseBoardPressed()
@@ -270,5 +271,25 @@ void ACharacter_Player::FireRocket_Implementation()
 		FVector SpawnLocation = GetActorLocation();
 		SpawnLocation.Z += 200;
 		GetWorld()->SpawnActor<AProjectile_Rocket>(SpawnLocation, GetControlRotation(), SpawnInfo);
+	}
+}
+
+bool ACharacter_Player::FireSpear_Validate()
+{
+	return true;
+}
+
+void ACharacter_Player::FireSpear_Implementation()
+{
+	if (HasAuthority())
+	{
+		FActorSpawnParameters SpawnInfo;
+		SpawnInfo.Owner = this;
+		SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+		FVector SpawnLocation = GetActorLocation();
+		SpawnLocation.X += GetControlRotation().Vector().Component(0)*200;
+		SpawnLocation.X += GetControlRotation().Vector().Component(1)*200;
+		GetWorld()->SpawnActor<ASpeargun>(SpawnLocation, GetControlRotation(), SpawnInfo);
 	}
 }

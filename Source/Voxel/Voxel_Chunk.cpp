@@ -181,10 +181,25 @@ void AVoxel_Chunk::UpdateChunk()
 		{
 			for (int8 VoxelZ = 0; VoxelZ < 30; VoxelZ++)
 			{
+				//Oclude blocks
 				if (IsLocalOccluded(VoxelX, VoxelY, VoxelZ))
 					RenderData[VoxelX + VoxelY * 30 + VoxelZ * 900] = 0;
 				else
 					RenderData[VoxelX + VoxelY * 30 + VoxelZ * 900] = ChunkData[VoxelX + VoxelY * 30 + VoxelZ * 900];
+
+				//Grass
+				//TODO reach into chunks below
+				if ((VoxelZ - 1) < 0)
+				{
+
+				}
+				else
+				{
+					if (ChunkData[VoxelX + VoxelY * 30 + ((VoxelZ - 1) * 900)] == 131)
+					{
+						RenderData[VoxelX + VoxelY * 30 + VoxelZ * 900] = 50;
+					}
+				}
 			}
 		}
 	}

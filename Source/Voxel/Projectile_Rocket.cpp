@@ -21,8 +21,9 @@ AProjectile_Rocket::AProjectile_Rocket()
 
 	UProjectileMovementComponent* Projectile = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileComponent"));
 	Projectile->ProjectileGravityScale = 1;
-	Projectile->InitialSpeed = 3000;
+	Projectile->InitialSpeed = 2000;
 	Projectile->Friction = 0;
+	Projectile->MaxSpeed = 6000;
 	Projectile->SetUpdatedComponent(RootComponent);
 }
 
@@ -35,7 +36,6 @@ void AProjectile_Rocket::BeginPlay()
 void AProjectile_Rocket::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void AProjectile_Rocket::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
