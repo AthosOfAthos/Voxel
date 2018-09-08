@@ -12,7 +12,7 @@
 class VOXEL_API Pillars
 {
 public:
-	Pillars();
+	Pillars(int);
 	~Pillars();
 
 	int Generate(int VoxelX, int VoxelY, int VoxelZ);

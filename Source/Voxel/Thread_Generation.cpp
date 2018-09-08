@@ -26,6 +26,9 @@ bool Thread_Generation::Init()
 
 uint32 Thread_Generation::Run()
 {
+	Pillars pillars = Pillars(Seed);
+	Rings rings = Rings(Seed);
+
 	while (true)
 	{
 		if (IsActive && !HasCompleted)

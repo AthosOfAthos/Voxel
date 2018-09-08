@@ -11,7 +11,7 @@ AVoxel_World::AVoxel_World()
 	bReplicates = true;
 	bAlwaysRelevant = true;
 
-	Seed = 0;
+	Seed = FMath::RandRange(0,50000);
 
 	//Load Generic Voxel mesh
 	VoxelMesh.Init(nullptr, 200);

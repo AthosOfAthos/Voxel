@@ -25,8 +25,6 @@ public:
 
 	FastNoise temperature;
 	FastNoise rainfall;
-	Pillars pillars = Pillars();
-	Rings rings = Rings();
 
 	bool IsActive = false;
 	bool HasCompleted = true;

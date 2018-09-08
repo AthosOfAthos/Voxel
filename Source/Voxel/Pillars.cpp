@@ -2,20 +2,20 @@
 
 #include "Pillars.h"
 //This class generates the known and loved skyfallen pillar terrain
-Pillars::Pillars()
+Pillars::Pillars(int Seed)
 {
 	land = FastNoise();
-	land.SetSeed(6);
+	land.SetSeed(Seed);
 	land.SetFrequency(0.01);
 	land.SetFractalOctaves(5);
 
 	overhangs = FastNoise();
-	overhangs.SetSeed(6);
+	overhangs.SetSeed(Seed);
 	overhangs.SetFrequency(0.1);
 	overhangs.SetFractalGain(0.1);
 
 	pillars = FastNoise();
-	pillars.SetSeed(6);
+	pillars.SetSeed(Seed);
 	pillars.SetFrequency(0.05);
 	pillars.SetCellularJitter(0.9);
 	folliage = 0.4;

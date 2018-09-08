@@ -12,7 +12,7 @@
 class VOXEL_API Rings
 {
 public:
-	Rings();
+	Rings(int);
 	~Rings();
 
 	int Generate(int VoxelX, int VoxelY, int VoxelZ);

@@ -4,20 +4,20 @@
 #include "Voxel_World.h"
 #include "VoxelGameModeBase.h"
 //This class generates the known and loved skyfallen ring terrain
-Rings::Rings()
+Rings::Rings(int Seed)
 {
 	land = FastNoise();
-	land.SetSeed(6);
+	land.SetSeed(Seed);
 	land.SetFrequency(0.01);
 	land.SetFractalOctaves(5);
 
 	overhangs = FastNoise();
-	overhangs.SetSeed(6);
+	overhangs.SetSeed(Seed);
 	overhangs.SetFrequency(0.1);
 	overhangs.SetFractalGain(0.1);
 
 	rings = FastNoise();
-	rings.SetSeed(6);
+	rings.SetSeed(Seed);
 	rings.SetFrequency(0.01);
 	rings.SetFractalLacunarity(2);
 	rings.SetFractalOctaves(5);
