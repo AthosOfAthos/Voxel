@@ -217,8 +217,19 @@ void AVoxel_Chunk::UpdateChunk()
 			for (int8 VoxelZ = 0; VoxelZ < 30; VoxelZ++)
 			{
 				int i = RenderData[VoxelX + VoxelY * 30 + VoxelZ * 900];
-				if (VoxelMesh[i] != nullptr)
-					VoxelMesh[i]->AddInstance(FTransform(FRotator(0, 0, 0), FVector(VoxelX * 100, VoxelY * 100, VoxelZ * 100), FVector(1, 1, 1)));
+				switch (i)
+				{
+				case 50:
+					//Voxel_GrassFoliage
+					if (VoxelMesh[i] != nullptr)
+						VoxelMesh[i]->AddInstance(FTransform(FRotator(0, 0, 0), FVector(VoxelX * 100, VoxelY * 100, VoxelZ * 100), FVector(1, 1, FMath::RandRange(0.5f, 1.5f))));
+					break;
+				default:
+					//std Voxel
+					if (VoxelMesh[i] != nullptr)
+						VoxelMesh[i]->AddInstance(FTransform(FRotator(0, 0, 0), FVector(VoxelX * 100, VoxelY * 100, VoxelZ * 100), FVector(1, 1, 1)));
+					break;
+				}
 			}
 		}
 	}
