@@ -157,17 +157,17 @@ bool AVoxel_Chunk::IsLocalOccluded(int VoxelX, int VoxelY, int VoxelZ)
 	if (VoxelX == 0 || VoxelX == 29 || VoxelY == 0 || VoxelY == 29 || VoxelZ == 0 || VoxelZ == 29)
 		return false;
 
-	if (ChunkData[FMath::Clamp(VoxelX + 1, 0, 29) + FMath::Clamp(VoxelY, 0, 29) * 30 + FMath::Clamp(VoxelZ, 0, 29) * 900] == 0)
+	if (ChunkData[FMath::Clamp(VoxelX + 1, 0, 29) + FMath::Clamp(VoxelY, 0, 29) * 30 + FMath::Clamp(VoxelZ, 0, 29) * 900] <= 100)
 		return false;
-	if (ChunkData[FMath::Clamp(VoxelX - 1, 0, 29) + FMath::Clamp(VoxelY, 0, 29) * 30 + FMath::Clamp(VoxelZ, 0, 29) * 900] == 0)
+	if (ChunkData[FMath::Clamp(VoxelX - 1, 0, 29) + FMath::Clamp(VoxelY, 0, 29) * 30 + FMath::Clamp(VoxelZ, 0, 29) * 900] <= 100)
 		return false;
-	if (ChunkData[FMath::Clamp(VoxelX, 0, 29) + FMath::Clamp(VoxelY + 1, 0, 29) * 30 + FMath::Clamp(VoxelZ, 0, 29) * 900] == 0)
+	if (ChunkData[FMath::Clamp(VoxelX, 0, 29) + FMath::Clamp(VoxelY + 1, 0, 29) * 30 + FMath::Clamp(VoxelZ, 0, 29) * 900] <= 100)
 		return false;
-	if (ChunkData[FMath::Clamp(VoxelX, 0, 29) + FMath::Clamp(VoxelY - 1, 0, 29) * 30 + FMath::Clamp(VoxelZ, 0, 29) * 900] == 0)
+	if (ChunkData[FMath::Clamp(VoxelX, 0, 29) + FMath::Clamp(VoxelY - 1, 0, 29) * 30 + FMath::Clamp(VoxelZ, 0, 29) * 900] <= 100)
 		return false;
-	if (ChunkData[FMath::Clamp(VoxelX, 0, 29) + FMath::Clamp(VoxelY, 0, 29) * 30 + FMath::Clamp(VoxelZ + 1, 0, 29) * 900] == 0)
+	if (ChunkData[FMath::Clamp(VoxelX, 0, 29) + FMath::Clamp(VoxelY, 0, 29) * 30 + FMath::Clamp(VoxelZ + 1, 0, 29) * 900] <= 100)
 		return false;
-	if (ChunkData[FMath::Clamp(VoxelX, 0, 29) + FMath::Clamp(VoxelY, 0, 29) * 30 + FMath::Clamp(VoxelZ - 1, 0, 29) * 900] == 0)
+	if (ChunkData[FMath::Clamp(VoxelX, 0, 29) + FMath::Clamp(VoxelY, 0, 29) * 30 + FMath::Clamp(VoxelZ - 1, 0, 29) * 900] <= 100)
 		return false;
 	
 	return true;
