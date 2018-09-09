@@ -24,15 +24,19 @@ Biome::~Biome()
 }
 int Biome::GetBiome(int PosX, int PosY, int PosZ)
 {
-	int islandSize = 5;
+	int islandSize = 10;
+	int waterSize = 1;
 	//First I check if it is part of an island
-	if (PosX%islandSize == 0 || PosY % islandSize == 0) {
-		return 0; //Sepeartes out my grid
+	if (abs((PosX%islandSize)) < waterSize || abs((PosY % islandSize)) < waterSize || abs((PosX%islandSize)) > (islandSize - waterSize) || abs((PosY % islandSize)) > (islandSize - waterSize)) {
+		return 0; //Sepeartes out my grid 
+	}
+	else if (abs((PosX%islandSize)) <= waterSize || abs((PosY % islandSize)) <= waterSize|| abs((PosX%islandSize)) >= (islandSize-waterSize) || abs((PosY % islandSize)) >= (islandSize - waterSize)) {
+		return 3;
 	}
 	else {
 		int fixedX = (PosX - (PosX% islandSize));//Should return only the island location! (I don't think it did)
 		int fixedY = (PosY - (PosY% islandSize));
-		if (abs(fixedX)%2 == 0 || abs(fixedY)%2 == 0) {
+		if (temperature.GetPerlin(fixedX, fixedY)!=0) {
 			return 1;
 		}
 		else {

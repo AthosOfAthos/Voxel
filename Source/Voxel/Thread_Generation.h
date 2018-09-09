@@ -6,6 +6,7 @@
 #include "Runnable.h"
 #include "Pillars.h"
 #include "Rings.h"
+#include "Beach.h"
 #include "Math/FastNoise.h"
 #include "Biome.h"
 

@@ -23,6 +23,7 @@ uint32 Thread_Generation::Run()
 	Pillars pillars = Pillars(Seed);
 	Rings rings = Rings(Seed);
 	Biome biome = Biome(Seed);
+	Beach beach = Beach(Seed);
 	while (true)
 	{
 		if (IsActive && !HasCompleted)
@@ -45,6 +46,9 @@ uint32 Thread_Generation::Run()
 							break;
 						case 2:
 							ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = pillars.Generate(VoxelX + (PosX * 30), VoxelY + (PosY * 30), VoxelZ + (PosZ * 30));
+							break;
+						case 3:
+							ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = beach.Generate(VoxelX + (PosX * 30), VoxelY + (PosY * 30), VoxelZ + (PosZ * 30));
 							break;
 						default:
 							ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = 0;
