@@ -36,9 +36,8 @@ uint32 Thread_Generation::Run()
 				{
 					for (int8 VoxelZ = 0; VoxelZ < 30; VoxelZ++)
 					{
-						switch (biome.GetBiome(VoxelX + (PosX * 30), VoxelY + (PosY * 30), VoxelZ + (PosZ * 30))) {
+						switch (biome.GetBiome(PosX, PosY, PosZ)) {//If I wanted! I could also curve based on smaller detail with Voxel
 						case 0:
-
 							ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = 0;
 							break;
 						case 1:
