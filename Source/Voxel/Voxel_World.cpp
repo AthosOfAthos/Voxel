@@ -11,7 +11,8 @@ AVoxel_World::AVoxel_World()
 	bReplicates = true;
 	bAlwaysRelevant = true;
 
-	Seed = FMath::RandRange(0,50000);
+	if (HasAuthority())
+		Seed = FMath::RandRange(0,50000);
 
 	//Load Generic Voxel mesh
 	VoxelMesh.Init(nullptr, 200);
@@ -27,6 +28,12 @@ AVoxel_World::AVoxel_World()
 	PlayerLocations.Init(FVector(0, 0, 0), 1);
 }
 
+void AVoxel_World::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME_CONDITION(AVoxel_World, Seed, COND_InitialOnly);
+}
 
 void AVoxel_World::BeginPlay()
 {
@@ -101,7 +108,7 @@ void AVoxel_World::ManageChunks()
 					}
 				}
 			}
-
+			
 			for (int ChunkX = -7 + PlayerX; ChunkX < 7 + PlayerX; ChunkX++)
 			{
 				for (int ChunkY = -7 + PlayerY; ChunkY < 7 + PlayerY; ChunkY++)
@@ -116,7 +123,7 @@ void AVoxel_World::ManageChunks()
 					}
 				}
 			}
-
+			
 
 
 
