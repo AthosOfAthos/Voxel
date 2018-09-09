@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Pillars.h"
-//This class generates the known and loved skyfallen pillar terrain
+//This class generates the pillars terrain
 Pillars::Pillars(int Seed)
 {
 	land = FastNoise();

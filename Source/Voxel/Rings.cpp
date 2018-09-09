@@ -3,7 +3,7 @@
 #include "Rings.h"
 #include "Voxel_World.h"
 #include "VoxelGameModeBase.h"
-//This class generates the known and loved skyfallen ring terrain
+//This class generates something
 Rings::Rings(int Seed)
 {
 	land = FastNoise();
@@ -43,31 +43,15 @@ int Rings::Land(int VoxelX, int VoxelY, int VoxelZ) {
 	if (VoxelZ < -10) {//Controls floor stop
 		return 0;
 	}
-
-
-	float ring = rings.GetPerlinFractal ((VoxelX) * 1, (VoxelY) * 1);//Considering messing with X/Y ratio to create arches
-	float r2 = rings.GetPerlinFractal((VoxelX) * 2, (VoxelY) * 2);
-	/*if (r2 > ring) {
-		ring = r2;
-	}*/
-
-	ring *= 200;
-	r2 *= 200;
-
-	//So my idea before I forget is to use this information to cut out select for at base
-	if (overhangs.GetPerlinFractal(VoxelX, VoxelY, VoxelZ) <= 0.2||true) { //cuts
-		if (VoxelZ < (ring - 2) && VoxelZ < (r2 - 2) && VoxelZ >(ring - 10)) {//I want to change it so that this makes rings of a certain rad (Current problem is perlin noise is smoothish 
-				Value = 101;
+	//Right here I'm going to draw a large map of how I want islands to work
+	if (VoxelZ == 1) {
+		if (land.GetPerlin(VoxelX, VoxelY) > 0) {
+			Value = 101;
 		}
-		else if (VoxelZ <= (ring - 1) && VoxelZ < (r2 - 1) && VoxelZ > (ring - 10)) {
-				Value = 130;
+		else if (land.GetPerlin(VoxelX, VoxelY) < 0) {
+			Value = 130;
 		}
-		else if (VoxelZ <= (ring) && VoxelZ < (r2) && VoxelZ > (ring - 10)) {
-				Value = 131;
-		}
-	}
-	if (Value == 131 && VoxelZ <= 0) {
-		Value = 132;
+
 	}
 	return Value;
 }

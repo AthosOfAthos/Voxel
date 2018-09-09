@@ -25,6 +25,7 @@ public:
 
 	FastNoise temperature;
 	FastNoise rainfall;
+	FastNoise islands;
 
 	bool IsActive = false;
 	bool HasCompleted = true;

@@ -13,6 +13,10 @@ Thread_Generation::Thread_Generation(int WorldSeed)
 	rainfall = FastNoise();
 	rainfall.SetSeed(Seed + 1);
 	rainfall.SetFrequency(0.01);
+
+	islands = FastNoise();
+	islands.SetSeed(Seed+2);
+	islands.SetFrequency(0.01);
 }
 
 Thread_Generation::~Thread_Generation()
@@ -42,17 +46,23 @@ uint32 Thread_Generation::Run()
 				{
 					for (int8 VoxelZ = 0; VoxelZ < 30; VoxelZ++)
 					{
-						switch (GetBiome(PosX / 30, PosY / 30, PosZ / 30)) {
+						int B = GetBiome(PosX / 30, PosY / 30, PosZ / 30);
+						switch (B) {
 						case 0:
-							ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = pillars.Generate(VoxelX + (PosX * 30), VoxelY + (PosY * 30), VoxelZ + (PosZ * 30));
+
+							ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = 0;
 							break;
 						case 1:
 							ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = rings.Generate(VoxelX + (PosX * 30), VoxelY + (PosY * 30), VoxelZ + (PosZ * 30));
+							break;
+						case 2:
+							ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = pillars.Generate(VoxelX + (PosX * 30), VoxelY + (PosY * 30), VoxelZ + (PosZ * 30));
 							break;
 						default:
 							ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = 0;
 							break;
 						}
+
 					}
 				}
 			}
@@ -77,12 +87,25 @@ void Thread_Generation::Stop()
 
 int Thread_Generation::GetBiome(int PosX, int PosY, int PosZ)
 {
-	float temp = temperature.GetPerlin(PosX, PosY);
-	float rain = rainfall.GetPerlin(PosX, PosY);
-	if (temp >= rain)
+	//First I check if it is part of an island
+	if (PosX == 0 && PosY == 0 && PosZ == 0) {
+		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(islands.GetPerlin((PosX) * 1, (PosY) * 1) > 0));
+	}
+	if (islands.GetPerlin((PosX) * 1, (PosY) * 1)>0||true) {
+		//Then I check which biome it is
+		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "island");
+		if (rainfall.GetPerlin((PosX)*10, (PosY)*10)<temperature.GetPerlin((PosX)*1, (PosY)*1)) {
+			//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "1");
+			return 1;
+		}
+		else {
+			//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "2");
+			return 2;
+		}
+	}
+	else {
 		return 0;
-	else
-		return 1;
+	}
 	//Current plan! I will have a matrix of sorts for biomes based on temp and rainfall (
 }
 

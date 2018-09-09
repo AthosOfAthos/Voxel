@@ -162,8 +162,8 @@ void ACharacter_Player::SprintReleased()
 
 void ACharacter_Player::PrimaryPressed()
 {
-	//FireRocket();
-	FireSpear();
+	FireRocket();
+	//FireSpear();
 }
 
 void ACharacter_Player::UseBoardPressed()
