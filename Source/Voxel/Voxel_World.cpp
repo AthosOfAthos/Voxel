@@ -39,8 +39,11 @@ void AVoxel_World::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Thread_Generation1 = new Thread_Generation(Seed);
-	FRunnableThread::Create(Thread_Generation1, TEXT("Thread Generation 1"), 0, TPri_Normal);
+	GenerationThreads.Add(new Thread_Generation(Seed));
+	FRunnableThread::Create(GenerationThreads[0], TEXT("Thread Generation 1"), 0, TPri_Normal);
+
+	GenerationThreads.Add(new Thread_Generation(Seed));
+	FRunnableThread::Create(GenerationThreads[1], TEXT("Thread Generation 2"), 0, TPri_Normal);
 
 	if (HasAuthority())
 	{

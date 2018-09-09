@@ -20,8 +20,7 @@ public:
 	virtual uint32 Run();
 	virtual void Stop();
 
-
-	void Start(uint16* RefChunkData, int NewPosX, int NewPosY, int NewPosZ);
+	bool Start(uint16* RefChunkData, int NewPosX, int NewPosY, int NewPosZ);
 	void Confirm();
 
 	bool IsActive = false;
