@@ -20,6 +20,7 @@ void AVoxelGameModeBase::BeginPlay()
 	SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	GameWorld = GetWorld()->SpawnActor<AVoxel_World>(FVector(0,0,0), FRotator(0,0,0), SpawnInfo);
+	TestAirship = GetWorld()->SpawnActor<AAirship_Generic>(FVector(0, 0, 4000), FRotator(0, 0, 0), SpawnInfo);
 }
 
 void AVoxelGameModeBase::Tick(float DeltaTime)
@@ -33,6 +34,9 @@ void AVoxelGameModeBase::Tick(float DeltaTime)
 			{
 				if (Players[i]->GetPawnOrSpectator() != nullptr)
 					GameWorld->PlayerLocations[i] = Players[i]->GetPawnOrSpectator()->GetActorLocation();
+
+				if (Players[i]->GetPawn() == nullptr)
+					SpawnPlayer(Players[i]);
 			}
 		}
 
@@ -42,8 +46,24 @@ void AVoxelGameModeBase::Tick(float DeltaTime)
 	}
 }
 
+void AVoxelGameModeBase::SpawnPlayer(APlayerController* Player)
+{
+	if (Player->GetPawn() != nullptr)
+		Player->GetPawn()->Destroy();
+
+	if (TestAirship == nullptr)
+		return;
+
+	FActorSpawnParameters SpawnInfo;
+	SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	FVector SpawnLocation = TestAirship->GetActorLocation();
+	SpawnLocation.Z += 100;
+	APawn* NewPawn = GetWorld()->SpawnActor<ACharacter_Player>(SpawnLocation, FRotator(0, 0, 0), SpawnInfo);
+
+	Player->Possess(NewPawn);
+}
+
 void AVoxelGameModeBase::PostLogin(APlayerController* NewPlayer)
 {
 	Players.Add(NewPlayer);
-	RestartPlayer(NewPlayer);
 }

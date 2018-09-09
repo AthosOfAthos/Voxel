@@ -6,6 +6,7 @@
 #include "Voxel_World.h"
 #include "Character_Player.h"
 #include "Controller_Player.h"
+#include "Airship_Generic.h"
 #include "GameFramework/GameModeBase.h"
 #include "VoxelGameModeBase.generated.h"
 
@@ -22,10 +23,12 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
+	void SpawnPlayer(APlayerController* Player);
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 	
 public:
 	AVoxel_World* GameWorld;
 	TArray<APlayerController*> Players;
 	
+	AAirship_Generic* TestAirship;
 };
