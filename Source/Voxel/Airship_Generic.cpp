@@ -14,7 +14,7 @@ AAirship_Generic::AAirship_Generic()
 	AirShipMesh->SetCollisionProfileName(FName("BlockAll"));
 	RootComponent = AirShipMesh;
 
-	AirSpeed = 500;
+	AirSpeed = 100;
 }
 
 void AAirship_Generic::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
@@ -36,9 +36,11 @@ void AAirship_Generic::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-
 	SetActorRotation(Attitude);
 	FVector TargetLocation = GetActorLocation();
+	FVector Velocity = FVector(AirSpeed * DeltaTime, 0, 0);
+	Velocity = Attitude.RotateVector(Velocity);
+	TargetLocation += Velocity;
 	SetActorLocation(TargetLocation);
 }
 

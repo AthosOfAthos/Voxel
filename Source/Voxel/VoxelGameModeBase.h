@@ -10,9 +10,6 @@
 #include "GameFramework/GameModeBase.h"
 #include "VoxelGameModeBase.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class VOXEL_API AVoxelGameModeBase : public AGameModeBase
 {

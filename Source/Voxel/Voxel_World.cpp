@@ -25,7 +25,7 @@ AVoxel_World::AVoxel_World()
 
 	VoxelMesh[100] = LoadObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Generic.Voxel_Generic"));
 
-	PlayerLocations.Init(FVector(0, 0, 0), 1);
+	PlayerLocations.Init(FVector(0, 0, 0), 10);
 }
 
 void AVoxel_World::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
