@@ -52,7 +52,7 @@ public:
 	float DragCoefficient = 0.01;
 
 	float TargetRoll = 0;
-	float PitchResponse = 100;
+	float PitchResponse = 60;
 	float RollResponse = 4;
 	float YawResponse = 3;
 

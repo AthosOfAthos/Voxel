@@ -46,6 +46,7 @@ public:
 	TMap<FString, AVoxel_Chunk*> ChunkMap;
 	FTimerHandle ChunkTimer;
 	int ViewRadius = 2;
+	UPROPERTY( Replicated )
 	int Seed;
 	
 };
