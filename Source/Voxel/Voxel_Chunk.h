@@ -26,6 +26,8 @@ public:
 
 	TArray<UInstancedStaticMeshComponent*> VoxelMesh;
 	
+	void FindThread();
+
 	uint16 GetBlock(int VoxelX, int VoxelY, int VoxelZ);
 	UFUNCTION( NetMulticast, Reliable )
 	void SetBlock(int VoxelX, int VoxelY, int VoxelZ, int Id);
@@ -38,6 +40,7 @@ public:
 	bool NeedsUpdate = false;
 	bool NeedsGeneration = true;
 	bool HasGenerationTask = false;
+	int GenerationThreadID;
 
 	uint16 ChunkData[27000];
 

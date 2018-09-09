@@ -73,9 +73,7 @@ void Thread_Generation::Stop()
 
 }
 
-
-
-void Thread_Generation::Start(uint16* RefChunkData, int NewPosX, int NewPosY, int NewPosZ)
+bool Thread_Generation::Start(uint16* RefChunkData, int NewPosX, int NewPosY, int NewPosZ)
 {
 	if (!IsActive)
 	{
@@ -86,7 +84,10 @@ void Thread_Generation::Start(uint16* RefChunkData, int NewPosX, int NewPosY, in
 
 		IsActive = true;
 		HasCompleted = false;
+		return true;
 	}
+
+	return false;
 }
 
 void Thread_Generation::Confirm()

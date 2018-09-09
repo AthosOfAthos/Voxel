@@ -94,9 +94,9 @@ void AVoxel_Chunk::Tick(float DeltaTime)
 		AVoxel_World* World = (AVoxel_World*)GetOwner();
 		if (HasGenerationTask)
 		{
-			if (World->Thread_Generation1->HasCompleted)
+			if (World->GenerationThreads[GenerationThreadID]->HasCompleted)
 			{
-				World->Thread_Generation1->Confirm();
+				World->GenerationThreads[GenerationThreadID]->Confirm();
 				NeedsGeneration = false;
 				HasGenerationTask = false;
 				NeedsUpdate = true;
@@ -104,11 +104,7 @@ void AVoxel_Chunk::Tick(float DeltaTime)
 		}
 		else
 		{
-			if (!World->Thread_Generation1->IsActive)
-			{
-				World->Thread_Generation1->Start(ChunkData, PosX, PosY, PosZ);
-				HasGenerationTask = true;
-			}
+			FindThread();
 		}
 	}
 
@@ -116,6 +112,21 @@ void AVoxel_Chunk::Tick(float DeltaTime)
 	{
 		NeedsUpdate = false;
 		UpdateChunk();
+	}
+}
+
+void AVoxel_Chunk::FindThread()
+{
+	AVoxel_World* World = (AVoxel_World*)GetOwner();
+	int TotalThreads = World->GenerationThreads.Num();
+	for (int i = 0; i < TotalThreads; i++)
+	{
+		if (World->GenerationThreads[i]->Start(ChunkData, PosX, PosY, PosZ))
+		{
+			HasGenerationTask = true;
+			GenerationThreadID = i;
+			return;
+		}
 	}
 }
 

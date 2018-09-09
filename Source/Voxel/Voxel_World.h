@@ -40,7 +40,7 @@ public:
 
 	AVoxel_Chunk* GetChunk(int ChunkX, int ChunkY, int ChunkZ);
 
-	Thread_Generation* Thread_Generation1;
+	TArray<Thread_Generation*> GenerationThreads;
 	TArray<UStaticMesh*> VoxelMesh;
 	TArray<FVector> PlayerLocations;
 	TMap<FString, AVoxel_Chunk*> ChunkMap;
