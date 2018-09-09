@@ -6,17 +6,7 @@ Thread_Generation::Thread_Generation(int WorldSeed)
 {
 	Seed = WorldSeed;
 
-	temperature = FastNoise();
-	temperature.SetSeed(Seed);
-	temperature.SetFrequency(0.01);
-
-	rainfall = FastNoise();
-	rainfall.SetSeed(Seed + 1);
-	rainfall.SetFrequency(0.01);
-
-	islands = FastNoise();
-	islands.SetSeed(Seed+2);
-	islands.SetFrequency(0.01);
+	
 }
 
 Thread_Generation::~Thread_Generation()
@@ -32,7 +22,7 @@ uint32 Thread_Generation::Run()
 {
 	Pillars pillars = Pillars(Seed);
 	Rings rings = Rings(Seed);
-
+	Biome biome = Biome(Seed);
 	while (true)
 	{
 		if (IsActive && !HasCompleted)
@@ -46,10 +36,8 @@ uint32 Thread_Generation::Run()
 				{
 					for (int8 VoxelZ = 0; VoxelZ < 30; VoxelZ++)
 					{
-						int B = GetBiome(PosX / 30, PosY / 30, PosZ / 30);
-						switch (B) {
+						switch (biome.GetBiome(PosX, PosY, PosZ)) {//If I wanted! I could also curve based on smaller detail with Voxel
 						case 0:
-
 							ChunkData[VoxelX + (VoxelY * 30) + (VoxelZ * 900)] = 0;
 							break;
 						case 1:
@@ -85,29 +73,7 @@ void Thread_Generation::Stop()
 
 }
 
-int Thread_Generation::GetBiome(int PosX, int PosY, int PosZ)
-{
-	//First I check if it is part of an island
-	if (PosX == 0 && PosY == 0 && PosZ == 0) {
-		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(islands.GetPerlin((PosX) * 1, (PosY) * 1) > 0));
-	}
-	if (islands.GetPerlin((PosX) * 1, (PosY) * 1)>0||true) {
-		//Then I check which biome it is
-		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "island");
-		if (rainfall.GetPerlin((PosX)*10, (PosY)*10)<temperature.GetPerlin((PosX)*1, (PosY)*1)) {
-			//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "1");
-			return 1;
-		}
-		else {
-			//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "2");
-			return 2;
-		}
-	}
-	else {
-		return 0;
-	}
-	//Current plan! I will have a matrix of sorts for biomes based on temp and rainfall (
-}
+
 
 void Thread_Generation::Start(uint16* RefChunkData, int NewPosX, int NewPosY, int NewPosZ)
 {
