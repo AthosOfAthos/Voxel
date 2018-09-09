@@ -37,7 +37,7 @@ int SkyfallenPillars::Generate(int VoxelX, int VoxelY, int VoxelZ) {
 }
 int SkyfallenPillars::Land(int VoxelX, int VoxelY, int VoxelZ) {
 	int Value = 0;
-	if (VoxelZ < -10) {//Controls floor stop
+	if (VoxelZ < -15) {//Controls floor stop
 		return 0;
 	}
 
