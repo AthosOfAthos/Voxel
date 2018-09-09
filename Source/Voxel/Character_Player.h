@@ -85,5 +85,6 @@ public:
 	float FOVNormal = 110;
 	float FOVSprinting = 120;
 
+	UPROPERTY(Replicated, BlueprintReadOnly)
 	bool IsSprinting = false;
 };

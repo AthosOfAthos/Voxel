@@ -41,6 +41,7 @@ void ACharacter_Player::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > &
 
 	DOREPLIFETIME(ACharacter_Player, ControlledBoard);
 	DOREPLIFETIME(ACharacter_Player, IsMounted);
+	DOREPLIFETIME(ACharacter_Player, IsSprinting);
 }
 
 void ACharacter_Player::BeginPlay()
