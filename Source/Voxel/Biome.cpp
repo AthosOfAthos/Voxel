@@ -8,7 +8,7 @@ Biome::Biome(int WorldSeed)
 	Seed = WorldSeed;
 	temperature = FastNoise();
 	temperature.SetSeed(Seed);
-	temperature.SetFrequency(0.001);
+	temperature.SetFrequency(0.01);
 
 	rainfall = FastNoise();
 	rainfall.SetSeed(Seed + 1);
@@ -29,23 +29,10 @@ int Biome::GetBiome(int PosX, int PosY, int PosZ)
 	if (PosX%islandSize == 0 || PosY % islandSize == 0) {
 		return 0; //Sepeartes out my grid
 	}
-	/*
-	o--o--o--o--o
-	-------------
-	o--x--x--x--o
-	-------------
-	o--x--x--x--o
-	-------------
-	o--x--x--x--o
-	-------------
-	o--o--o--o--o
-	*/
 	else {
-		//Now I need this to return only the same value for inner row
-		int fixedX = PosX - PosX % islandSize;//Should return only the island location!
-		int fixedY = PosY - PosY % islandSize;
-		int fixedZ = PosZ - PosZ % islandSize;
-		if (temperature.GetPerlin((fixedX) * 1, (fixedY) * 1) < rainfall.GetPerlin((fixedX) * 1, (fixedY) * 1)) {
+		int fixedX = (PosX - (PosX% islandSize));//Should return only the island location! (I don't think it did)
+		int fixedY = (PosY - (PosY% islandSize));
+		if (abs(fixedX)%2 == 0 || abs(fixedY)%2 == 0) {
 			return 1;
 		}
 		else {
