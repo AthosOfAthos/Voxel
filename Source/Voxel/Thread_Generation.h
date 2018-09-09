@@ -7,6 +7,7 @@
 #include "Pillars.h"
 #include "Rings.h"
 #include "Math/FastNoise.h"
+#include "Biome.h"
 
 class VOXEL_API Thread_Generation : public FRunnable
 {
@@ -18,14 +19,9 @@ public:
 	virtual uint32 Run();
 	virtual void Stop();
 
-	int GetBiome(int PosX, int PosY, int PosZ);
 
 	void Start(uint16* RefChunkData, int NewPosX, int NewPosY, int NewPosZ);
 	void Confirm();
-
-	FastNoise temperature;
-	FastNoise rainfall;
-	FastNoise islands;
 
 	bool IsActive = false;
 	bool HasCompleted = true;
