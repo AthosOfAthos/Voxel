@@ -4,7 +4,7 @@
 
 #include "Engine.h"
 #include "Runnable.h"
-#include "Pillars.h"
+#include "SkyfallenPillars.h"
 #include "Rings.h"
 #include "Beach.h"
 #include "Math/FastNoise.h"

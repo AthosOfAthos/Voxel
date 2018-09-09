@@ -2,7 +2,7 @@
 
 #pragma once
 #include "Math/FastNoise.h"
-#include "Pillars.h"
+#include "SkyfallenPillars.h"
 #include "Rings.h"
 #include "CoreMinimal.h"
 

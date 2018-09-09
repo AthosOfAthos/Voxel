@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Pillars.h"
+#include "SkyfallenPillars.h"
 //This class generates the pillars terrain
-Pillars::Pillars(int Seed)
+SkyfallenPillars::SkyfallenPillars(int Seed)
 {
 	land = FastNoise();
 	land.SetSeed(Seed);
@@ -21,13 +21,13 @@ Pillars::Pillars(int Seed)
 	folliage = 0.4;
 }
 
-Pillars::~Pillars()
+SkyfallenPillars::~SkyfallenPillars()
 {
 }
 /*
 Very Important! Pass this method only the total position (voxel pos + chunk pos * 10
 */
-int Pillars::Generate(int VoxelX, int VoxelY, int VoxelZ) {
+int SkyfallenPillars::Generate(int VoxelX, int VoxelY, int VoxelZ) {
 	int Value = Land(VoxelX, VoxelY, VoxelZ);
 
 	//Value = Detail(VoxelX, VoxelY, VoxelZ, Value);
@@ -35,7 +35,7 @@ int Pillars::Generate(int VoxelX, int VoxelY, int VoxelZ) {
 
 	return Value;
 }
-int Pillars::Land(int VoxelX, int VoxelY, int VoxelZ) {
+int SkyfallenPillars::Land(int VoxelX, int VoxelY, int VoxelZ) {
 	int Value = 0;
 	if (VoxelZ < -10) {//Controls floor stop
 		return 0;
@@ -83,7 +83,7 @@ int Pillars::Land(int VoxelX, int VoxelY, int VoxelZ) {
 	}
 	return Value;
 }
-int Pillars::Detail(int VoxelX, int VoxelY, int VoxelZ, int Value) {
+int SkyfallenPillars::Detail(int VoxelX, int VoxelY, int VoxelZ, int Value) {
 	if ((abs(overhangs.GetPerlin(VoxelX * 20, VoxelY * 20, VoxelZ * 20)) > folliage) && Value == 3) {
 		return 132;
 	}

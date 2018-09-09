@@ -24,8 +24,8 @@ Biome::~Biome()
 }
 int Biome::GetBiome(int PosX, int PosY, int PosZ)
 {
-	int islandSize = 10;
-	int waterSize = 1;
+	int islandSize = 16; //Land of 5x5 to 6x6 looked good
+	int waterSize = 5; 
 	//First I check if it is part of an island
 	if (abs((PosX%islandSize)) < waterSize || abs((PosY % islandSize)) < waterSize || abs((PosX%islandSize)) > (islandSize - waterSize) || abs((PosY % islandSize)) > (islandSize - waterSize)) {
 		return 0; //Sepeartes out my grid 

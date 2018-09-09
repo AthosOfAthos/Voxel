@@ -9,11 +9,11 @@
 /**
  * 
  */
-class VOXEL_API Pillars
+class VOXEL_API SkyfallenPillars
 {
 public:
-	Pillars(int);
-	~Pillars();
+	SkyfallenPillars(int);
+	~SkyfallenPillars();
 
 	int Generate(int VoxelX, int VoxelY, int VoxelZ);
 	int Land(int VoxelX, int VoxelY, int VoxelZ);

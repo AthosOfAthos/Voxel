@@ -20,7 +20,7 @@ bool Thread_Generation::Init()
 
 uint32 Thread_Generation::Run()
 {
-	Pillars pillars = Pillars(Seed);
+	SkyfallenPillars pillars = SkyfallenPillars(Seed);
 	Rings rings = Rings(Seed);
 	Biome biome = Biome(Seed);
 	Beach beach = Beach(Seed);
