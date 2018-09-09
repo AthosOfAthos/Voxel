@@ -1,0 +1,24 @@
+Theme:Overgrowth
+	-8 Skyfallen Pillars: As seen in game currently --> Basic land with Semi floating pillars sticking out of it
+	-7 Isle of Vines: No land mass with a series of Large islands surronded by smaller satilite islands connected by vines
+	8 Shattered Rings: A basic landmass cut by rivers with massive horizontal rings streaching out of the ground <Requires place>
+	-8 Ancient Redwoods: Like pillars but with a series of massive trees that provide total sky <Will want to redo with place>
+	8 Impassible Jungle: A dense jungle with vine growths on the ground, hard to walk through <Requires place> 
+Theme:Wasteland
+	3 Grey pools: A very flat land with no trees where the water is grey goo which if touched kills the entity and spawns a 'goo' entity
+	-5 Wormridden Desert: A Sandy area with decent dunes all above water with dune esk sandworms & spice 
+	4 Nuclear Wasteland: A poc marked land with radioactive everything (Slow damage+sticks to items) 
+	7 Meteor crator: A massive hole in the ground with large mountains on the outskirts with rare materials in the center 
+	3 Deepfrozen land: A massive sheet of ice covered in snow, things to find in ice (Needs improvement)
+	-9 Fungal kingdom: A series of mountainus structures that look like mushrooms and mushroom foliage 
+Theme:Elevated
+	6 Frosttipped mountains: Large near vertical mountains that streach up to 
+	-8 Supervulcano: A massive mountain with lava at the top and active lava flows inside lava tubes
+	6 Geiser flats: A relativly flat plane with geisers hidden under it that can be poison, steam etc
+	-5 Acidic Gorges: Basically a lot of flat area with rivers cutting through it that are acid 
+	-8 Salt Caves: From the last jedi 
+
+Do spacing first Mitchell!
+	
+
+
