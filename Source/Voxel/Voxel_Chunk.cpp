@@ -16,36 +16,42 @@ AVoxel_Chunk::AVoxel_Chunk()
 
 	GenericVoxel = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Voxel Grass Foliage"));
 	GenericVoxel->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_GrassFoliage.Voxel_GrassFoliage")));
+	GenericVoxel->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GenericVoxel->SetMobility(EComponentMobility::Movable);
 	GenericVoxel->SetupAttachment(RootComponent);
 	VoxelMesh[50] = GenericVoxel;
 
 	GenericVoxel = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Generic Voxel"));
 	GenericVoxel->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Generic.Voxel_Generic")));
+	GenericVoxel->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GenericVoxel->SetMobility(EComponentMobility::Movable);
 	GenericVoxel->SetupAttachment(RootComponent);
 	VoxelMesh[100] = GenericVoxel;
 
 	GenericVoxel = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Voxel Stone"));
 	GenericVoxel->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Stone.Voxel_Stone")));
+	GenericVoxel->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GenericVoxel->SetMobility(EComponentMobility::Movable);
 	GenericVoxel->SetupAttachment(RootComponent);
 	VoxelMesh[101] = GenericVoxel;
 
 	GenericVoxel = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Voxel Dirt"));
 	GenericVoxel->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Dirt.Voxel_Dirt")));
+	GenericVoxel->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GenericVoxel->SetMobility(EComponentMobility::Movable);
 	GenericVoxel->SetupAttachment(RootComponent);
 	VoxelMesh[130] = GenericVoxel;
 
 	GenericVoxel = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Voxel Grass"));
 	GenericVoxel->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Grass.Voxel_Grass")));
+	GenericVoxel->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GenericVoxel->SetMobility(EComponentMobility::Movable);
 	GenericVoxel->SetupAttachment(RootComponent);
 	VoxelMesh[131] = GenericVoxel;
 
 	GenericVoxel = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Voxel Sand"));
 	GenericVoxel->SetStaticMesh(FindObject<UStaticMesh>(NULL, TEXT("/Game/Mesh/Voxel_Sand.Voxel_Sand")));
+	GenericVoxel->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GenericVoxel->SetMobility(EComponentMobility::Movable);
 	GenericVoxel->SetupAttachment(RootComponent);
 	VoxelMesh[132] = GenericVoxel;
