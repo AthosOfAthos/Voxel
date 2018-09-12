@@ -7,6 +7,7 @@
 #include "SkyfallenPillars.h"
 #include "Rings.h"
 #include "Beach.h"
+#include "IsleofVines.h"
 #include "Math/FastNoise.h"
 #include "Biome.h"
 

@@ -37,13 +37,15 @@ int SkyfallenPillars::Generate(int VoxelX, int VoxelY, int VoxelZ) {
 }
 int SkyfallenPillars::Land(int VoxelX, int VoxelY, int VoxelZ) {
 	int Value = 0;
-	if (VoxelZ < -10) {//Controls floor stop
+	if (VoxelZ < -15) {//Controls floor stop
 		return 0;
 	}
 
 	float Mheight = land.GetPerlinFractal((VoxelX) * 1, (VoxelY) * 1);
-	
 	float pillar = pillars.GetCellular((VoxelX) * 1, (VoxelY) * 1);
+	float o = overhangs.GetPerlinFractal(VoxelX, VoxelY, VoxelZ);
+	float o2 = overhangs.GetPerlinFractal(VoxelX, VoxelY, VoxelZ + 1);
+	float o3 = overhangs.GetPerlinFractal(VoxelX, VoxelY, VoxelZ + 2);
 
 	/*if (Mheight > 0.01 && pillar>0.2) { //I think this is an uh oh 
 		pillar *= 50;
@@ -55,7 +57,7 @@ int SkyfallenPillars::Land(int VoxelX, int VoxelY, int VoxelZ) {
 	Mheight *= 25;
 
 	if (VoxelZ > Mheight && pillar != 0) {//So my idea before I forget is to use this information to cut out select for at base
-		if (overhangs.GetPerlinFractal(VoxelX, VoxelY, VoxelZ) <= 0.2) { //Pillar cuts
+		//Pillar cuts
 			if (VoxelZ < (pillar - 2)&& VoxelZ>(pow(std::abs(Mheight),2)*pillar/(pillar-5))) {//The abs is is you want to edit the 2
 				Value = 101;
 
@@ -66,8 +68,7 @@ int SkyfallenPillars::Land(int VoxelX, int VoxelY, int VoxelZ) {
 			else if (VoxelZ <= (pillar) && VoxelZ > (pow(std::abs(Mheight),2)*pillar/(pillar-5))) {
 				Value = 131;
 			}
-		}
-	}else if (overhangs.GetPerlinFractal(VoxelX, VoxelY, VoxelZ) <= 0.35) {//Land cave size
+	}else {
 		if (VoxelZ < (Mheight - 2)) {
 			Value = 101;
 
@@ -78,8 +79,23 @@ int SkyfallenPillars::Land(int VoxelX, int VoxelY, int VoxelZ) {
 		}
 
 	}
-	if (Value == 131 && VoxelZ <= 0) {
+	if (Value == 131 && VoxelZ <= 0) {//The beaches
 		Value = 132;
+	}
+
+	float cut = 0.2; //The cuts
+	if (Value != 0) {
+		if (o > cut) {
+			Value = 0;
+		}
+	}
+	if (Value == 101) {
+		if (o2 > cut) {
+			Value = 131;//131
+		}
+		else if (o3 > cut) {
+			Value = 130;
+		}
 	}
 	return Value;
 }
