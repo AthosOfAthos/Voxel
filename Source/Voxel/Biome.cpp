@@ -24,7 +24,6 @@ Biome::~Biome()
 }
 int Biome::GetBiome(int PosX, int PosY, int PosZ)
 {
-	/*All of this code is good and works
 	I just need to test out all of my new stuff so I'm leaving this out for a bit
 	
 	//Land of 5x5 to 6x6 looked good
@@ -44,12 +43,10 @@ int Biome::GetBiome(int PosX, int PosY, int PosZ)
 			return 1;
 		}
 		else {
-			return 2;
+			return 4;
 		}
 	}
 	return 0;
-	*/
-	return 4;
 }
 
 	//Current plan! I will have a matrix of sorts for biomes based on temp and rainfall 
