@@ -24,7 +24,6 @@ Biome::~Biome()
 }
 int Biome::GetBiome(int PosX, int PosY, int PosZ)
 {
-	I just need to test out all of my new stuff so I'm leaving this out for a bit
 	
 	//Land of 5x5 to 6x6 looked good
 	int islandSize = 16; 
